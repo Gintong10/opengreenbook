@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import katex from 'katex'
 import { tokenize, plain } from '../src/lib/tokenize.js'
+import { grade } from '../src/lib/grade.js'
 
 const dataDir = path.resolve(import.meta.dirname, '../src/data')
 const files = process.argv.length > 2
@@ -69,10 +70,42 @@ for (const file of files) {
     if (c.name && c.name.length > 48) warnings.push(`${where}: name longer than 48 chars`)
     if (c.answer && plain(c.answer).length > 110) warnings.push(`${where}: answer is ${plain(c.answer).length} chars (aim for <= 110)`)
     for (const k of ['prompt', 'answer', 'explanation', 'hint']) if (typeof c[k] === 'string') checkMath(c[k], `${where}.${k}`)
+    if (c.check) {
+      const ch = c.check
+      if (ch.type === 'number') {
+        if (typeof ch.value !== 'number' || !Number.isFinite(ch.value)) errors.push(`${where}: check.value must be a finite number`)
+        if (!Array.isArray(ch.examples) || !ch.examples.length) errors.push(`${where}: number check needs "examples" (inputs that must be accepted)`)
+        else
+          for (const ex of ch.examples) {
+            const r = grade(c, ex)
+            if (r.status !== 'correct') errors.push(`${where}: example "${ex}" is graded ${r.status} (value ${ch.value})`)
+          }
+        if (ch.unit != null && (typeof ch.unit !== 'string' || ch.unit.length > 16)) errors.push(`${where}: check.unit must be a short string`)
+        for (const d of c.distractors || []) {
+          // A distractor that is just a number must not be accepted as correct.
+          if (/^\$?[-\d./\\{}frac ]+\$?$/.test(d.trim())) {
+            const r = grade(c, plain(d).replace(/\\frac\{(.+?)\}\{(.+?)\}/g, '($1)/($2)'))
+            if (r.status === 'correct') errors.push(`${where}: distractor "${d}" would be graded correct`)
+          }
+        }
+      } else if (ch.type === 'text') {
+        if (!Array.isArray(ch.accept) || !ch.accept.length || ch.accept.some((a) => typeof a !== 'string' || !a.trim()))
+          errors.push(`${where}: text check needs a non-empty "accept" array of strings`)
+      } else errors.push(`${where}: unknown check.type "${ch.type}"`)
+    }
   }
 }
 
 for (const w of warnings) console.warn('warn:', w)
 for (const e of errors) console.error('ERROR:', e)
-console.log(`${files.length} file(s), ${total} card(s), ${errors.length} error(s), ${warnings.length} warning(s)`)
+const typed = files.flatMap((f) => {
+  try {
+    return JSON.parse(fs.readFileSync(f, 'utf8')).cards
+  } catch {
+    return []
+  }
+})
+const byType = { number: 0, text: 0, choice: 0 }
+for (const c of typed) byType[c.check?.type ?? 'choice'] = (byType[c.check?.type ?? 'choice'] ?? 0) + 1
+console.log(`${files.length} file(s), ${total} card(s) [${byType.number} number, ${byType.text} text, ${byType.choice} choice], ${errors.length} error(s), ${warnings.length} warning(s)`)
 process.exit(errors.length ? 1 : 0)

@@ -94,15 +94,22 @@
    "name": "Derivative of (ln x)^(ln x)",
    "kind": "problem",
    "page": 34,
-   "prompt": "Find the derivative of $y=(\\ln x)^{\\ln x}$ for $x>1$.",
-   "answer": "$y'=\\frac{(\\ln x)^{\\ln x}}{x}\\big(\\ln(\\ln x)+1\\big)$",
-   "explanation": "Take logs first: $\\ln y=\\ln x\\cdot\\ln(\\ln x)$.\nDifferentiate both sides using the product and chain rules: $\\frac{y'}{y}=\\frac{1}{x}\\ln(\\ln x)+\\ln x\\cdot\\frac{1}{x\\ln x}=\\frac{\\ln(\\ln x)+1}{x}$.\nMultiply by $y$ to finish.\nLogarithmic differentiation is the standard trick whenever the variable appears in both the base and the exponent; the plain power rule fails because the exponent is not constant.",
+   "prompt": "Let $y=(\\ln x)^{\\ln x}$ for $x>1$. What is the value of $y'$ at $x=e^e$?",
+   "answer": "$2$, from $y'=\\frac{(\\ln x)^{\\ln x}}{x}\\big(\\ln(\\ln x)+1\\big)$",
+   "explanation": "Take logs first: $\\ln y=\\ln x\\cdot\\ln(\\ln x)$.\nDifferentiate both sides using the product and chain rules: $\\frac{y'}{y}=\\frac{1}{x}\\ln(\\ln x)+\\ln x\\cdot\\frac{1}{x\\ln x}=\\frac{\\ln(\\ln x)+1}{x}$.\nMultiply by $y$: $y'=\\frac{(\\ln x)^{\\ln x}}{x}\\big(\\ln(\\ln x)+1\\big)$.\nAt $x=e^e$: $\\ln x=e$, $\\ln(\\ln x)=1$ and $y=e^e$, so $y'=\\frac{e^e}{e^e}(1+1)=2$.\nLogarithmic differentiation is the standard trick whenever the variable appears in both the base and the exponent; the plain power rule fails because the exponent is not constant.",
    "distractors": [
-    "$y'=\\frac{(\\ln x)^{\\ln x}}{x}\\ln(\\ln x)$",
-    "$y'=\\ln x\\,(\\ln x)^{\\ln x-1}\\cdot\\frac{1}{x}$",
-    "$y'=\\frac{(\\ln x)^{\\ln x}}{x\\ln x}\\big(\\ln(\\ln x)+1\\big)$"
+    "$1$",
+    "$\\frac{2}{e}$",
+    "$e^e+1$"
    ],
-   "hint": "Take the natural log of both sides before differentiating."
+   "hint": "Take the natural log of both sides before differentiating.",
+   "check": {
+    "type": "number",
+    "value": 2.0,
+    "examples": [
+     "2"
+    ]
+   }
   },
   {
    "id": "3-local-extremum-condition",
@@ -140,15 +147,24 @@
    "name": "Maximum of ln(x)/x",
    "kind": "concept",
    "page": 35,
-   "prompt": "For $x>0$, where does $f(x)=\\frac{\\ln x}{x}$ attain its global maximum, and what is the maximum value?",
-   "answer": "At $x=e$, with maximum value $1/e$",
+   "prompt": "For $x>0$, what is the global maximum value of $f(x)=\\frac{\\ln x}{x}$?",
+   "answer": "$\\frac1e\\approx0.368$, attained at $x=e$",
    "explanation": "$f'(x)=\\frac{\\frac1x\\cdot x-\\ln x}{x^2}=\\frac{1-\\ln x}{x^2}$, which is positive for $x<e$ and negative for $x>e$.\nSo $f$ rises up to $x=e$ and falls afterwards: $x=e$ is the global maximum, with $f(e)=\\frac1e$.\nThis monotonicity is the key to comparing expressions such as $a^b$ versus $b^a$.",
    "distractors": [
-    "At $x=1$, with maximum value $0$",
-    "At $x=e$, with maximum value $1$",
-    "At $x=\\sqrt{e}$, with maximum value $\\frac{1}{2\\sqrt e}$"
+    "$e$",
+    "$1$",
+    "$\\frac{1}{2\\sqrt e}$"
    ],
-   "hint": "Use the quotient rule and find where the derivative changes sign."
+   "hint": "Use the quotient rule and find where the derivative changes sign.",
+   "check": {
+    "type": "number",
+    "value": 0.36787944117144233,
+    "examples": [
+     "1/e",
+     "e^-1",
+     "0.3679"
+    ]
+   }
   },
   {
    "id": "3-e-pi-vs-pi-e",
@@ -156,15 +172,23 @@
    "name": "e^pi versus pi^e",
    "kind": "problem",
    "page": 35,
-   "prompt": "Without computing numerically, which is larger: $e^\\pi$ or $\\pi^e$?",
-   "answer": "$e^\\pi>\\pi^e$",
+   "prompt": "Without computing numerically, is $e^\\pi$ larger than $\\pi^e$? Answer yes or no.",
+   "answer": "Yes: $e^\\pi>\\pi^e$",
    "explanation": "Take logs: compare $\\pi\\ln e=\\pi$ with $e\\ln\\pi$, which is the same as comparing $\\frac{\\ln e}{e}$ with $\\frac{\\ln\\pi}{\\pi}$.\n$g(x)=\\frac{\\ln x}{x}$ has $g'(x)=\\frac{1-\\ln x}{x^2}<0$ for $x>e$ and its global maximum at $x=e$, so $\\frac{\\ln e}{e}>\\frac{\\ln\\pi}{\\pi}$ and hence $e^\\pi>\\pi^e$.\nAlternative: $e^x>1+x$ for $x>0$. With $x=\\frac{\\pi}{e}-1$ this gives $e^{\\pi/e}>\\pi$; raising both sides to the power $e$ gives $e^\\pi>\\pi^e$.\n(Numerically about 23.14 versus 22.46.)",
    "distractors": [
-    "$\\pi^e>e^\\pi$",
-    "$e^\\pi=\\pi^e$",
+    "No: $\\pi^e>e^\\pi$",
+    "No: they are equal",
     "Cannot tell without computing both numerically"
    ],
-   "hint": "Take logs and study the function $\\frac{\\ln x}{x}$."
+   "hint": "Take logs and study the function $\\frac{\\ln x}{x}$.",
+   "check": {
+    "type": "text",
+    "accept": [
+     "yes",
+     "true",
+     "yes it is"
+    ]
+   }
   },
   {
    "id": "3-lhospital-rule",
@@ -195,7 +219,18 @@
     "$1$",
     "$\\frac12$"
    ],
-   "hint": "Apply L'Hospital's rule more than once."
+   "hint": "Apply L'Hospital's rule more than once.",
+   "check": {
+    "type": "text",
+    "accept": [
+     "infinity",
+     "inf",
+     "infty",
+     "infinite",
+     "positive infinity",
+     "plus infinity"
+    ]
+   }
   },
   {
    "id": "3-limit-x2-lnx",
@@ -209,9 +244,16 @@
    "distractors": [
     "$-\\infty$",
     "$1$",
-    "$-\\frac12$"
+    "$-\\frac{1}{2}$"
    ],
-   "hint": "Rewrite the product as $\\ln x$ divided by something that blows up."
+   "hint": "Rewrite the product as $\\ln x$ divided by something that blows up.",
+   "check": {
+    "type": "number",
+    "value": 0.0,
+    "examples": [
+     "0"
+    ]
+   }
   },
   {
    "id": "3-power-rule-integral",
@@ -264,15 +306,22 @@
    "name": "Integral of ln x (A)",
    "kind": "problem",
    "page": 37,
-   "prompt": "Compute $\\int\\ln x\\,dx$.",
-   "answer": "$x\\ln x-x+C$",
-   "explanation": "Integrate by parts with $u=\\ln x$ and $dv=dx$, so $du=\\frac{dx}{x}$ and $v=x$.\nThen $\\int\\ln x\\,dx=x\\ln x-\\int x\\cdot\\frac1x\\,dx=x\\ln x-x+C$.\nCheck: $\\frac{d}{dx}(x\\ln x-x)=\\ln x+1-1=\\ln x$.",
+   "prompt": "Compute $\\int_1^e\\ln x\\,dx$.",
+   "answer": "$1$, using the antiderivative $x\\ln x-x$",
+   "explanation": "Integrate by parts with $u=\\ln x$ and $dv=dx$, so $du=\\frac{dx}{x}$ and $v=x$.\nThen $\\int\\ln x\\,dx=x\\ln x-\\int x\\cdot\\frac1x\\,dx=x\\ln x-x+C$.\nCheck: $\\frac{d}{dx}(x\\ln x-x)=\\ln x+1-1=\\ln x$.\nEvaluate: $\\big[x\\ln x-x\\big]_1^e=(e-e)-(0-1)=1$.",
    "distractors": [
-    "$\\frac{1}{x}+C$",
-    "$x\\ln x+x+C$",
-    "$\\frac{(\\ln x)^2}{2}+C$"
+    "$e$",
+    "$2e-1$",
+    "$\\frac{1}{2}$"
    ],
-   "hint": "Integrate by parts with $dv=dx$."
+   "hint": "Integrate by parts with $dv=dx$.",
+   "check": {
+    "type": "number",
+    "value": 1.0,
+    "examples": [
+     "1"
+    ]
+   }
   },
   {
    "id": "3-antiderivative-sec",
@@ -297,14 +346,23 @@
    "kind": "problem",
    "page": 37,
    "prompt": "Evaluate $\\int_0^{\\pi/6}\\sec x\\,dx$.",
-   "answer": "$\\ln\\sqrt3=\\frac12\\ln3$",
+   "answer": "$\\ln\\sqrt3=\\frac12\\ln3\\approx0.549$",
    "explanation": "Use $\\int\\sec x\\,dx=\\ln|\\sec x+\\tan x|+C$.\nAt $x=\\pi/6$: $\\sec x=\\frac{2}{\\sqrt3}$ and $\\tan x=\\frac{1}{\\sqrt3}$, so $\\sec x+\\tan x=\\frac{3}{\\sqrt3}=\\sqrt3$.\nAt $x=0$: $\\sec x+\\tan x=1$ and $\\ln1=0$.\nSo the integral is $\\ln\\sqrt3\\approx0.549$.",
    "distractors": [
     "$\\ln 3$",
     "$\\ln\\frac{2}{\\sqrt3}$",
     "$\\frac{2}{\\sqrt3}-1$"
    ],
-   "hint": "First find an antiderivative of $\\sec x$ via $\\sec x+\\tan x$."
+   "hint": "First find an antiderivative of $\\sec x$ via $\\sec x+\\tan x$.",
+   "check": {
+    "type": "number",
+    "value": 0.5493061443340549,
+    "examples": [
+     "ln(3)/2",
+     "ln(sqrt(3))",
+     "0.5493"
+    ]
+   }
   },
   {
    "id": "3-volume-by-cross-sections",
@@ -335,7 +393,15 @@
     "$\\frac{8}{3}$",
     "$\\frac{16\\pi}{3}$"
    ],
-   "hint": "Slice horizontally: what shape is each cross-section?"
+   "hint": "Slice horizontally: what shape is each cross-section?",
+   "check": {
+    "type": "number",
+    "value": 5.333333333333333,
+    "examples": [
+     "16/3",
+     "5.333"
+    ]
+   }
   },
   {
    "id": "3-snow-plow",
@@ -343,15 +409,24 @@
    "name": "Snow plow (B)",
    "kind": "problem",
    "page": 39,
-   "prompt": "Snow began falling at a constant rate some time before noon. A plow starts at noon and removes a constant volume of snow per unit time, so its speed is inversely proportional to the snow depth. It travels 2 miles in the first hour and 1 more mile in the second hour. When did the snow start?",
-   "answer": "$\\frac{\\sqrt5-1}{2}\\approx0.618$ h before noon, about 11:23 AM",
+   "prompt": "Snow began falling at a constant rate some time before noon. A plow starts at noon and removes a constant volume of snow per unit time, so its speed is inversely proportional to the snow depth. It travels 2 miles in the first hour and 1 more mile in the second hour. How many hours before noon did the snow start?",
+   "answer": "$\\frac{\\sqrt5-1}{2}\\approx0.618$ hours before noon (about 11:23 AM)",
    "explanation": "Let $t$ be hours after noon and suppose snow began $T$ hours before noon. Depth grows linearly, so speed is $v(t)=\\frac{c}{t+T}$.\nDistances: $\\int_0^1\\frac{c\\,dt}{t+T}=c\\ln\\frac{1+T}{T}=2$ and $\\int_0^2\\frac{c\\,dt}{t+T}=c\\ln\\frac{2+T}{T}=3$.\nEliminating $c$: $\\left(\\frac{1+T}{T}\\right)^3=\\left(\\frac{2+T}{T}\\right)^2\\Rightarrow(1+T)^3=T(2+T)^2\\Rightarrow T^2+T-1=0$.\nSo $T=\\frac{\\sqrt5-1}{2}\\approx0.618$ hours, about 37 minutes before noon.\n(The scan shows the quadratic as $T^2-T+1=0$, a typo; its stated root is correct.)",
    "distractors": [
-    "$\\frac{\\sqrt5+1}{2}\\approx1.618$ h before noon, about 10:23 AM",
-    "$\\frac12$ h before noon, at 11:30 AM",
-    "$1$ h before noon, at 11:00 AM"
+    "$\\frac{\\sqrt5+1}{2}\\approx1.618$",
+    "$\\frac{1}{2}$",
+    "$1$"
    ],
-   "hint": "Speed is $\\frac{c}{t+T}$; integrate it over the first hour and the first two hours."
+   "hint": "Speed is $\\frac{c}{t+T}$; integrate it over the first hour and the first two hours.",
+   "check": {
+    "type": "number",
+    "value": 0.6180339887498949,
+    "examples": [
+     "(sqrt(5)-1)/2",
+     "0.618"
+    ],
+    "unit": "hours"
+   }
   },
   {
    "id": "3-normal-conditional-mean",
@@ -367,7 +442,15 @@
     "$\\frac12$",
     "$\\sqrt{\\pi/2}\\approx1.253$"
    ],
-   "hint": "Integrate $x\\,\\phi(x)$ over $(0,\\infty)$, then remember to divide by $P(X>0)$."
+   "hint": "Integrate $x\\,\\phi(x)$ over $(0,\\infty)$, then remember to divide by $P(X>0)$.",
+   "check": {
+    "type": "number",
+    "value": 0.7978845608028654,
+    "examples": [
+     "sqrt(2/pi)",
+     "0.7979"
+    ]
+   }
   },
   {
    "id": "3-multivariable-chain-rule",
@@ -406,14 +489,23 @@
    "kind": "problem",
    "page": 41,
    "prompt": "Compute $\\int_0^\\infty e^{-x^2/2}\\,dx$.",
-   "answer": "$\\sqrt{\\pi/2}$",
+   "answer": "$\\sqrt{\\pi/2}\\approx1.2533$",
    "explanation": "The standard normal density $\\frac{1}{\\sqrt{2\\pi}}e^{-x^2/2}$ integrates to 1 over the real line, so $\\int_{-\\infty}^\\infty e^{-x^2/2}dx=\\sqrt{2\\pi}$.\nThe integrand is even, so half of that lies on $[0,\\infty)$: $\\frac{\\sqrt{2\\pi}}{2}=\\sqrt{\\pi/2}\\approx1.2533$.\nCareful not to confuse it with $\\int_0^\\infty e^{-x^2}dx=\\frac{\\sqrt\\pi}{2}$.",
    "distractors": [
     "$\\sqrt{2\\pi}$",
     "$\\frac{\\sqrt\\pi}{2}$",
     "$\\sqrt{\\pi}$"
    ],
-   "hint": "Relate it to the standard normal density and use symmetry."
+   "hint": "Relate it to the standard normal density and use symmetry.",
+   "check": {
+    "type": "number",
+    "value": 1.2533141373155001,
+    "examples": [
+     "sqrt(pi/2)",
+     "sqrt(2pi)/2",
+     "1.2533"
+    ]
+   }
   },
   {
    "id": "3-gaussian-polar-trick",
@@ -421,14 +513,23 @@
    "name": "Gaussian integral via polar coordinates",
    "kind": "concept",
    "page": 41,
-   "prompt": "Let $I=\\int_{-\\infty}^{\\infty}e^{-x^2/2}\\,dx$. Using polar coordinates on $I^2$, what are $I^2$ and $I$?",
-   "answer": "$I^2=2\\pi$, so $I=\\sqrt{2\\pi}$",
+   "prompt": "Let $I=\\int_{-\\infty}^{\\infty}e^{-x^2/2}\\,dx$. Writing $I^2$ as a double integral and switching to polar coordinates, what is the value of $I^2$?",
+   "answer": "$2\\pi$, so $I=\\sqrt{2\\pi}$",
    "explanation": "$I^2=\\int\\!\\!\\int e^{-(x^2+y^2)/2}\\,dx\\,dy=\\int_0^{2\\pi}\\!\\int_0^\\infty e^{-r^2/2}\\,r\\,dr\\,d\\theta$.\nThe extra factor $r$ makes the radial integral elementary: $\\int_0^\\infty re^{-r^2/2}dr=\\left[-e^{-r^2/2}\\right]_0^\\infty=1$.\nThe angular integral contributes $2\\pi$, so $I^2=2\\pi$ and $I=\\sqrt{2\\pi}$. That is why the normal density carries the constant $\\frac{1}{\\sqrt{2\\pi}}$.",
    "distractors": [
-    "$I^2=\\pi$, so $I=\\sqrt{\\pi}$",
-    "$I^2=4\\pi$, so $I=2\\sqrt{\\pi}$",
-    "$I^2=\\pi/2$, so $I=\\sqrt{\\pi/2}$"
-   ]
+    "$\\pi$",
+    "$4\\pi$",
+    "$\\frac{\\pi}{2}$"
+   ],
+   "check": {
+    "type": "number",
+    "value": 6.283185307179586,
+    "examples": [
+     "2pi",
+     "2*pi",
+     "6.283"
+    ]
+   }
   },
   {
    "id": "3-taylor-series",
@@ -534,7 +635,16 @@
     "$-1$",
     "$i$"
    ],
-   "hint": "Write $i$ as $e^{i\\pi/2}$."
+   "hint": "Write $i$ as $e^{i\\pi/2}$.",
+   "check": {
+    "type": "number",
+    "value": 0.20787957635076193,
+    "examples": [
+     "e^(-pi/2)",
+     "exp(-pi/2)",
+     "0.2079"
+    ]
+   }
   },
   {
    "id": "3-bernoulli-inequality",
@@ -574,14 +684,22 @@
    "kind": "problem",
    "page": 44,
    "prompt": "Estimate $\\sqrt{37}$ to three decimal places without a calculator.",
-   "answer": "$\\approx6.083$",
+   "answer": "$\\approx6.083$ (one Newton step from 6 gives $6+\\frac{1}{12}$)",
    "explanation": "Apply Newton's method to $f(x)=x^2-37$ from $x_0=6$: $x_1=6-\\frac{36-37}{2\\cdot6}=6+\\frac{1}{12}\\approx6.0833$. Check: $6.083^2\\approx37.003$.\nEquivalent views: a first-order Taylor expansion of $\\sqrt{x}$ at 36 gives $6+\\frac{1}{2\\cdot6}$; or write $(6+y)^2=37$, i.e. $y^2+12y-1=0$, and drop the tiny $y^2$ to get $y\\approx\\frac{1}{12}$.\n(True value: $6.08276\\ldots$)",
    "distractors": [
-    "$\\approx6.167$",
-    "$\\approx6.037$",
-    "$\\approx6.077$"
+    "$6.167$",
+    "$6.037$",
+    "$6.077$"
    ],
-   "hint": "Take one Newton step from $x_0=6$."
+   "hint": "Take one Newton step from $x_0=6$.",
+   "check": {
+    "type": "number",
+    "value": 6.082762530298219,
+    "examples": [
+     "6.083",
+     "6.0828"
+    ]
+   }
   },
   {
    "id": "3-bisection-method",
@@ -642,7 +760,15 @@
     "$\\frac{12}{9}\\approx1.333$",
     "$\\frac{\\sqrt{29}}{12}\\approx0.449$"
    ],
-   "hint": "Minimize squared distance with a Lagrange multiplier; the answer lies along the normal."
+   "hint": "Minimize squared distance with a Lagrange multiplier; the answer lies along the normal.",
+   "check": {
+    "type": "number",
+    "value": 2.2283440581246223,
+    "examples": [
+     "12/sqrt(29)",
+     "2.228"
+    ]
+   }
   },
   {
    "id": "3-separable-ode",
@@ -665,15 +791,24 @@
    "name": "Solve y' + 6xy = 0 (A)",
    "kind": "problem",
    "page": 47,
-   "prompt": "Solve $y'+6xy=0$ with $y(0)=1$.",
-   "answer": "$y=e^{-3x^2}$",
-   "explanation": "Separate: $\\frac{dy}{y}=-6x\\,dx$.\nIntegrate: $\\ln|y|=-3x^2+C$, so $y=Ae^{-3x^2}$.\nThe condition $y(0)=1$ gives $A=1$. Check: $y'=-6xe^{-3x^2}=-6xy$.",
+   "prompt": "Solve $y'+6xy=0$ with $y(0)=1$. What is $y(1)$?",
+   "answer": "$e^{-3}\\approx0.0498$, since $y=e^{-3x^2}$",
+   "explanation": "Separate: $\\frac{dy}{y}=-6x\\,dx$.\nIntegrate: $\\ln|y|=-3x^2+C$, so $y=Ae^{-3x^2}$.\nThe condition $y(0)=1$ gives $A=1$. Check: $y'=-6xe^{-3x^2}=-6xy$.\nSo $y(1)=e^{-3}\\approx0.0498$.",
    "distractors": [
-    "$y=e^{-6x^2}$",
-    "$y=e^{3x^2}$",
-    "$y=1-3x^2$"
+    "$e^{-6}$",
+    "$e^{3}$",
+    "$-2$"
    ],
-   "hint": "Separate variables: $\\frac{dy}{y}=-6x\\,dx$."
+   "hint": "Separate variables: $\\frac{dy}{y}=-6x\\,dx$.",
+   "check": {
+    "type": "number",
+    "value": 0.049787068367863944,
+    "examples": [
+     "e^-3",
+     "exp(-3)",
+     "0.04979"
+    ]
+   }
   },
   {
    "id": "3-ode-x-minus-y-over-x-plus-y",
@@ -712,15 +847,23 @@
    "name": "Solve y' + y/x = 1/x^2",
    "kind": "problem",
    "page": 48,
-   "prompt": "Solve $y'+\\frac{y}{x}=\\frac{1}{x^2}$ for $x>0$ with $y(1)=1$.",
-   "answer": "$y=\\frac{\\ln x+1}{x}$",
-   "explanation": "Here $P=\\frac1x$ and $Q=\\frac{1}{x^2}$, so the integrating factor is $e^{\\int dx/x}=e^{\\ln x}=x$.\nMultiplying through: $(xy)'=xy'+y=\\frac1x$.\nIntegrate: $xy=\\ln x+C$. The condition $y(1)=1$ gives $C=1$, so $y=\\frac{\\ln x+1}{x}$.",
+   "prompt": "Solve $y'+\\frac{y}{x}=\\frac{1}{x^2}$ for $x>0$ with $y(1)=1$. What is $y(e)$?",
+   "answer": "$\\frac{2}{e}\\approx0.736$, since $y=\\frac{\\ln x+1}{x}$",
+   "explanation": "Here $P=\\frac1x$ and $Q=\\frac{1}{x^2}$, so the integrating factor is $e^{\\int dx/x}=e^{\\ln x}=x$.\nMultiplying through: $(xy)'=xy'+y=\\frac1x$.\nIntegrate: $xy=\\ln x+C$. The condition $y(1)=1$ gives $C=1$, so $y=\\frac{\\ln x+1}{x}$.\nAt $x=e$: $y(e)=\\frac{1+1}{e}=\\frac{2}{e}\\approx0.736$.",
    "distractors": [
-    "$y=\\frac{\\ln x}{x}+1$",
-    "$y=\\frac{1}{x}$",
-    "$y=\\frac{1-\\ln x}{x}$"
+    "$1+\\frac{1}{e}$",
+    "$\\frac{1}{e}$",
+    "$0$"
    ],
-   "hint": "The integrating factor is $e^{\\int dx/x}$."
+   "hint": "The integrating factor is $e^{\\int dx/x}$.",
+   "check": {
+    "type": "number",
+    "value": 0.7357588823428847,
+    "examples": [
+     "2/e",
+     "0.7358"
+    ]
+   }
   },
   {
    "id": "3-char-eq-distinct-roots",
@@ -851,15 +994,23 @@
    "name": "Correlation bounds (vector view)",
    "kind": "problem",
    "page": 51,
-   "prompt": "Random variables $x,y,z$ satisfy $\\rho_{xy}=0.8$ and $\\rho_{xz}=0.8$. What are the maximum and minimum possible values of $\\rho_{yz}$?",
-   "answer": "Maximum $1$, minimum $0.28$",
+   "prompt": "Random variables $x,y,z$ satisfy $\\rho_{xy}=0.8$ and $\\rho_{xz}=0.8$. What is the minimum possible value of $\\rho_{yz}$?",
+   "answer": "$0.28$ (the maximum is $1$)",
    "explanation": "Treat the variables as unit vectors, with correlation equal to the cosine of the angle. Let $\\cos\\theta=0.8$, so $\\sin\\theta=0.6$.\nThe angle between $y$ and $z$ is smallest (zero) when they coincide, giving $\\rho_{yz}=1$.\nIt is largest, $2\\theta$, when $y$ and $z$ sit on opposite sides of $x$ in one plane: $\\rho_{yz}=\\cos2\\theta=\\cos^2\\theta-\\sin^2\\theta=0.64-0.36=0.28$.\nGeneral rule: $\\rho_{yz}\\in\\left[\\rho_{xy}\\rho_{xz}\\pm\\sqrt{(1-\\rho_{xy}^2)(1-\\rho_{xz}^2)}\\right]=[0.64\\pm0.36]$.",
    "distractors": [
-    "Maximum $1$, minimum $0.64$",
-    "Maximum $1$, minimum $-1$",
-    "Maximum $0.8$, minimum $0.28$"
+    "$0.64$",
+    "$-1$",
+    "$0.36$"
    ],
-   "hint": "Correlations are cosines of angles between vectors."
+   "hint": "Correlations are cosines of angles between vectors.",
+   "check": {
+    "type": "number",
+    "value": 0.28,
+    "examples": [
+     "0.28",
+     "7/25"
+    ]
+   }
   },
   {
    "id": "3-qr-decomposition",
@@ -973,15 +1124,22 @@
    "name": "Eigenvalues of [[2,1],[1,2]]",
    "kind": "problem",
    "page": 55,
-   "prompt": "Find the eigenvalues and eigenvectors of $A=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}$.",
-   "answer": "$\\lambda=3$ with $(1,1)^T$; $\\lambda=1$ with $(1,-1)^T$",
+   "prompt": "What is the larger eigenvalue of $A=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}$?",
+   "answer": "$3$, eigenvector $(1,1)^T$ (the other is $1$, eigenvector $(1,-1)^T$)",
    "explanation": "Quick route: $\\operatorname{tr}A=4=\\lambda_1+\\lambda_2$ and $\\det A=3=\\lambda_1\\lambda_2$, so the eigenvalues are 3 and 1. (Equivalently, solve $(2-\\lambda)^2-1=0$.)\nFor $\\lambda=3$: $2x_1+x_2=3x_1\\Rightarrow x_1=x_2$, normalized eigenvector $\\frac{1}{\\sqrt2}(1,1)^T$.\nFor $\\lambda=1$: $x_1+x_2=0$, normalized eigenvector $\\frac{1}{\\sqrt2}(1,-1)^T$.\nThe two eigenvectors are orthogonal, as expected for a symmetric matrix.",
    "distractors": [
-    "$\\lambda=3$ with $(1,-1)^T$; $\\lambda=1$ with $(1,1)^T$",
-    "$\\lambda=2$ with $(1,0)^T$; $\\lambda=2$ with $(0,1)^T$",
-    "$\\lambda=4$ with $(1,1)^T$; $\\lambda=0$ with $(1,-1)^T$"
+    "$4$",
+    "$2$",
+    "$1$"
    ],
-   "hint": "Use trace = sum and determinant = product of the eigenvalues."
+   "hint": "Use trace = sum and determinant = product of the eigenvalues.",
+   "check": {
+    "type": "number",
+    "value": 3.0,
+    "examples": [
+     "3"
+    ]
+   }
   },
   {
    "id": "3-psd-criteria",
@@ -1019,15 +1177,23 @@
    "name": "Correlation bounds (PSD view)",
    "kind": "problem",
    "page": 56,
-   "prompt": "With $\\rho_{xy}=\\rho_{xz}=0.8$ and unknown $\\rho=\\rho_{yz}$, use positive semidefiniteness of the $3\\times3$ correlation matrix to find the allowed range of $\\rho$.",
-   "answer": "$\\det=-\\rho^2+1.28\\rho-0.28\\ge0$, so $0.28\\le\\rho\\le1$",
+   "prompt": "With $\\rho_{xy}=\\rho_{xz}=0.8$ and unknown $\\rho=\\rho_{yz}$, use positive semidefiniteness of the $3\\times3$ correlation matrix to find the smallest allowed value of $\\rho$.",
+   "answer": "$0.28$: $\\det P=-(\\rho-1)(\\rho-0.28)\\ge0$ gives $0.28\\le\\rho\\le1$",
    "explanation": "The correlation matrix is $P=\\begin{pmatrix}1&0.8&0.8\\\\0.8&1&\\rho\\\\0.8&\\rho&1\\end{pmatrix}$.\nIts $1\\times1$ and $2\\times2$ principal minors ($1$, $0.36$, $1-\\rho^2$) are nonnegative whenever $|\\rho|\\le1$, so the binding condition is $\\det P\\ge0$.\nCofactor expansion: $\\det P=(1-\\rho^2)-0.8(0.8-0.8\\rho)+0.8(0.8\\rho-0.8)=-\\rho^2+1.28\\rho-0.28=-(\\rho-1)(\\rho-0.28)$.\nSo $0.28\\le\\rho\\le1$, matching the geometric (angle) argument.",
    "distractors": [
-    "$\\det=-\\rho^2+1.28\\rho-0.28\\ge0$, so $-1\\le\\rho\\le0.28$",
-    "$\\det=1-\\rho^2\\ge0$, so $-1\\le\\rho\\le1$",
-    "$\\det=\\rho^2-1.28\\rho+0.28\\ge0$, so $\\rho\\le0.28$ or $\\rho\\ge1$"
+    "$-1$",
+    "$0.64$",
+    "$-0.28$"
    ],
-   "hint": "Require $\\det P\\ge0$ and factor the quadratic in $\\rho$."
+   "hint": "Require $\\det P\\ge0$ and factor the quadratic in $\\rho$.",
+   "check": {
+    "type": "number",
+    "value": 0.28,
+    "examples": [
+     "0.28",
+     "7/25"
+    ]
+   }
   },
   {
    "id": "3-lu-decomposition",

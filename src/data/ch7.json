@@ -118,13 +118,21 @@
    "name": "Horner's algorithm",
    "kind": "problem",
    "page": 174,
-   "prompt": "Give an efficient algorithm to evaluate the polynomial $y=A_0+A_1x+A_2x^2+\\cdots+A_nx^n$. How many multiplications does it need?",
-   "answer": "Horner: $y=(\\cdots((A_nx+A_{n-1})x+A_{n-2})x+\\cdots)x+A_0$; $n$ multiplications",
-   "explanation": "Computing each power $x^k$ from scratch costs about $n^2/2$ multiplications. Keeping a running power brings that down to about $2n$. Horner's nesting needs only $n$ multiplications and $n$ additions:\n```\nB = A[n]\nfor k = n-1 down to 0:\n    B = B * x + A[k]\nreturn B            # equals y\n```\nThe intermediate values are $B_n=A_n$ and $B_k=B_{k+1}x+A_k$, and $y=B_0$.",
+   "prompt": "You must evaluate the polynomial $y=A_0+A_1x+A_2x^2+\\cdots+A_{10}x^{10}$ at a given $x$, with arbitrary coefficients. How many multiplications does the most efficient standard method need?",
+   "answer": "10, with Horner's rule: $y=(\\cdots((A_{10}x+A_9)x+A_8)x+\\cdots)x+A_0$",
+   "check": {
+    "type": "number",
+    "value": 10.0,
+    "examples": [
+     "10"
+    ],
+    "unit": "multiplications"
+   },
+   "explanation": "Computing each power $x^k$ from scratch and then multiplying by $A_k$ costs $1+2+\\cdots+n=n(n+1)/2$ multiplications, which is 55 for $n=10$. Keeping a running power brings that down to $2n-1=19$. Horner's nesting needs only $n=10$ multiplications and $n$ additions:\n```\nB = A[n]\nfor k = n-1 down to 0:\n    B = B * x + A[k]\nreturn B            # equals y\n```\nThe intermediate values are $B_n=A_n$ and $B_k=B_{k+1}x+A_k$, and $y=B_0$. For general coefficients (no preprocessing), $n$ multiplications is the fewest possible.",
    "distractors": [
-    "Sum each $A_kx^k$ with $x^k$ computed from scratch; $n$ multiplications",
-    "Horner: $y=(\\cdots((A_0x+A_1)x+A_2)x+\\cdots)x+A_n$; $n$ multiplications",
-    "Precompute powers by repeated squaring; $O(\\log n)$ multiplications"
+    "55, computing each power $x^k$ from scratch and multiplying it by $A_k$",
+    "19, keeping a running power $x^k$ and multiplying it by $A_k$",
+    "11, with Horner's rule: one multiplication per coefficient"
    ],
    "hint": "Factor $x$ out of everything except the constant term, again and again."
   },
@@ -150,8 +158,29 @@
    "name": "Sorting algorithm: insertion sort",
    "kind": "problem",
    "page": 175,
-   "prompt": "Sorting algorithm: describe insertion sort on $n$ distinct values $A_1,\\dots,A_n$ and give its average-case and worst-case running times.",
-   "answer": "$\\Theta(n^2)$ average and worst; $\\Theta(n)$ best (already sorted input)",
+   "prompt": "Sorting algorithm: insertion sort keeps a sorted prefix and inserts each new element into it by shifting larger entries to the right. What is its average-case running time on $n$ distinct values? (Answer in $O$ or $\\Theta$ form; write powers with ^, e.g. n^3.)",
+   "answer": "$\\Theta(n^2)$, the same as its worst case; $\\Theta(n)$ best (already sorted input)",
+   "check": {
+    "type": "text",
+    "accept": [
+     "n^2",
+     "O(n^2)",
+     "theta(n^2)",
+     "big O(n^2)",
+     "n squared",
+     "O(n squared)",
+     "theta(n squared)",
+     "big O(n squared)",
+     "n*n",
+     "O(n*n)",
+     "theta(n*n)",
+     "big O(n*n)",
+     "quadratic",
+     "quadratic time",
+     "O(n^2) time",
+     "n^2 time"
+    ]
+   },
    "explanation": "Keep a sorted prefix $A[1..i-1]$. Insert $A_i$ into it by shifting larger entries one slot to the right.\n```\nfor i = 2 .. n:\n    key = A[i];  j = i - 1\n    while j >= 1 and A[j] > key:\n        A[j+1] = A[j];  j = j - 1\n    A[j+1] = key\n```\nStep $i$ costs about $i/2$ comparisons on average and $i$ in the worst case (reverse-sorted input). Summing gives about $n^2/4$ and $n^2/2$, both $\\Theta(n^2)$. In general the cost is $\\Theta(n+\\text{inversions})$, which is why the sort is fast on nearly sorted data. It is stable and in place.",
    "distractors": [
     "$\\Theta(n\\log n)$ average, $\\Theta(n^2)$ worst",
@@ -166,13 +195,53 @@
    "name": "Sorting algorithm: merge sort",
    "kind": "problem",
    "page": 175,
-   "prompt": "Sorting algorithm: describe merge sort, and give its running-time recurrence and complexity.",
-   "answer": "$T(n)=2T(n/2)+\\Theta(n)$, so $\\Theta(n\\log n)$ in both average and worst case",
+   "prompt": "Sorting algorithm: merge sort splits the array into two halves, sorts each half recursively and merges the two sorted halves. What is its worst-case running time on $n$ values? (Answer in $O$ or $\\Theta$ form; write powers with ^, e.g. n^3.)",
+   "answer": "$\\Theta(n\\log n)$, from $T(n)=2T(n/2)+\\Theta(n)$; the average case is the same",
+   "check": {
+    "type": "text",
+    "accept": [
+     "n log n",
+     "O(n log n)",
+     "theta(n log n)",
+     "big O(n log n)",
+     "nlogn",
+     "O(nlogn)",
+     "theta(nlogn)",
+     "big O(nlogn)",
+     "n logn",
+     "O(n logn)",
+     "theta(n logn)",
+     "big O(n logn)",
+     "nlog n",
+     "O(nlog n)",
+     "theta(nlog n)",
+     "big O(nlog n)",
+     "n lg n",
+     "O(n lg n)",
+     "theta(n lg n)",
+     "big O(n lg n)",
+     "nlgn",
+     "O(nlgn)",
+     "theta(nlgn)",
+     "big O(nlgn)",
+     "n log2 n",
+     "O(n log2 n)",
+     "theta(n log2 n)",
+     "big O(n log2 n)",
+     "n ln n",
+     "O(n ln n)",
+     "theta(n ln n)",
+     "big O(n ln n)",
+     "linearithmic",
+     "O(n log n) time",
+     "n log n time"
+    ]
+   },
    "explanation": "Split the array into two halves, sort each half recursively, then merge the two sorted halves by repeatedly taking the smaller front element. Merging costs $\\Theta(n)$.\n```\nmergesort(A, lo, hi):\n    if lo >= hi: return\n    mid = (lo + hi) // 2\n    mergesort(A, lo, mid)\n    mergesort(A, mid+1, hi)\n    merge(A, lo, mid, hi)        # linear time\n```\nMaster theorem with $a=b=2$, $f=\\Theta(n)$ (the middle case, $k=0$) gives $\\Theta(n\\log n)$. The work does not depend on the input order, so $A(n)=W(n)$. The array version needs $\\Theta(n)$ extra memory, and the sort is stable.",
    "distractors": [
-    "$T(n)=2T(n/2)+\\Theta(1)$, so $\\Theta(n)$ in both average and worst case",
-    "$T(n)=T(n/2)+\\Theta(n)$, so $\\Theta(n)$ in both average and worst case",
-    "$T(n)=2T(n/2)+\\Theta(n)$, so $\\Theta(n\\log n)$ average but $\\Theta(n^2)$ worst"
+    "$\\Theta(n)$, from $T(n)=2T(n/2)+\\Theta(1)$; the average case is the same",
+    "$\\Theta(n)$, from $T(n)=T(n/2)+\\Theta(n)$; the average case is the same",
+    "$\\Theta(n^2)$, from unbalanced splits; $\\Theta(n\\log n)$ on average"
    ],
    "hint": "Two half-size subproblems plus a linear-time merge."
   },
@@ -182,13 +251,34 @@
    "name": "Sorting algorithm: quicksort",
    "kind": "problem",
    "page": 175,
-   "prompt": "Sorting algorithm: describe quicksort on $n$ distinct values and give its average-case and worst-case running times.",
-   "answer": "$\\Theta(n\\log n)$ average, $\\Theta(n^2)$ worst",
+   "prompt": "Sorting algorithm: quicksort picks a pivot, partitions the other values into those smaller and those larger than it, and recurses on both parts. What is its worst-case running time on $n$ distinct values? (Answer in $O$ or $\\Theta$ form; write powers with ^, e.g. n^3.)",
+   "answer": "$\\Theta(n^2)$ worst case (every pivot is an extreme value); $\\Theta(n\\log n)$ on average",
+   "check": {
+    "type": "text",
+    "accept": [
+     "n^2",
+     "O(n^2)",
+     "theta(n^2)",
+     "big O(n^2)",
+     "n squared",
+     "O(n squared)",
+     "theta(n squared)",
+     "big O(n squared)",
+     "n*n",
+     "O(n*n)",
+     "theta(n*n)",
+     "big O(n*n)",
+     "quadratic",
+     "quadratic time",
+     "O(n^2) time",
+     "n^2 time"
+    ]
+   },
    "explanation": "Pick a pivot, partition the other elements into those smaller and those larger than it, then recurse on both parts.\n- Worst case: every pivot is an extreme value, so the part sizes shrink by only one each time. That costs $(n-1)+(n-2)+\\cdots+1=\\Theta(n^2)$ comparisons.\n- Average case: two elements $p$ and $q$ ranks apart are compared with probability $2/(q-p+1)$, so the expected comparison count is about $2n\\ln n\\approx1.39\\,n\\log_2 n=\\Theta(n\\log n)$.\nIn practice it often beats merge sort because it works in place with good cache behaviour. A random pivot (or shuffling the input first) makes the bad case unlikely for any input.",
    "distractors": [
-    "$\\Theta(n\\log n)$ average and worst",
-    "$\\Theta(n^2)$ average and worst",
-    "$\\Theta(n)$ average, $\\Theta(n\\log n)$ worst"
+    "$\\Theta(n\\log n)$ worst case, the same as its average case",
+    "$\\Theta(n\\log^2 n)$ worst case; $\\Theta(n\\log n)$ on average",
+    "$\\Theta(n^2\\log n)$ worst case; $\\Theta(n\\log n)$ on average"
    ],
    "hint": "The average and worst cases differ; think about bad pivots."
   },
@@ -214,15 +304,23 @@
    "name": "Quicksort: chance two elements meet",
    "kind": "concept",
    "page": 176,
-   "prompt": "In quicksort on $n$ distinct values in random order, let $\\tilde A_p$ and $\\tilde A_q$ ($p<q$) be the $p$-th and $q$-th smallest values. What is the probability that these two are ever compared?",
-   "answer": "$\\dfrac{2}{q-p+1}$",
-   "explanation": "Look at the $q-p+1$ values $\\tilde A_p,\\dots,\\tilde A_q$. They all stay in the same subarray until one of them becomes a pivot. By symmetry, each is equally likely to be the first chosen.\n- If the first is $\\tilde A_p$ or $\\tilde A_q$, that pivot gets compared with the other: probability $2/(q-p+1)$.\n- If the first lies strictly between them, they are split into different subarrays and never meet.\nSumming gives the expected comparison count $\\sum_{p<q}\\frac{2}{q-p+1}\\approx 2n\\ln n=\\Theta(n\\log n)$.",
+   "prompt": "Quicksort runs on 20 distinct values in random order. What is the probability that the 3rd-smallest and the 7th-smallest values are ever compared with each other?",
+   "answer": "$2/5$: ranks $p<q$ meet with probability $\\frac{2}{q-p+1}$, here $\\frac{2}{7-3+1}$",
+   "check": {
+    "type": "number",
+    "value": 0.4,
+    "examples": [
+     "2/5",
+     "0.4"
+    ]
+   },
+   "explanation": "Let $\\tilde A_p$ be the $p$-th smallest value and look at the $q-p+1$ values $\\tilde A_p,\\dots,\\tilde A_q$; here $p=3$, $q=7$, so five values. They all stay in the same subarray until one of them becomes a pivot. By symmetry, each is equally likely to be the first chosen.\n- If the first is $\\tilde A_p$ or $\\tilde A_q$, that pivot gets compared with the other: probability $2/(q-p+1)=2/5$.\n- If the first lies strictly between them, they are split into different subarrays and never meet.\nThe array size ($n=20$) plays no role. Summing over all pairs gives the expected comparison count $\\sum_{p<q}\\frac{2}{q-p+1}\\approx 2n\\ln n=\\Theta(n\\log n)$.",
    "distractors": [
-    "$\\dfrac{1}{q-p+1}$",
-    "$\\dfrac{2}{n}$",
-    "$\\dfrac{2}{q-p}$"
+    "$1/5$: ranks $p<q$ meet with probability $\\frac{1}{q-p+1}$, here $\\frac{1}{5}$",
+    "$1/2$: ranks $p<q$ meet with probability $\\frac{2}{q-p}$, here $\\frac{2}{4}$",
+    "$1/10$: any two values meet with probability $\\frac{2}{n}$, here $\\frac{2}{20}$"
    ],
-   "hint": "Only the first pivot chosen from the range $\\tilde A_p..\\tilde A_q$ matters."
+   "hint": "Only the first pivot chosen from ranks 3 through 7 matters."
   },
   {
    "id": "7-random-permutation-a",
@@ -230,8 +328,29 @@
    "name": "Random permutation (A): shuffle",
    "kind": "problem",
    "page": 176,
-   "prompt": "Random permutation: you have a random number generator for discrete or continuous uniform draws. How do you shuffle a deck of 52 cards so that every one of the $52!$ orderings is equally likely? Aim for linear time.",
+   "prompt": "Random permutation: you have a generator of uniform random numbers. Which standard linear-time algorithm shuffles a deck of 52 cards so that each of the $52!$ orderings is equally likely? Name it.",
    "answer": "Knuth (Fisher–Yates) shuffle: for i = 1..n, swap A[i] with A[Random(i, n)]; $\\Theta(n)$",
+   "check": {
+    "type": "text",
+    "accept": [
+     "Fisher-Yates",
+     "Fisher-Yates shuffle",
+     "Fisher-Yates algorithm",
+     "fisheryates",
+     "Knuth",
+     "Knuth shuffle",
+     "Knuth's shuffle",
+     "Knuth algorithm",
+     "Knuth's algorithm",
+     "Knuth-Fisher-Yates",
+     "Fisher-Yates-Knuth",
+     "Knuth-Fisher-Yates shuffle",
+     "Knuth (Fisher-Yates) shuffle",
+     "Durstenfeld",
+     "Durstenfeld shuffle",
+     "Fisher-Yates-Durstenfeld"
+    ]
+   },
    "explanation": "```\nfor i = 1 .. n:\n    k = uniform integer in [i, n]\n    swap(A[i], A[k])\n```\nPosition 1 gets each of the $n$ cards with probability $1/n$. Position 2 gets each of the remaining $n-1$ with probability $1/(n-1)$, and so on. Any given ordering therefore has probability $\\frac1n\\cdot\\frac1{n-1}\\cdots\\frac11=\\frac1{n!}$.\nAlternative: give every card an i.i.d. Uniform(0,1) key and sort by key. Ties have probability 0, so this is uniform too, but it costs $\\Theta(n\\log n)$.",
    "distractors": [
     "For i = 1..n, swap A[i] with A[Random(1, n)]; $\\Theta(n)$",
@@ -262,15 +381,23 @@
    "name": "Random permutation (B): unknown length",
    "kind": "problem",
    "page": 177,
-   "prompt": "A file of characters can only be read sequentially, and its length is unknown in advance. In a single pass, how do you pick one character so that every character is equally likely to be chosen?",
-   "answer": "Reservoir sampling: replace the current pick with the $k$-th character with probability $1/k$",
-   "explanation": "Induction: suppose that after $k$ characters each has probability $1/k$ of being the current pick. Character $k+1$ replaces it with probability $\\frac1{k+1}$. Each earlier character survives with probability $\\frac1k\\cdot\\frac{k}{k+1}=\\frac1{k+1}$. After all $m$ characters, every one has probability $1/m$.\n```\npick = None; k = 0\nfor c in stream:\n    k += 1\n    if uniform(0,1) < 1/k: pick = c\nreturn pick\n```\nThis takes one pass and $O(1)$ memory. For a sample of size $s$, keep item $k$ with probability $s/k$, replacing a random slot.",
+   "prompt": "A file of characters can only be read sequentially, and its length is unknown in advance. In one pass you keep a single current pick, and every character should be equally likely to end up chosen. When you read the 10th character, with what probability should it replace the current pick?",
+   "answer": "$1/10$: in reservoir sampling the $k$-th character replaces the current pick with probability $1/k$",
+   "check": {
+    "type": "number",
+    "value": 0.1,
+    "examples": [
+     "1/10",
+     "0.1"
+    ]
+   },
+   "explanation": "If the file ended right after character $k$, that character would need probability $1/k$ of being the pick, so it must replace the current pick with probability $1/k$; for $k=10$ that is $1/10$.\nInduction: suppose that after $k$ characters each has probability $1/k$ of being the current pick. Character $k+1$ replaces it with probability $\\frac1{k+1}$. Each earlier character survives with probability $\\frac1k\\cdot\\frac{k}{k+1}=\\frac1{k+1}$. After all $m$ characters, every one has probability $1/m$.\n```\npick = None; k = 0\nfor c in stream:\n    k += 1\n    if uniform(0,1) < 1/k: pick = c\nreturn pick\n```\nThis takes one pass and $O(1)$ memory. For a sample of size $s$, keep item $k$ with probability $s/k$, replacing a random slot.",
    "distractors": [
-    "Replace the current pick with each new character with probability $1/2$",
-    "Replace the current pick with the $k$-th character with probability $1/(k+1)$",
-    "Stop at the $k$-th character with probability $1/k$ and pick that one"
+    "$1/2$: every new character replaces the current pick with probability $1/2$",
+    "$1/11$: the $k$-th character replaces the current pick with probability $1/(k+1)$",
+    "$1/9$: the $k$-th character replaces the current pick with probability $1/(k-1)$"
    ],
-   "hint": "The newest of $k$ characters should win with probability $1/k$."
+   "hint": "If the file ended right after this character, what chance should it have?"
   },
   {
    "id": "7-search-min-max",
@@ -278,13 +405,21 @@
    "name": "Search algorithm (A): min and max",
    "kind": "problem",
    "page": 177,
-   "prompt": "Search algorithm: find both the minimum and the maximum of $n$ unsorted numbers using no more than $3n/2$ comparisons.",
-   "answer": "Compare in pairs; min of the smaller ones, max of the larger: about $3n/2-2$ comparisons",
-   "explanation": "Finding the min and max separately costs $2(n-1)$ comparisons. Instead:\n- Pair up the elements and compare within each pair ($n/2$ comparisons). Put the smaller into group A and the larger into group B.\n- The overall min must be in A and the max in B. Scanning each group costs $n/2-1$ comparisons.\nThe total is $3n/2-2$ for even $n$. For odd $n$, start with one element as both current min and max and pair up the rest. In general it is $\\lceil 3n/2\\rceil-2$, which is optimal.",
+   "prompt": "Search algorithm: what is the smallest number of comparisons that always suffices to find both the minimum and the maximum of 100 distinct unsorted numbers?",
+   "answer": "148: compare in 50 pairs, then take the min of the 50 smaller and the max of the 50 larger",
+   "check": {
+    "type": "number",
+    "value": 148.0,
+    "examples": [
+     "148"
+    ],
+    "unit": "comparisons"
+   },
+   "explanation": "Finding the min and max separately costs $2(n-1)$ comparisons. Instead:\n- Pair up the elements and compare within each pair ($n/2$ comparisons). Put the smaller into group A and the larger into group B.\n- The overall min must be in A and the max in B. Scanning each group costs $n/2-1$ comparisons.\nThe total is $3n/2-2$ for even $n$; for $n=100$ that is $50+49+49=148$. For odd $n$, start with one element as both current min and max and pair up the rest. In general it is $\\lceil 3n/2\\rceil-2$, which is optimal.",
    "distractors": [
-    "Scan once, updating min and max at each element: about $3n/2$ comparisons",
-    "Sort first, then read both ends: about $3n/2$ comparisons",
-    "Find the min, then the max of the rest: about $n+\\log_2 n$ comparisons"
+    "198: one scan for the minimum, then another scan for the maximum",
+    "150: compare in 50 pairs, then scan the 50 smaller and the 50 larger",
+    "99: one scan that updates both the minimum and the maximum"
    ],
    "hint": "One comparison between two elements tells you which is a min candidate and which a max candidate."
   },
@@ -328,6 +463,16 @@
    "page": 179,
    "prompt": "A naive recursive function computes Fibonacci numbers: `fib(n)` returns 0 for $n\\le0$, 1 for $n=1$, and otherwise `fib(n-1) + fib(n-2)`. For some large $n$, `fib(n)` takes 100 seconds. About how long does `fib(n+1)` take, to the nearest second?",
    "answer": "About 162 seconds (the runtime grows by the factor $\\varphi=(1+\\sqrt5)/2\\approx1.618$)",
+   "check": {
+    "type": "number",
+    "value": 161.80339887498948,
+    "examples": [
+     "162",
+     "161.8",
+     "100(1+sqrt(5))/2"
+    ],
+    "unit": "seconds"
+   },
    "explanation": "The call count satisfies $T(0)=T(1)=1$ and $T(n)=T(n-1)+T(n-2)+1$. Adding 1 to both sides shows that $T(n)+1$ follows the Fibonacci recurrence, so $T(n)=2F_{n+1}-1$.\nFor large $n$, $F_{n+1}/F_n\\to\\varphi\\approx1.618$, the golden ratio, so $T(n+1)\\approx1.618\\times100\\approx162$ seconds.",
    "distractors": [
     "About 200 seconds (the runtime doubles with each increase of $n$)",
@@ -390,8 +535,15 @@
    "name": "Maximum contiguous subarray: example",
    "kind": "problem",
    "page": 181,
-   "prompt": "What is the maximum contiguous-subarray sum of $A=[1,\\ 2,\\ -5,\\ 4,\\ -3,\\ 2,\\ 6,\\ -5,\\ -1]$, and which subarray achieves it?",
+   "prompt": "What is the maximum sum of a contiguous subarray of $A=[1,\\ 2,\\ -5,\\ 4,\\ -3,\\ 2,\\ 6,\\ -5,\\ -1]$?",
    "answer": "9, from $[4,-3,2,6]$",
+   "check": {
+    "type": "number",
+    "value": 9.0,
+    "examples": [
+     "9"
+    ]
+   },
    "explanation": "Prefix sums, starting at $T_0=0$: 0, 1, 3, −2, 2, −1, 1, 7, 2, 1.\nThe largest value of $T_j$ minus an earlier minimum is $T_7-T_3=7-(-2)=9$. That is elements 4 through 7 (1-indexed): $4-3+2+6=9$.\nTempting wrong answers: $[2,6]=8$ misses the extra $4-3=+1$, and the long prefix run $1+2-5+4-3+2+6$ gives only 7.",
    "distractors": [
     "8, from $[2,6]$",
@@ -486,13 +638,21 @@
    "name": "Probability simulation: expected tosses",
    "kind": "concept",
    "page": 183,
-   "prompt": "In the fair-coin game that compares toss bits with the binary digits of $p$ and stops at the first mismatch, what is the expected number of tosses?",
-   "answer": "At most 2: each toss ends the game with probability 1/2 (exactly 2 for non-dyadic $p$)",
-   "explanation": "Each toss matches the corresponding digit of $p$ with probability 1/2, whatever that digit is. The number of tosses is therefore Geometric(1/2), with mean 2.\nIf $p=k/2^n$ has a terminating expansion, you can stop after $n$ tosses, since no win is possible after that. That gives $E=\\sum_{k=0}^{n-1}2^{-k}=2-2^{1-n}<2$.\nSo even an irrational $p$ needs only a couple of tosses on average, with digits of $p$ computed on demand.",
+   "prompt": "A fair-coin game is won with probability $p=1/3$ by comparing each toss (heads = 1, tails = 0) with the next binary digit of $p$ and stopping at the first mismatch. What is the expected number of tosses?",
+   "answer": "2: each toss ends the game with probability 1/2, so the count is Geometric(1/2)",
+   "check": {
+    "type": "number",
+    "value": 2.0,
+    "examples": [
+     "2"
+    ],
+    "unit": "tosses"
+   },
+   "explanation": "Each toss matches the corresponding digit of $p$ with probability 1/2, whatever that digit is. The number of tosses is therefore Geometric(1/2), with mean 2. Here $1/3=0.010101\\ldots_2$ never terminates, so the game ends only at a mismatch and the mean is exactly 2.\nIf $p=k/2^n$ has a terminating expansion, you can stop after $n$ tosses, since no win is possible after that. That gives $E=\\sum_{i=0}^{n-1}2^{-i}=2-2^{1-n}<2$.\nSo even an irrational $p$ needs only a couple of tosses on average, with digits of $p$ computed on demand.",
    "distractors": [
-    "About $\\log_2(1/p)$ tosses, which grows as $p\\to0$",
-    "Infinite for irrational $p$ such as $1/\\pi$",
-    "$1/p$ tosses, like waiting for a first success"
+    "3: like waiting for a first success of probability $p=1/3$",
+    "$\\log_2 3\\approx1.58$: one toss per bit of information in the outcome",
+    "Infinite: $1/3$ has a non-terminating binary expansion"
    ],
    "hint": "What is the chance that any single toss ends the game?"
   },
@@ -502,15 +662,23 @@
    "name": "Poisonous wine",
    "kind": "problem",
    "page": 183,
-   "prompt": "You have 1000 bottles of wine, exactly one of them poisoned, and 10 lab mice. Any amount of the poison kills a mouse in exactly 18 hours, with no symptoms before that, and the party is in 20 hours. How can you be sure of identifying the poisoned bottle before the party?",
-   "answer": "Binary labels: mouse $k$ sips each bottle whose bit $k$ is 1; dead mice spell the bottle's number",
-   "explanation": "With 18 of the 20 hours needed for symptoms, only one round of testing is possible, so all the tests must run at once. Binary search still works if every mouse runs in parallel.\n- Number the bottles 1–1000 in binary. $1000<2^{10}=1024$, so 10 bits suffice. For example, bottle 1000 = 1111101000.\n- Mouse $k$ drinks a drop from every bottle whose $k$-th bit (counting from the right) is 1.\n- After 18 hours, read dead = 1 and alive = 0 from mouse 10 down to mouse 1. That binary number is the poisoned bottle's label.\nEach mouse gives one bit of information and 1000 outcomes need at least 10 bits, so 10 mice is also the minimum. Nine mice cover only 512 bottles.",
+   "prompt": "You have 1000 bottles of wine, exactly one of them poisoned, and plenty of lab mice. Any amount of the poison kills a mouse in exactly 18 hours, with no symptoms before that, and the party is in 20 hours. So there is one round of tests: every mouse drinks at the same moment, and after 18 hours you see only which mice died. What is the fewest mice that guarantees you identify the poisoned bottle?",
+   "answer": "10 mice: number the bottles in binary; mouse $k$ sips each bottle whose bit $k$ is 1",
+   "check": {
+    "type": "number",
+    "value": 10.0,
+    "examples": [
+     "10"
+    ],
+    "unit": "mice"
+   },
+   "explanation": "**Lower bound.** Each mouse ends up dead or alive, so $k$ mice give at most $2^k$ distinguishable outcomes. Telling 1000 bottles apart needs $2^k\\ge1000$, so $k\\ge10$; nine mice cover only 512 bottles.\n**Ten mice suffice.** Run a binary search with all the tests in parallel:\n- Number the bottles 1–1000 in binary. $1000<2^{10}=1024$, so 10 bits suffice. For example, bottle 1000 = 1111101000.\n- Mouse $k$ drinks a drop from every bottle whose $k$-th bit (counting from the right) is 1.\n- After 18 hours, read dead = 1 and alive = 0 from mouse 10 down to mouse 1. That binary number is the poisoned bottle's label.\nIf the mice could drink at staggered times, the time of death would carry extra information; the same-moment rule excludes that.",
    "distractors": [
-    "Split the bottles into 10 groups of 100, one per mouse, then retest the fatal group",
-    "Binary search: test half the bottles, wait for the result, then test half of the remainder",
-    "Give mouse $k$ bottles $100(k-1)+1$ to $100k$; the dead mouse's group holds the poison"
+    "9 mice: $\\log_2 1000\\approx9.97$, so nine binary tests are enough",
+    "7 mice: each mouse has 3 outcomes, and $3^7=2187\\ge1000$",
+    "999 mice: one per bottle, and if none dies the last bottle is poisoned"
    ],
-   "hint": "There is time for only one round, so the ten tests must run in parallel."
+   "hint": "Each mouse ends up in one of two states. How many outcomes can $k$ mice produce?"
   },
   {
    "id": "7-poisonous-wine-decode",
@@ -520,6 +688,13 @@
    "page": 183,
    "prompt": "In the binary poisoned-wine scheme, mouse $k$ drinks from every bottle whose $k$-th bit from the right is 1. After 18 hours mice 6, 7 and 9 are dead and the rest are alive. Which bottle is poisoned?",
    "answer": "Bottle 352 ($2^5+2^6+2^8$)",
+   "check": {
+    "type": "number",
+    "value": 352.0,
+    "examples": [
+     "352"
+    ]
+   },
    "explanation": "Mouse $k$ stands for the bit worth $2^{k-1}$. Dead mice 6, 7 and 9 give $2^5+2^6+2^8=32+64+256=352$, which is 0101100000 in binary.\nA common slip is to use $2^k$ in place of $2^{k-1}$, which gives 704.",
    "distractors": [
     "Bottle 704 ($2^6+2^7+2^9$)",
@@ -648,6 +823,14 @@
    "page": 186,
    "prompt": "To sample $|Z|$ for $Z\\sim N(0,1)$ (half-normal density $f(x)=\\sqrt{2/\\pi}\\,e^{-x^2/2}$, $x>0$) by rejection from an Exp(1) proposal $g(x)=e^{-x}$, what is the smallest valid bound $M$ on $f/g$?",
    "answer": "$M=\\sqrt{2e/\\pi}\\approx1.32$, attained at $x=1$",
+   "check": {
+    "type": "number",
+    "value": 1.315489246958914,
+    "examples": [
+     "sqrt(2e/pi)",
+     "1.315"
+    ]
+   },
    "explanation": "$\\frac{f(x)}{g(x)}=\\sqrt{2/\\pi}\\,e^{x-x^2/2}=\\sqrt{2/\\pi}\\,e^{1/2-(x-1)^2/2}\\le\\sqrt{2/\\pi}\\,e^{1/2}=\\sqrt{2e/\\pi}\\approx1.3155$.\nAbout $1/M\\approx76\\%$ of proposals are accepted. The Exp(1) proposal itself comes from $-\\ln(1-U)$.\nThis yields only $|Z|$. Attach a random sign (one more coin flip) to get $N(0,1)$, then scale to $\\mu+\\sigma Z$. The book applies the bound to the standard normal directly, but the ratio it computes is the half-normal one, so the sign step is needed.",
    "distractors": [
     "$M=\\sqrt{2/\\pi}\\approx0.80$, attained at $x=0$",
@@ -662,13 +845,20 @@
    "name": "Monte Carlo convergence rate",
    "kind": "concept",
    "page": 186,
-   "prompt": "A plain Monte Carlo estimate averages $M$ i.i.d. samples, each with standard deviation $\\sigma$. What is its standard error, and how many more samples does it take to halve the error?",
-   "answer": "$\\sigma/\\sqrt M$, so error $\\propto M^{-1/2}$: 4× the samples halves it",
-   "explanation": "$\\mathrm{Var}(\\bar Y)=\\sigma^2/M$, so the standard error is $\\sigma/\\sqrt M$. The book writes $\\mathrm{Var}(\\bar Y)=\\sigma/\\sqrt M$, mixing up variance and standard deviation.\n- The rate does not depend on dimension, which is why Monte Carlo suits high-dimensional problems.\n- It is slow: each extra decimal digit of accuracy costs 100× more paths.\n- Estimate $\\sigma$ with the sample standard deviation $s$ and report $\\bar Y\\pm1.96\\,s/\\sqrt M$ as a 95% interval.\nVariance reduction attacks $\\sigma$; quasi-random sequences attack the rate.",
+   "prompt": "A plain Monte Carlo estimate averages $M$ i.i.d. samples, each with standard deviation $\\sigma$. By what factor must $M$ grow to halve the standard error of the estimate?",
+   "answer": "4: the standard error is $\\sigma/\\sqrt M$, so the error falls like $M^{-1/2}$",
+   "check": {
+    "type": "number",
+    "value": 4.0,
+    "examples": [
+     "4"
+    ]
+   },
+   "explanation": "$\\mathrm{Var}(\\bar Y)=\\sigma^2/M$, so the standard error is $\\sigma/\\sqrt M$, and halving it takes $4M$ samples. The book writes $\\mathrm{Var}(\\bar Y)=\\sigma/\\sqrt M$, mixing up variance and standard deviation.\n- The rate does not depend on dimension, which is why Monte Carlo suits high-dimensional problems.\n- It is slow: each extra decimal digit of accuracy costs 100× more paths.\n- Estimate $\\sigma$ with the sample standard deviation $s$ and report $\\bar Y\\pm1.96\\,s/\\sqrt M$ as a 95% interval.\nVariance reduction attacks $\\sigma$; quasi-random sequences attack the rate.",
    "distractors": [
-    "$\\sigma/M$, so error $\\propto M^{-1}$: 2× the samples halves it",
-    "$\\sigma^2/\\sqrt M$, so error $\\propto M^{-1/2}$: 2× the samples halves it",
-    "$\\sigma/\\sqrt M$, so error $\\propto M^{-1/2}$: $\\sqrt2$× the samples halves it"
+    "2: the standard error is $\\sigma/M$",
+    "$\\sqrt2$: the standard error is $\\sigma/M^2$",
+    "16: the standard error is $\\sigma/M^{1/4}$"
    ],
    "hint": "The variance of a mean of $M$ i.i.d. terms is $\\sigma^2/M$."
   },
@@ -790,13 +980,22 @@
    "name": "Monte Carlo π: standard error",
    "kind": "concept",
    "page": 189,
-   "prompt": "You estimate $\\pi$ as $4\\hat p$ from $n$ uniform points in the unit square, where $\\hat p$ is the fraction inside the quarter circle. What is the standard error, and roughly what is it for $n=10^6$?",
-   "answer": "$4\\sqrt{p(1-p)/n}\\approx1.64/\\sqrt n$ with $p=\\pi/4$; about $0.0016$ for $n=10^6$",
-   "explanation": "Each point lands inside with probability $p=\\pi/4\\approx0.785$, so $\\hat p$ is a Bernoulli mean with variance $p(1-p)/n$. Multiplying by 4 multiplies the standard error by 4.\n$\\sqrt{0.785\\times0.215}\\approx0.411$, so $\\mathrm{SE}\\approx1.64/\\sqrt n$. For $n=10^6$ that is about 0.0016, which matches the book's reported spread of about 0.0015 over repeated runs.\nEach extra correct digit costs 100 times as many points.",
+   "prompt": "You estimate $\\pi$ as $4\\hat p$ from $n=10^6$ uniform points in the unit square, where $\\hat p$ is the fraction inside the quarter circle $x^2+y^2\\le1$. What is the standard error of the estimate, to 3 significant figures?",
+   "answer": "About $0.00164$: $4\\sqrt{p(1-p)/n}\\approx1.64/\\sqrt n$ with $p=\\pi/4$",
+   "check": {
+    "type": "number",
+    "value": 0.001642183367736324,
+    "examples": [
+     "0.001642",
+     "0.00164",
+     "4sqrt(pi/4*(1-pi/4)/10^6)"
+    ]
+   },
+   "explanation": "Each point lands inside with probability $p=\\pi/4\\approx0.785$, so $\\hat p$ is a Bernoulli mean with variance $p(1-p)/n$. Multiplying by 4 multiplies the standard error by 4.\n$\\sqrt{0.785\\times0.215}\\approx0.411$, so $\\mathrm{SE}\\approx1.64/\\sqrt n$. For $n=10^6$ that is $1.642\\times10^{-3}\\approx0.00164$, which matches the book's reported spread of about 0.0015 over repeated runs.\nEach extra correct digit costs 100 times as many points.",
    "distractors": [
-    "$\\sqrt{p(1-p)/n}\\approx0.41/\\sqrt n$ with $p=\\pi/4$; about $0.0004$ for $n=10^6$",
-    "$4p(1-p)/n\\approx0.67/n$ with $p=\\pi/4$; about $7\\times10^{-7}$ for $n=10^6$",
-    "$4\\sqrt{p(1-p)}/n\\approx1.64/n$ with $p=\\pi/4$; about $1.6\\times10^{-6}$ for $n=10^6$"
+    "About $0.00041$: $\\sqrt{p(1-p)/n}$ with $p=\\pi/4$",
+    "About $6.7\\times10^{-7}$: $4p(1-p)/n$ with $p=\\pi/4$",
+    "About $1.6\\times10^{-6}$: $4\\sqrt{p(1-p)}/n$ with $p=\\pi/4$"
    ],
    "hint": "Each point is a Bernoulli trial, and the estimator is scaled by 4."
   },
@@ -872,6 +1071,32 @@
    "page": 191,
    "prompt": "You are solving a parabolic PDE with the explicit finite difference method. Is it worse to have too many steps in the time dimension or too many in the space dimension?",
    "answer": "Too many space steps: stability needs $\\Delta\\tau/(\\Delta x)^2\\le\\tfrac12$, broken by tiny $\\Delta x$",
+   "check": {
+    "type": "text",
+    "accept": [
+     "space",
+     "space dimension",
+     "space steps",
+     "space step",
+     "too many space steps",
+     "space direction",
+     "in space",
+     "too many in space",
+     "too many in the space dimension",
+     "too many steps in space",
+     "too many steps in the space dimension",
+     "space is worse",
+     "space dimension is worse",
+     "space steps are worse",
+     "too many space steps is worse",
+     "spatial",
+     "spatial steps",
+     "spatial dimension",
+     "x",
+     "dx",
+     "delta x"
+    ]
+   },
    "explanation": "The explicit update $u_j^{n+1}=\\alpha u_{j-1}^n+(1-2\\alpha)u_j^n+\\alpha u_{j+1}^n$ needs nonnegative weights, so $\\alpha=\\Delta\\tau/(\\Delta x)^2\\le\\tfrac12$. Von Neumann analysis gives the same limit.\n- More time steps means a smaller $\\Delta\\tau$ and a smaller $\\alpha$: safer, just slower.\n- More space steps means a smaller $\\Delta x$, so $\\alpha$ grows like $1/\\Delta x^2$. Once it passes $\\tfrac12$, errors grow exponentially.\nHalving $\\Delta x$ forces you to quarter $\\Delta\\tau$. The book states the condition as the strict $1-2\\alpha>0$, but $\\alpha=\\tfrac12$ is still stable. Implicit and Crank–Nicolson schemes have no such restriction.",
    "distractors": [
     "Too many time steps: a tiny $\\Delta\\tau$ pushes $\\Delta\\tau/(\\Delta x)^2$ above $\\tfrac12$",

@@ -26,15 +26,35 @@
    "name": "Price direction: volatility",
    "kind": "problem",
    "page": 138,
-   "prompt": "Holding everything else fixed, what happens to the prices of European and American calls and puts when the underlying's volatility $\\sigma$ increases?",
-   "answer": "Calls and puts both rise (European and American)",
+   "prompt": "Holding everything else fixed, what happens to the price of a put (European or American) when the underlying's volatility $\\sigma$ increases?",
+   "answer": "It increases (calls rise too, European and American alike)",
    "explanation": "An option holder's loss is capped at the premium, while the gain grows with the size of the move.\nA higher $\\sigma$ widens the distribution of $S_T$ in both directions: the extra upside adds value, and the extra downside is cut off by the $\\max(\\cdot,0)$.\nPut another way, vanilla payoffs are convex in $S$, so more dispersion raises their expected value. That is why vega is positive for both calls and puts.",
    "distractors": [
-    "Calls rise, puts fall (European and American)",
-    "Calls fall, puts rise (European and American)",
-    "European calls and puts rise; American ones are unchanged"
+    "It decreases (puts fall while calls rise)",
+    "It is unchanged (only calls are sensitive to volatility)",
+    "It depends on whether the put is in or out of the money"
    ],
-   "hint": "What does the $\\max(\\cdot,0)$ do to the extra downside?"
+   "hint": "The payoff $\\max(K-S_T,0)$ can't drop below 0, however far $S_T$ rises.",
+   "check": {
+    "type": "text",
+    "accept": [
+     "increases",
+     "increase",
+     "increased",
+     "it increases",
+     "rises",
+     "rise",
+     "it rises",
+     "goes up",
+     "go up",
+     "grows",
+     "more valuable",
+     "worth more",
+     "more expensive",
+     "gains value",
+     "gain value"
+    ]
+   }
   },
   {
    "id": "6-direction-rate",
@@ -42,15 +62,35 @@
    "name": "Price direction: interest rate",
    "kind": "problem",
    "page": 138,
-   "prompt": "All else equal, how does an increase in the risk-free rate $r$ affect the value of a call and of a put (European or American)?",
-   "answer": "Call value rises; put value falls",
+   "prompt": "All else equal, how does an increase in the risk-free rate $r$ affect the value of a call (European or American)?",
+   "answer": "It increases (while put values fall)",
    "explanation": "The call holder pays $K$ at expiry. A higher $r$ lowers the present value of that payment, so the call is worth more.\nThe put holder receives $K$ at expiry, and its present value falls, so the put is worth less. In risk-neutral terms the stock drifts at $r$, so a higher $r$ also shifts $S_T$ up.\nCaveat: in real markets rates and stock prices move together (a rate cut often lifts stocks), so the change-one-factor answer can be swamped.",
    "distractors": [
-    "Call value falls; put value rises",
-    "Both call and put values rise",
-    "Both call and put values fall"
+    "It decreases, since the payoff is discounted at a higher rate",
+    "It is unchanged, since $r$ does not appear in the call payoff",
+    "It depends on moneyness: up in the money, down out of the money"
    ],
-   "hint": "Who pays the strike, and who receives it?"
+   "hint": "Who pays the strike, and who receives it?",
+   "check": {
+    "type": "text",
+    "accept": [
+     "increases",
+     "increase",
+     "increased",
+     "it increases",
+     "rises",
+     "rise",
+     "it rises",
+     "goes up",
+     "go up",
+     "grows",
+     "more valuable",
+     "worth more",
+     "more expensive",
+     "gains value",
+     "gain value"
+    ]
+   }
   },
   {
    "id": "6-direction-dividends",
@@ -58,14 +98,37 @@
    "name": "Price direction: dividends",
    "kind": "problem",
    "page": 138,
-   "prompt": "All else equal, how do larger expected dividends (paid before expiry) affect call and put values?",
-   "answer": "Call value falls; put value rises",
+   "prompt": "All else equal, how do larger expected dividends (paid before expiry) affect the value of a call?",
+   "answer": "It decreases (while put values rise)",
    "explanation": "The option holder does not receive dividends, but the share price drops by roughly the dividend on the ex-dividend date.\nA lower expected $S_T$ hurts calls and helps puts. In put-call parity the stock appears as $S-D$, so a larger $D$ lowers $c-p$.",
    "distractors": [
-    "Call value rises; put value falls",
-    "Both call and put values rise",
-    "No effect; dividends only matter to shareholders"
-   ]
+    "It increases, since the stock pays out more",
+    "It is unchanged; dividends only matter to shareholders",
+    "It increases for American calls and decreases for European ones"
+   ],
+   "check": {
+    "type": "text",
+    "accept": [
+     "decreases",
+     "decrease",
+     "decreased",
+     "it decreases",
+     "falls",
+     "fall",
+     "it falls",
+     "goes down",
+     "go down",
+     "drops",
+     "declines",
+     "decline",
+     "less valuable",
+     "worth less",
+     "cheaper",
+     "lower",
+     "lowers",
+     "reduced"
+    ]
+   }
   },
   {
    "id": "6-direction-maturity",
@@ -181,14 +244,30 @@
    "name": "American vs. European options (A)",
    "kind": "problem",
    "page": 139,
-   "prompt": "Why should you never exercise an American call on a non-dividend-paying stock before maturity?",
-   "answer": "Its value always exceeds $S-K$ (it is at least $S-Ke^{-r\\tau}$), so selling beats exercising",
+   "prompt": "When, if ever, is it optimal to exercise an American call on a non-dividend-paying stock before maturity?",
+   "answer": "Never: the call is always worth more than $S-K$ (at least $S-Ke^{-r\\tau}$), so selling beats exercising",
    "explanation": "Exercising now gives only the intrinsic value $S-K$.\nFrom parity, $c=(S-K)+(K-Ke^{-r\\tau})+p$. On top of intrinsic value, the call carries the interest saved by paying $K$ later and the value of an embedded put, and both are nonnegative. So $c>S-K$.\nAn American call is worth at least the European one, so it also exceeds intrinsic value: selling it, or holding it, beats exercising it. As a result, American and European calls on non-dividend stocks have the same price.",
    "distractors": [
-    "Early exercise becomes optimal once $S$ exceeds $Ke^{r\\tau}$",
-    "Its value equals $S-K$, so early exercise gains nothing and loses nothing",
-    "Its theta is positive, so waiting always adds value"
-   ]
+    "Once $S$ exceeds $Ke^{r\\tau}$, when the call is deep enough in the money",
+    "Whenever it is deep in the money, since its time value is then near 0",
+    "At any time: its value equals $S-K$, so exercising early costs nothing"
+   ],
+   "check": {
+    "type": "text",
+    "accept": [
+     "never",
+     "never optimal",
+     "never early",
+     "never before maturity",
+     "not optimal",
+     "at no time",
+     "only at maturity",
+     "only at expiry",
+     "at maturity",
+     "at expiry",
+     "hold to maturity"
+    ]
+   }
   },
   {
    "id": "6-call-value-decomposition",
@@ -437,15 +516,25 @@
    "name": "Pay 1 at first hit of H (D)",
    "kind": "problem",
    "page": 147,
-   "prompt": "Interest rates are zero, and a non-dividend stock trades at USD 1. An option lets you receive USD 1 the first time the stock price reaches a level $H>1$. What is the option worth today?",
-   "answer": "USD $1/H$",
-   "explanation": "With $r=0$, the stock is a martingale under the risk-neutral measure. Stop it when it hits $H$ (or falls toward 0). Optional stopping gives $P\\cdot H+(1-P)\\cdot0=S_0=1$, so the probability of ever hitting $H$ is $P=1/H$. With zero rates, the option is worth $1/H$.\nNo-arbitrage check: $1/H$ shares cost $1/H$ and are worth exactly 1 when $S=H$, so the option can't cost more than that. If it cost $C<1/H$, you could buy it by shorting $C$ shares: zero cost now, and $1-CH>0$ when the level is hit.\nSide note: $E[S_T]=1$ for every $T$, yet $\\ln S$ drifts down at rate $\\sigma^2/2$, so $P(S_T\\ge1)\\to0$ as $T\\to\\infty$.",
+   "prompt": "Interest rates are zero, and a non-dividend stock trades at USD 20. An option pays USD 1 the first time the stock price reaches USD 50. What is the option worth today, in dollars?",
+   "answer": "USD 0.40, i.e. $S_0/H=20/50$",
+   "explanation": "With $r=0$, the stock is a martingale under the risk-neutral measure. Stop it the first time it reaches 50 (it may instead drift toward 0 and never get there). Optional stopping gives $p\\cdot50+(1-p)\\cdot0=20$, so the probability of ever hitting 50 is $p=20/50=0.4$. With zero rates, the option is worth USD 0.40. In general the value is $S_0/H$.\nNo-arbitrage check: $1/50$ of a share costs 0.40 and is worth exactly 1 when the stock reaches 50, so the option can't cost more than that. If it cost $C<0.4$, you could buy it by shorting $C/20$ shares: zero cost now, and $1-50C/20>0$ when the level is hit.\nSide note: $\\tilde E[S_T]=20$ for every $T$, yet $\\ln S$ drifts down at rate $\\sigma^2/2$, so $\\tilde P(S_T\\ge20)\\to0$ as $T\\to\\infty$.",
    "distractors": [
-    "USD $1/H^2$",
-    "USD $1-1/H$",
-    "USD 1"
+    "USD 0.16, i.e. $(S_0/H)^2$",
+    "USD 0.60, i.e. $1-S_0/H$",
+    "USD 1, since the level is hit eventually"
    ],
-   "hint": "The stock is a martingale when $r=0$: use optional stopping."
+   "hint": "The stock is a martingale when $r=0$: use optional stopping.",
+   "check": {
+    "type": "number",
+    "value": 0.4,
+    "examples": [
+     "20/50",
+     "0.4",
+     "2/5"
+    ],
+    "unit": "dollars"
+   }
   },
   {
    "id": "6-inverse-stock-payoff",
@@ -513,15 +602,23 @@
    "name": "Delta of an ATM call (B)",
    "kind": "problem",
    "page": 150,
-   "prompt": "Estimate the delta of an at-the-money ($S=K$) European call on a non-dividend stock. What happens to it as expiry approaches?",
-   "answer": "Slightly above 0.5; it tends to 0.5 as $\\tau\\to0$",
+   "prompt": "What value does the delta of an at-the-money ($S=K$) European call on a non-dividend stock approach as expiry nears ($\\tau\\to0$)?",
+   "answer": "0.5 (before expiry it sits slightly above 0.5, since $d_1>0$ when $r>0$)",
    "explanation": "With $S=K$, $d_1=\\left(\\frac{r}{\\sigma}+\\frac{\\sigma}{2}\\right)\\sqrt\\tau>0$, so $\\Delta=N(d_1)>0.5$, and longer maturities push it higher. As $\\tau\\to0$, $d_1\\to0$ and $\\Delta\\to N(0)=0.5$. With a dividend yield $y<r$, $d_1$ is still positive.\nMore generally, $\\Delta\\to1$ for $S\\gg K$ and $\\Delta\\to0$ for $S\\ll K$. The shorter the maturity, the faster delta reaches these limits, so the delta curve steepens around $K$.",
    "distractors": [
-    "Exactly 0.5; it stays at 0.5 as $\\tau\\to0$",
-    "Slightly below 0.5; it tends to 0 as $\\tau\\to0$",
-    "Slightly above 0.5; it tends to 1 as $\\tau\\to0$"
+    "1, since the call is sure to finish in the money",
+    "0, since the option's time value vanishes",
+    "$1/\\sqrt{2\\pi}\\approx0.4$, the normal density at 0"
    ],
-   "hint": "Compute $d_1$ when $S=K$."
+   "hint": "Compute $d_1$ when $S=K$.",
+   "check": {
+    "type": "number",
+    "value": 0.5,
+    "examples": [
+     "0.5",
+     "1/2"
+    ]
+   }
   },
   {
    "id": "6-delta-hedge-call",
@@ -544,15 +641,24 @@
    "name": "Value of an ATM call (D)",
    "kind": "problem",
    "page": 152,
-   "prompt": "Estimate the value of an at-the-money European call on a non-dividend stock with short maturity when interest rates are low.",
-   "answer": "$c\\approx0.4\\,\\sigma S\\sqrt\\tau$",
-   "explanation": "With $S=K$ and $r\\approx0$, $c\\approx S[N(d_1)-N(d_2)]$ with $d_{1,2}=\\left(\\frac{r}{\\sigma}\\pm\\frac{\\sigma}{2}\\right)\\sqrt\\tau$, both near 0. The normal density there is about $1/\\sqrt{2\\pi}$, so\n$$N(d_1)-N(d_2)\\approx\\frac{d_1-d_2}{\\sqrt{2\\pi}}=\\frac{\\sigma\\sqrt\\tau}{\\sqrt{2\\pi}}\\approx0.4\\,\\sigma\\sqrt\\tau.$$\nExample: $\\sigma=30\\%$, $\\tau=1/6$ and $r=3\\%$ give about $0.049S$, against an exact $0.051S$. Traders use this rule of thumb in reverse to read implied volatility off at-the-money prices.",
+   "prompt": "A non-dividend stock trades at USD 100 with volatility $\\sigma=20\\%$, and interest rates are close to zero. Using the short-maturity approximation for an at-the-money call (with $1/\\sqrt{2\\pi}\\approx0.4$), estimate the price of a 3-month at-the-money European call.",
+   "answer": "USD 4, from $c\\approx0.4\\,\\sigma S\\sqrt\\tau$",
+   "explanation": "With $S=K$ and $r\\approx0$, $c\\approx S[N(d_1)-N(d_2)]$ with $d_{1,2}=\\left(\\frac{r}{\\sigma}\\pm\\frac{\\sigma}{2}\\right)\\sqrt\\tau$, both near 0. The normal density there is about $1/\\sqrt{2\\pi}$, so\n$$N(d_1)-N(d_2)\\approx\\frac{d_1-d_2}{\\sqrt{2\\pi}}=\\frac{\\sigma\\sqrt\\tau}{\\sqrt{2\\pi}}\\approx0.4\\,\\sigma\\sqrt\\tau.$$\nHere $c\\approx0.4\\times0.2\\times100\\times\\sqrt{0.25}=4$ dollars. The exact Black-Scholes price with $r=0$ is about 3.99, so the rule of thumb is very close. Traders also use it in reverse to read implied volatility off at-the-money prices.",
    "distractors": [
-    "$c\\approx0.4\\,\\sigma S\\tau$",
-    "$c\\approx0.4\\,\\sigma^2 S\\sqrt\\tau$",
-    "$c\\approx0.8\\,\\sigma S\\sqrt\\tau$"
+    "USD 2, from $c\\approx0.4\\,\\sigma S\\tau$",
+    "USD 0.80, from $c\\approx0.4\\,\\sigma^2S\\sqrt\\tau$",
+    "USD 8, from $c\\approx0.8\\,\\sigma S\\sqrt\\tau$"
    ],
-   "hint": "$1/\\sqrt{2\\pi}\\approx0.4$"
+   "hint": "Expand $N(d_1)-N(d_2)$ around 0.",
+   "check": {
+    "type": "number",
+    "value": 4.0,
+    "examples": [
+     "4",
+     "0.4*0.2*100*sqrt(0.25)"
+    ],
+    "unit": "dollars"
+   }
   },
   {
    "id": "6-gamma-formula",
@@ -575,14 +681,34 @@
    "name": "Gamma of ATM option near expiry",
    "kind": "problem",
    "page": 153,
-   "prompt": "What happens to the gamma of an at-the-money European option as it approaches maturity?",
-   "answer": "$\\Gamma\\to\\infty$ as $\\tau\\to0$; delta becomes a step function",
+   "prompt": "What limit does the gamma of an at-the-money European option approach as it nears maturity ($\\tau\\to0$)?",
+   "answer": "Infinity: $\\Gamma\\to\\infty$ as $\\tau\\to0$, and delta becomes a step function at $K$",
    "explanation": "For $S=K$ with no dividends, $d_1=(r/\\sigma+\\sigma/2)\\sqrt\\tau\\to0$, so the numerator $N'(d_1)\\to1/\\sqrt{2\\pi}$ while the denominator $S\\sigma\\sqrt\\tau\\to0$.\nAt expiry, delta jumps from 0 to 1 at the strike. That is why at-the-money options are very hard to hedge near expiry: tiny moves in $S$ swing the required hedge.",
    "distractors": [
-    "$\\Gamma\\to0$ as $\\tau\\to0$; delta becomes flat",
-    "$\\Gamma\\to1/\\sqrt{2\\pi}$ as $\\tau\\to0$; delta stays smooth",
-    "$\\Gamma\\to0.5$ as $\\tau\\to0$, matching delta's limit"
-   ]
+    "0: $\\Gamma\\to0$ as $\\tau\\to0$, and delta becomes flat",
+    "$1/\\sqrt{2\\pi}$: delta stays smooth",
+    "0.5, matching the limit of delta"
+   ],
+   "check": {
+    "type": "text",
+    "accept": [
+     "infinity",
+     "infinite",
+     "goes to infinity",
+     "tends to infinity",
+     "approaches infinity",
+     "to infinity",
+     "becomes infinite",
+     "blows up",
+     "explodes",
+     "unbounded",
+     "increases without bound",
+     "grows without bound",
+     "inf",
+     "plus infinity",
+     "positive infinity"
+    ]
+   }
   },
   {
    "id": "6-gamma-shape",
@@ -650,14 +776,41 @@
    "name": "Delta-neutral long call (B)",
    "kind": "problem",
    "page": 156,
-   "prompt": "You are long a call on GM (no dividends) and short enough GM shares to be delta-neutral. If GM's price immediately jumps up or down, what happens to your portfolio value? Is this an arbitrage?",
-   "answer": "Value rises either way (long gamma), but it's not arbitrage: negative theta pays for it",
+   "prompt": "You are long a call on GM (no dividends) and short enough GM shares to be delta-neutral. If GM's price immediately jumps, either up or down, what happens to the value of your portfolio?",
+   "answer": "It increases either way (long gamma); not an arbitrage, since negative theta pays for it",
    "explanation": "Shares have zero gamma, so the hedged position keeps the option's positive gamma. Its value is convex in $S$, so any immediate move, up or down, produces a gain.\nBut the BSM PDE implies that a delta-neutral portfolio satisfies $\\Theta+\\tfrac12\\sigma^2S^2\\Gamma=r\\Pi$. Positive gamma comes with negative theta: if the stock doesn't move enough, time decay eats the value. You are betting that realized volatility beats implied volatility, not collecting free money.",
    "distractors": [
-    "Value is unchanged either way (delta-neutral), so it's a riskless arbitrage",
-    "Value falls either way (short gamma); not an arbitrage",
-    "Value rises either way (long gamma), so it's a riskless arbitrage"
-   ]
+    "It is unchanged either way, since the position is delta-neutral",
+    "It falls either way (short gamma)",
+    "It rises on an up-move and falls on a down-move"
+   ],
+   "check": {
+    "type": "text",
+    "accept": [
+     "increases",
+     "increase",
+     "increased",
+     "it increases",
+     "rises",
+     "rise",
+     "it rises",
+     "goes up",
+     "go up",
+     "grows",
+     "more valuable",
+     "worth more",
+     "more expensive",
+     "gains value",
+     "gain value",
+     "gains",
+     "gain",
+     "increases either way",
+     "rises either way",
+     "goes up either way",
+     "profit",
+     "makes money"
+    ]
+   }
   },
   {
    "id": "6-theta-gamma-relation",
@@ -862,14 +1015,22 @@
    "name": "Minimum-variance portfolio",
    "kind": "problem",
    "page": 163,
-   "prompt": "Stocks A and B both have an expected return of 12%. A's return has a standard deviation of 20%, B's has 30%, and their correlation is 0.5. How should you split your investment between them to minimize portfolio risk?",
-   "answer": "$6/7$ in A and $1/7$ in B",
+   "prompt": "Stocks A and B both have an expected return of 12%. A's return has a standard deviation of 20%, B's has 30%, and their correlation is 0.5. What fraction of your investment should go into A to minimize portfolio risk?",
+   "answer": "$6/7$ in A, $1/7$ in B",
    "explanation": "With equal expected returns, only variance matters. For weight $w$ in A,\n$$\\sigma_p^2=w^2\\sigma_A^2+(1-w)^2\\sigma_B^2+2w(1-w)\\rho\\sigma_A\\sigma_B.$$\nSetting the derivative to zero gives $w=\\frac{\\sigma_B^2-\\rho\\sigma_A\\sigma_B}{\\sigma_A^2-2\\rho\\sigma_A\\sigma_B+\\sigma_B^2}=\\frac{0.09-0.03}{0.04-0.06+0.09}=\\frac{0.06}{0.07}=\\frac67$.\nThe resulting portfolio volatility is about 19.6%, slightly below A's 20%.",
    "distractors": [
-    "$3/5$ in A and $2/5$ in B",
-    "$1/2$ in A and $1/2$ in B",
-    "$9/13$ in A and $4/13$ in B"
-   ]
+    "$3/5$ in A, $2/5$ in B",
+    "$1/2$ in A, $1/2$ in B",
+    "$9/13$ in A, $4/13$ in B"
+   ],
+   "check": {
+    "type": "number",
+    "value": 0.8571428571428571,
+    "examples": [
+     "6/7",
+     "0.8571"
+    ]
+   }
   },
   {
    "id": "6-min-variance-formula",
@@ -922,14 +1083,22 @@
    "name": "VaR drawback: tail blindness",
    "kind": "problem",
    "page": 165,
-   "prompt": "You are short protection on a USD 1M credit default swap on bond A, which has a 3% default probability and zero recovery. What is the 95% VaR, and what weakness of VaR does this show?",
-   "answer": "VaR = 0 because the 3% default chance is below 5%; VaR ignores losses beyond the quantile",
+   "prompt": "You are short protection on a USD 1M credit default swap on bond A, which has a 3% default probability over the horizon and zero recovery. What is the 95% VaR of this position, in dollars?",
+   "answer": "USD 0: the 3% default chance is below 5%, so VaR misses the USD 1M tail loss",
    "explanation": "With probability 97% there is no loss, so the 5th percentile of P&L is 0 and the 95% VaR is 0, even though there is a 3% chance of losing the entire USD 1M.\nBecause VaR looks at only one quantile, it says nothing about how bad losses are beyond it. For derivatives with highly non-normal, fat-tailed or jumpy P&L, this can badly understate risk, which is why stress tests are used alongside VaR.",
    "distractors": [
-    "VaR = USD 1M because any default loses the full notional; VaR overstates tail risk",
-    "VaR = USD 30,000, the expected loss; VaR equals the mean loss",
-    "VaR = USD 50,000, i.e. 5% of notional; VaR is linear in the confidence level"
-   ]
+    "USD 1,000,000, since any default loses the full notional",
+    "USD 30,000, the expected loss",
+    "USD 50,000, i.e. 5% of the notional"
+   ],
+   "check": {
+    "type": "number",
+    "value": 0.0,
+    "examples": [
+     "0"
+    ],
+    "unit": "dollars"
+   }
   },
   {
    "id": "6-var-subadditivity",
@@ -937,14 +1106,22 @@
    "name": "VaR is not subadditive",
    "kind": "problem",
    "page": 165,
-   "prompt": "Add a second short USD 1M CDS position on bond B (3% default probability, zero recovery, independent of A). Each position alone has a 95% VaR of 0. What is the 95% VaR of the combined portfolio?",
-   "answer": "USD 1M, since P(at least one default) $\\approx5.91\\%>5\\%$",
+   "prompt": "Add a second short USD 1M CDS position on bond B (3% default probability, zero recovery, independent of A). Each position alone has a 95% VaR of 0. What is the 95% VaR of the combined portfolio, in millions of dollars?",
+   "answer": "USD 1M, since P(at least one default) $=1-0.97^2\\approx5.91\\%>5\\%$",
    "explanation": "$P(\\text{at least one default})=1-0.97^2=5.91\\%$, which exceeds 5%. So the 5th percentile of P&L is a loss of USD 1M (both defaulting has only a 0.09% chance).\nSo $\\text{VaR}(A+B)>\\text{VaR}(A)+\\text{VaR}(B)$: combining the positions appears to increase risk, which contradicts the idea that diversification shouldn't. This failure of subadditivity means VaR is not a coherent risk measure.",
    "distractors": [
     "0, since each position alone has zero VaR and VaRs add",
     "USD 2M, since both bonds could default together",
-    "USD 60,000, the sum of the two expected losses"
-   ]
+    "USD 0.06M, the sum of the two expected losses"
+   ],
+   "check": {
+    "type": "number",
+    "value": 1.0,
+    "examples": [
+     "1"
+    ],
+    "unit": "USD million"
+   }
   },
   {
    "id": "6-coherent-risk-measure",
@@ -1027,15 +1204,24 @@
    "name": "Inverse floater price",
    "kind": "problem",
    "page": 166,
-   "prompt": "An inverse floater has face value USD 100, matures in 5 years, and pays an annual coupon rate of $30\\%-3r$ semiannually, where $r$ is the floating rate reset each period. The yield curve is flat at 7.5%. What is its price, and how do you replicate it?",
+   "prompt": "An inverse floater has face value USD 100, matures in 5 years, and pays an annual coupon rate of $30\\%-3r$ semiannually, where $r$ is the floating rate reset each period. The yield curve is flat at 7.5%. What is its price, in dollars?",
    "answer": "USD 100: long 4 par 7.5% fixed-rate bonds, short 3 par floating-rate bonds",
    "explanation": "Each half-year the inverse floater pays $100\\cdot\\frac{0.30-3r}{2}=15-150r$, and it returns 100 at maturity.\n- 4 fixed-rate bonds with a 7.5% coupon pay $4\\times3.75=15$ per period and 400 at maturity.\n- Shorting 3 floaters costs $3\\times50r=150r$ per period and 300 at maturity.\nThe net is $15-150r$ per period and 100 at the end, an exact match. With a flat 7.5% curve both kinds of bond trade at par, so the price is $4\\cdot100-3\\cdot100=100$. (This ignores the zero floor on the coupon, which would bind if $r>10\\%$.)",
    "distractors": [
-    "USD 100: long 3 par 7.5% fixed-rate bonds, short 4 par floating-rate bonds",
     "USD 70: long 1 par 7.5% fixed-rate bond, short 3 zero-coupon bonds",
-    "USD 130: long 4 par 7.5% fixed-rate bonds, short 3 par floating-rate bonds"
+    "USD 130: long 4 par 7.5% fixed-rate bonds, short 3 par floating-rate bonds",
+    "USD 400: long 4 par 7.5% fixed-rate bonds; the floating leg is worth nothing"
    ],
-   "hint": "Replicate the cash flows with fixed-rate and floating-rate bonds."
+   "hint": "Replicate the cash flows with fixed-rate and floating-rate bonds.",
+   "check": {
+    "type": "number",
+    "value": 100.0,
+    "examples": [
+     "100",
+     "4*100-3*100"
+    ],
+    "unit": "dollars"
+   }
   },
   {
    "id": "6-inverse-floater-duration",
@@ -1043,14 +1229,23 @@
    "name": "Inverse floater duration",
    "kind": "problem",
    "page": 167,
-   "prompt": "For the same inverse floater (face 100, 5 years, coupon $30\\%-3r$ paid semiannually, flat 7.5% curve, price 100), estimate its duration.",
+   "prompt": "For the same inverse floater (face 100, 5 years, coupon $30\\%-3r$ paid semiannually, flat 7.5% curve, price 100), estimate its modified duration.",
    "answer": "About 15 (≈ 14.98), far above its 5-year maturity",
    "explanation": "Dollar durations add across the replicating portfolio: $\\mathrm{DD}_{inv}=4\\,\\mathrm{DD}_{fixed}-3\\,\\mathrm{DD}_{float}$.\n- A par floater just after a reset behaves like a 6-month zero paying 103.75, so $\\mathrm{DD}_{float}=\\frac{0.5\\cdot103.75}{1.0375^2}=\\frac{50}{1.0375}\\approx48.19$.\n- A 5-year 7.5% par bond with semiannual coupons has $\\mathrm{DD}_{fixed}=-dP/dy\\approx410.64$ (modified duration about 4.11).\nSo $\\mathrm{DD}_{inv}\\approx1642.6-144.6\\approx1498$ and $D_{inv}=1498/100\\approx14.98$. Leverage makes an inverse floater far more rate-sensitive than its maturity suggests.",
    "distractors": [
     "About 4.1, the same as a 5-year par bond",
     "About 16.4, i.e. 4 times a par bond's duration",
     "About 5, equal to its time to maturity"
-   ]
+   ],
+   "check": {
+    "type": "number",
+    "value": 14.97979137082944,
+    "examples": [
+     "15",
+     "14.98"
+    ],
+    "unit": "years"
+   }
   },
   {
    "id": "6-futures-vs-forwards",
@@ -1073,14 +1268,26 @@
    "name": "Futures vs. forwards with random rates",
    "kind": "problem",
    "page": 167,
-   "prompt": "Interest rates are stochastic, and the underlying asset's price is strongly positively correlated with them. Which is higher, the futures price or the forward price, and why?",
+   "prompt": "Interest rates are stochastic, and the underlying asset's price is strongly positively correlated with them. Which is higher, the futures price or the forward price?",
    "answer": "Futures: daily gains arrive when rates are high and losses when rates are low",
    "explanation": "With positive correlation, a long futures holder receives variation margin when the asset rises, which tends to happen when rates are high, so the cash can be reinvested at a high rate. Losses tend to come when rates are low, so they are cheap to finance.\nThis systematic advantage makes a long futures position worth more than a long forward, so the futures price must be higher to offset it. With negative correlation the ordering flips, and with deterministic rates the two prices coincide.",
    "distractors": [
     "Forwards: daily gains arrive when rates are low and losses when rates are high",
     "They are equal: both equal $Se^{(r+u-y)\\tau}$ regardless of rates",
     "Forwards: settling only at maturity avoids reinvestment risk, so they are worth more"
-   ]
+   ],
+   "check": {
+    "type": "text",
+    "accept": [
+     "futures",
+     "futures price",
+     "future",
+     "future price",
+     "forward is lower",
+     "forward price is lower",
+     "forward lower"
+    ]
+   }
   },
   {
    "id": "6-forward-price",

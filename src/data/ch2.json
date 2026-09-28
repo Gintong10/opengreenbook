@@ -62,15 +62,23 @@
    "name": "Screwy pirates",
    "kind": "problem",
    "page": 3,
-   "prompt": "Five perfectly rational pirates, labeled 1 (most junior) to 5 (most senior), must split 100 gold coins. The most senior pirate still alive proposes a split and everyone votes, proposer included. If at least half vote yes, the split is final; otherwise the proposer is thrown to the sharks and the next most senior pirate proposes. Each pirate wants, in order: to survive, to get as much gold as possible, and (all else equal) to see fewer pirates left. How are the coins divided?",
-   "answer": "Pirate 5 keeps 98; pirates 3 and 1 get 1 coin each; pirates 4 and 2 get nothing",
+   "prompt": "Five perfectly rational pirates, labeled 1 (most junior) to 5 (most senior), must split 100 gold coins. The most senior pirate still alive proposes a split and everyone votes, proposer included. If at least half vote yes, the split is final; otherwise the proposer is thrown to the sharks and the next most senior pirate proposes. Each pirate wants, in order: to survive, to get as much gold as possible, and (all else equal) to see fewer pirates left. How many coins does pirate 5 keep for himself?",
+   "answer": "98 coins — pirates 3 and 1 get 1 coin each; pirates 4 and 2 get nothing",
    "explanation": "Work backward from small groups:\n- 2 pirates: pirate 2's own vote is already 50%, so he takes all 100.\n- 3 pirates: pirate 1 gets 0 if it falls to 2 pirates, so 1 coin buys his vote: (3: 99, 1: 1).\n- 4 pirates: needs 2 votes; pirate 2 gets 0 in the 3-pirate outcome, so 1 coin buys him: (4: 99, 2: 1).\n- 5 pirates: needs 3 votes; pirates 3 and 1 get 0 in the 4-pirate outcome, so 1 coin each buys both: (5: 98, 3: 1, 1: 1).\nOffering 0 doesn't work: a pirate who would get 0 either way votes no because he prefers fewer pirates.",
    "distractors": [
-    "Pirate 5 keeps 98; pirates 4 and 2 get 1 coin each; pirates 3 and 1 get nothing",
-    "Pirate 5 keeps 99; pirate 1 gets 1 coin; pirates 4, 3 and 2 get nothing",
-    "Pirate 5 keeps 97; pirates 3, 2 and 1 get 1 coin each; pirate 4 gets nothing"
+    "99 coins — pirate 1 gets the last coin; pirates 4, 3 and 2 get nothing",
+    "97 coins — pirates 3, 2 and 1 get 1 coin each; pirate 4 gets nothing",
+    "100 coins — pirates who get nothing either way will still vote yes"
    ],
-   "hint": "Solve the 2-pirate game first, then add one pirate at a time."
+   "hint": "Solve the 2-pirate game first, then add one pirate at a time.",
+   "check": {
+    "type": "number",
+    "value": 98.0,
+    "examples": [
+     "98"
+    ],
+    "unit": "coins"
+   }
   },
   {
    "id": "2-screwy-pirates-general",
@@ -102,7 +110,18 @@
     "Yes — it is eaten, then each new sheep is eaten, in a chain of 100",
     "Yes — with 100 tigers, one of them can always eat it safely"
    ],
-   "hint": "What happens with just 1 tiger? With 2?"
+   "hint": "What happens with just 1 tiger? With 2?",
+   "check": {
+    "type": "text",
+    "accept": [
+     "no",
+     "not eaten",
+     "never",
+     "will not",
+     "won t",
+     "sheep survives"
+    ]
+   }
   },
   {
    "id": "2-tiger-and-sheep-general",
@@ -118,7 +137,19 @@
     "Only when $n = 1$",
     "Always, for every $n \\ge 1$"
    ],
-   "hint": "Relate the $n$-tiger case to the $(n-1)$-tiger case."
+   "hint": "Relate the $n$-tiger case to the $(n-1)$-tiger case.",
+   "check": {
+    "type": "text",
+    "accept": [
+     "odd",
+     "odd n",
+     "n odd",
+     "n is odd",
+     "when n is odd",
+     "odd numbers",
+     "1 3 5"
+    ]
+   }
   },
   {
    "id": "2-river-crossing",
@@ -134,7 +165,15 @@
     "18 minutes",
     "16 minutes"
    ],
-   "hint": "Which two people should share a crossing?"
+   "hint": "Which two people should share a crossing?",
+   "check": {
+    "type": "number",
+    "value": 17.0,
+    "examples": [
+     "17"
+    ],
+    "unit": "minutes"
+   }
   },
   {
    "id": "2-birthday-problem",
@@ -150,7 +189,26 @@
     "June 7",
     "September 5"
    ],
-   "hint": "Your first statement tells C something about the month. Which months?"
+   "hint": "Your first statement tells C something about the month. Which months?",
+   "check": {
+    "type": "text",
+    "accept": [
+     "september 1",
+     "sep 1",
+     "sept 1",
+     "september 1st",
+     "sep 1st",
+     "sept 1st",
+     "september first",
+     "1 september",
+     "1st september",
+     "1 sep",
+     "1 sept",
+     "9 1",
+     "sep 01",
+     "september 01"
+    ]
+   }
   },
   {
    "id": "2-card-game",
@@ -158,15 +216,23 @@
    "name": "Card game",
    "kind": "problem",
    "page": 6,
-   "prompt": "A casino game uses a standard 52-card deck. Cards are turned over two at a time: two blacks go to the dealer's pile, two reds go to your pile, and a red-black pair is discarded. After all 52 cards are used, you win 100 dollars if your pile has more cards than the dealer's; a tie or a loss pays nothing. How much should you be willing to pay to play?",
-   "answer": "Nothing — the two piles always end up equal, so you can never win",
+   "prompt": "A casino game uses a standard 52-card deck. Cards are turned over two at a time: two blacks go to the dealer's pile, two reds go to your pile, and a red-black pair is discarded. After all 52 cards are used, you win 100 dollars if your pile has more cards than the dealer's; a tie or a loss pays nothing. What is the most, in dollars, you should be willing to pay to play?",
+   "answer": "0 dollars — the two piles always end up equal, so you can never win",
    "explanation": "Every discarded pair has exactly one red and one black card, so the discards remove the same number of each color. The deck starts with 26 of each, so the reds left for your pile always equal the blacks left for the dealer's pile, whatever the order of the cards. Every game is a tie, ties pay nothing, and the game is worth zero.",
    "distractors": [
     "50 dollars — by symmetry you win half the time",
-    "Just under 50 dollars, since ties pay nothing",
-    "25 dollars — you win roughly one game in four"
+    "25 dollars — you win roughly one game in four",
+    "Just under 50 dollars, since ties pay nothing"
    ],
-   "hint": "What do you know about the colors in the discard pile?"
+   "hint": "What do you know about the colors in the discard pile?",
+   "check": {
+    "type": "number",
+    "value": 0.0,
+    "examples": [
+     "0"
+    ],
+    "unit": "dollars"
+   }
   },
   {
    "id": "2-burning-ropes",
@@ -246,7 +312,16 @@
     "25",
     "11"
    ],
-   "hint": "Which prime factor of 10 is scarcer?"
+   "hint": "Which prime factor of 10 is scarcer?",
+   "check": {
+    "type": "number",
+    "value": 24.0,
+    "examples": [
+     "24",
+     "20+4"
+    ],
+    "unit": "zeros"
+   }
   },
   {
    "id": "2-horse-race",
@@ -262,7 +337,15 @@
     "8 races",
     "10 races"
    ],
-   "hint": "After racing the group winners, which horses can still make the top 3?"
+   "hint": "After racing the group winners, which horses can still make the top 3?",
+   "check": {
+    "type": "number",
+    "value": 7.0,
+    "examples": [
+     "7"
+    ],
+    "unit": "races"
+   }
   },
   {
    "id": "2-infinite-sequence",
@@ -278,7 +361,16 @@
     "$x = e^{1/e}$",
     "$x = 2^{1/4}$"
    ],
-   "hint": "Removing one $x$ from an infinite tower leaves the same tower."
+   "hint": "Removing one $x$ from an infinite tower leaves the same tower.",
+   "check": {
+    "type": "number",
+    "value": 1.4142135623730951,
+    "examples": [
+     "sqrt(2)",
+     "2^(1/2)",
+     "1.414"
+    ]
+   }
   },
   {
    "id": "2-mutilated-chessboard",
@@ -294,7 +386,17 @@
     "Yes — tile row by row and pair up the leftover squares at the ends",
     "Yes, but only if some dominoes are placed vertically"
    ],
-   "hint": "What does a single domino always cover on a checkerboard?"
+   "hint": "What does a single domino always cover on a checkerboard?",
+   "check": {
+    "type": "text",
+    "accept": [
+     "no",
+     "cannot",
+     "can t",
+     "impossible",
+     "not possible"
+    ]
+   }
   },
   {
    "id": "2-box-packing",
@@ -310,7 +412,17 @@
     "Yes — 54 bricks fit in the box, so 53 certainly do",
     "No — at most 48 bricks fit, one layer of 36 plus 12 more"
    ],
-   "hint": "Generalize the chessboard-coloring trick to 3D, using $2\\times2\\times2$ blocks."
+   "hint": "Generalize the chessboard-coloring trick to 3D, using $2\\times2\\times2$ blocks.",
+   "check": {
+    "type": "text",
+    "accept": [
+     "no",
+     "cannot",
+     "can t",
+     "impossible",
+     "not possible"
+    ]
+   }
   },
   {
    "id": "2-calendar-cubes",
@@ -374,7 +486,13 @@
     "Either color, each with probability 1/2",
     "It depends on the order of the draws"
    ],
-   "hint": "How can the number of red balls change in one step?"
+   "hint": "How can the number of red balls change in one step?",
+   "check": {
+    "type": "text",
+    "accept": [
+     "blue"
+    ]
+   }
   },
   {
    "id": "2-last-ball-odd",
@@ -390,7 +508,13 @@
     "Either color, each with probability 1/2",
     "Blue with probability 20/33"
    ],
-   "hint": "Look at the parity of the red count."
+   "hint": "Look at the parity of the red count.",
+   "check": {
+    "type": "text",
+    "accept": [
+     "red"
+    ]
+   }
   },
   {
    "id": "2-light-switches",
@@ -399,14 +523,22 @@
    "kind": "problem",
    "page": 14,
    "prompt": "Outside a closed room are four switches, all off; exactly one controls the single light bulb inside. You can flip switches as often as you like while outside. How many times do you need to enter the room to determine which switch controls the bulb?",
-   "answer": "Once — read two things off the bulb: whether it's on and whether it's hot",
+   "answer": "1 entry — check both whether the bulb is on and whether it's hot",
    "explanation": "On/off alone is one bit, enough for only 2 switches. A bulb also heats up when it has been on for a while, giving a second bit, and $2 \\times 2 = 4$ combinations cover 4 switches.\n- Turn on switches 1 and 2 and wait several minutes.\n- Turn off switch 2, turn on switch 3, and go in immediately.\n- On and hot: switch 1. Off and hot: switch 2. On and cold: switch 3. Off and cold: switch 4.",
    "distractors": [
-    "Twice — each visit only shows on/off, one bit per visit",
-    "Three times — test one switch per visit, the last by elimination",
+    "2 entries — each visit only shows on/off, one bit per visit",
+    "3 entries — test one switch per visit, the last by elimination",
     "It can't be determined with certainty"
    ],
-   "hint": "A light bulb gives off more than light."
+   "hint": "A light bulb gives off more than light.",
+   "check": {
+    "type": "number",
+    "value": 1.0,
+    "examples": [
+     "1"
+    ],
+    "unit": "entries"
+   }
   },
   {
    "id": "2-quant-salary",
@@ -446,15 +578,26 @@
    "name": "Mislabeled bags",
    "kind": "problem",
    "page": 16,
-   "prompt": "Three bags hold only apples, only oranges, and a mix of apples and oranges. They're labeled \"apple\", \"orange\" and \"mix\", but every label is wrong. What is the smallest number of fruits you must draw to identify all three bags, and from which bag?",
-   "answer": "One fruit, drawn from the bag labeled \"mix\"",
+   "prompt": "Three bags hold only apples, only oranges, and a mix of apples and oranges. They're labeled \"apple\", \"orange\" and \"mix\", but every label is wrong. You may draw a single fruit from one bag and look at it. Which bag, named by its label, should you draw from so that you can identify all three bags?",
+   "answer": "The bag labeled \"mix\" — one fruit from it identifies all three bags",
    "explanation": "The bag labeled \"mix\" can't be the mix, so it is pure, and one fruit tells you exactly what it holds.\n- Say you draw an orange: that bag is the orange bag.\n- The bag labeled \"apple\" can't be apples (wrong label) and can't be oranges (already found), so it is the mix.\n- The bag labeled \"orange\" therefore holds apples.\nDrawing an apple works the same way. Drawing from the \"apple\" or \"orange\" bag can fail, since one fruit can't tell a pure bag from the mix.",
    "distractors": [
-    "One fruit, drawn from the bag labeled \"apple\"",
-    "Two fruits, one each from the \"apple\" and \"orange\" bags",
-    "Three fruits, one from each bag"
+    "The bag labeled \"apple\"",
+    "The bag labeled \"orange\"",
+    "None — one fruit is never enough; you need at least two draws"
    ],
-   "hint": "Which label tells you the most when you know it's wrong?"
+   "hint": "Which label tells you the most when you know it's wrong?",
+   "check": {
+    "type": "text",
+    "accept": [
+     "mix",
+     "mixed",
+     "mixture",
+     "labeled mix",
+     "mix bag",
+     "mixed bag"
+    ]
+   }
   },
   {
    "id": "2-wise-men",
@@ -558,7 +701,7 @@
    "name": "Glass balls",
    "kind": "problem",
    "page": 19,
-   "prompt": "You have two identical glass balls in a 100-story building. A ball dropped from floor $X$ or higher always breaks; from any lower floor it survives and can be reused. What strategy finds $X$ with the fewest drops in the worst case, and how many drops is that?",
+   "prompt": "You have two identical glass balls in a 100-story building. A ball dropped from floor $X$ or higher always breaks; from any lower floor it survives and can be reused. Using the best strategy, how many drops do you need in the worst case to find $X$?",
    "answer": "14 drops: drop ball 1 at floors 14, 27, 39, 50, … (gaps shrink by 1), then scan with ball 2",
    "explanation": "If the worst case allows $N$ drops, ball 1's first drop can be at most floor $N$: if it breaks, ball 2 must test floors $1, \\dots, N-1$ one at a time. If it survives, only $N - 1$ drops remain, so the next jump can be at most $N - 1$ floors, then $N - 2$, and so on.\n- Two balls and $N$ drops therefore cover $N + (N-1) + \\dots + 1 = N(N+1)/2$ floors.\n- The smallest $N$ with $N(N+1)/2 \\ge 100$ is 14 ($13 \\cdot 14/2 = 91$, $14 \\cdot 15/2 = 105$).\nSo drop ball 1 at 14, 27, 39, 50, 60, 69, 77, 84, 90, 95, 99 until it breaks, then walk ball 2 up from the last safe floor.",
    "distractors": [
@@ -566,7 +709,15 @@
     "7 drops: binary-search the floors with ball 1, then finish with ball 2",
     "13 drops: drop ball 1 at floors 13, 25, 36, … (gaps shrink by 1), then scan with ball 2"
    ],
-   "hint": "If the first ball breaks on drop $k$, how many drops does the second ball have left?"
+   "hint": "If the first ball breaks on drop $k$, how many drops does the second ball have left?",
+   "check": {
+    "type": "number",
+    "value": 14.0,
+    "examples": [
+     "14"
+    ],
+    "unit": "drops"
+   }
   },
   {
    "id": "2-pigeonhole-principle",
@@ -598,7 +749,15 @@
     "5",
     "24"
    ],
-   "hint": "How many colors are there?"
+   "hint": "How many colors are there?",
+   "check": {
+    "type": "number",
+    "value": 4.0,
+    "examples": [
+     "4"
+    ],
+    "unit": "socks"
+   }
   },
   {
    "id": "2-handshakes",
@@ -614,7 +773,14 @@
     "Only if the total number of handshakes is even",
     "Not necessarily — it depends on who had met before the party"
    ],
-   "hint": "What range of values can each person's handshake count take?"
+   "hint": "What range of values can each person's handshake count take?",
+   "check": {
+    "type": "text",
+    "accept": [
+     "yes",
+     "yes always"
+    ]
+   }
   },
   {
    "id": "2-have-we-met-before",
@@ -646,7 +812,14 @@
     "Yes — split into 49 squares of side 1/7; one holds at least 2 ants, then add one more",
     "Yes — split into 16 squares of side 1/4; one has at least 4 ants, and the glass covers it"
    ],
-   "hint": "How many regions do you need so that 51 ants force 3 into one region?"
+   "hint": "How many regions do you need so that 51 ants force 3 into one region?",
+   "check": {
+    "type": "text",
+    "accept": [
+     "yes",
+     "yes always"
+    ]
+   }
   },
   {
    "id": "2-counterfeit-coins-2-two-bags",
@@ -662,7 +835,15 @@
     "2",
     "9"
    ],
-   "hint": "Count the combinations (pigeons) and the possible totals (holes)."
+   "hint": "Count the combinations (pigeons) and the possible totals (holes).",
+   "check": {
+    "type": "number",
+    "value": 3.0,
+    "examples": [
+     "3"
+    ],
+    "unit": "coins"
+   }
   },
   {
    "id": "2-counterfeit-coins-2",
@@ -670,15 +851,25 @@
    "name": "Counterfeit coins II",
    "kind": "problem",
    "page": 22,
-   "prompt": "There are 5 bags of 100 coins. Within a bag all coins weigh the same, either 9 g, 10 g or 11 g, but each bag's type is unknown. With a digital scale that shows the exact weight, how many weighings do you need to determine every bag's type, and how?",
-   "answer": "One: weigh 1, 3, 9, 27 and 81 coins from bags 1–5 together",
-   "explanation": "Subtract 10 g per coin, so bag $i$'s coins each deviate by $c_i \\in \\{-1, 0, 1\\}$. Taking $3^{i-1}$ coins from bag $i$ makes the total deviation\n$$D = c_1 + 3c_2 + 9c_3 + 27c_4 + 81c_5,$$\nwhich is a number written in balanced ternary. Each of the $3^5 = 243$ combinations gives a different $D$ between $-121$ and $121$, so a single reading decodes all five bags. Powers of 2 fail because deviations can be negative: with 1 and 2 coins, $(c_1, c_2) = (1, -1)$ and $(-1, 0)$ both give $-1$. The 100-coin bags are just big enough to supply 81 coins.",
+   "prompt": "There are 5 bags of 100 coins. Within a bag all coins weigh the same, either 9 g, 10 g or 11 g, but each bag's type is unknown. You get one reading from a digital scale that shows the exact weight, and may put any number of coins from each bag on it together. What is the smallest total number of coins on the scale that lets you determine every bag's type?",
+   "answer": "121 coins — 1, 3, 9, 27 and 81 from bags 1–5, read as a balanced-ternary number",
+   "explanation": "Subtract 10 g per coin, so bag $i$'s coins each deviate by $c_i \\in \\{-1, 0, 1\\}$. Taking $3^{i-1}$ coins from bag $i$ makes the total deviation\n$$D = c_1 + 3c_2 + 9c_3 + 27c_4 + 81c_5,$$\nwhich is a number written in balanced ternary. Each of the $3^5 = 243$ combinations gives a different $D$ between $-121$ and $121$, so one weighing of $1 + 3 + 9 + 27 + 81 = 121$ coins decodes all five bags.\n- Fewer coins can't work: with $S$ coins on the scale, $D$ is an integer from $-S$ to $S$, only $2S + 1$ possible readings. Telling 243 combinations apart needs $2S + 1 \\ge 243$, so $S \\ge 121$.\n- Powers of 2 fail because deviations can be negative: with 1 and 2 coins, $(c_1, c_2) = (1, -1)$ and $(-1, 0)$ both give $-1$.\nThe 100-coin bags are just big enough to supply 81 coins.",
    "distractors": [
-    "Five: weigh one coin from each bag separately",
-    "One: weigh 1, 2, 4, 8 and 16 coins from bags 1–5 together",
-    "Two: one weighing for bags 1–3, then one for bags 4–5"
+    "31 coins — 1, 2, 4, 8 and 16 from bags 1–5, read as a binary number",
+    "243 coins — you need one coin per possible type combination, $3^5$",
+    "15 coins — 1, 2, 3, 4 and 5 from bags 1–5"
    ],
-   "hint": "Start with two bags: how many coins from bag 2 per coin from bag 1?"
+   "hint": "Start with two bags: how many coins from bag 2 per coin from bag 1?",
+   "check": {
+    "type": "number",
+    "value": 121.0,
+    "examples": [
+     "121",
+     "1+3+9+27+81",
+     "(3^5-1)/2"
+    ],
+    "unit": "coins"
+   }
   },
   {
    "id": "2-modular-arithmetic",
@@ -710,7 +901,15 @@
     "100 — the first prisoner can also deduce his own color",
     "98 — the first two prisoners must sacrifice themselves to send signals"
    ],
-   "hint": "The first speaker can't help himself, but he can help everyone else."
+   "hint": "The first speaker can't help himself, but he can help everyone else.",
+   "check": {
+    "type": "number",
+    "value": 99.0,
+    "examples": [
+     "99"
+    ],
+    "unit": "prisoners"
+   }
   },
   {
    "id": "2-prisoner-problem-three-colors",
@@ -718,15 +917,23 @@
    "name": "Prisoner problem (three colors)",
    "kind": "problem",
    "page": 24,
-   "prompt": "Same setup as the 100-prisoner hat game (called in random order, every guess heard by all), but now each hat is red, green or blue. How many prisoners can be guaranteed to survive, and what should the first prisoner announce?",
+   "prompt": "Same setup as the 100-prisoner hat game (called in random order, every guess heard by all), but now each hat is red, green or blue. With the best strategy agreed in advance, how many prisoners can be guaranteed to survive?",
    "answer": "99 — code colors 0, 1, 2; the first announces the color equal to (sum of codes he sees) mod 3",
    "explanation": "Code red = 0, green = 1, blue = 2. The first prisoner adds up the codes of the other 99 hats and names the color whose code equals that sum mod 3 (his own chance is 1/3).\n- Any other prisoner adds up the 98 hats he can see (excluding the first prisoner and himself) to get $s$.\n- His own code $c$ must satisfy $(s + c) \\bmod 3 =$ the announced value, and since $s$, $s+1$, $s+2$ have distinct remainders, exactly one $c$ works.\nExample: $s = 103 \\equiv 1$ and the announcement is blue (2), so $c = 1$: green. The same trick works mod $k$ for $k$ colors.",
    "distractors": [
     "66 — only two-thirds of the prisoners can decode a three-color signal",
-    "99 — the first announces whichever color he sees most often",
-    "98 — the first two prisoners must each announce one bit of information"
+    "98 — the first two prisoners must each announce one bit of information",
+    "50 — one spoken color can only help half of the others with three colors"
    ],
-   "hint": "Replace \"odd or even\" with a remainder mod 3."
+   "hint": "Replace \"odd or even\" with a remainder mod 3.",
+   "check": {
+    "type": "number",
+    "value": 99.0,
+    "examples": [
+     "99"
+    ],
+    "unit": "prisoners"
+   }
   },
   {
    "id": "2-division-by-9",
@@ -774,7 +981,17 @@
     "Yes — the total of 45 is divisible by 3, so one color can absorb the rest",
     "No — the total number of chameleons is odd, so they can't all match"
    ],
-   "hint": "Consider the counts modulo 3."
+   "hint": "Consider the counts modulo 3.",
+   "check": {
+    "type": "text",
+    "accept": [
+     "no",
+     "cannot",
+     "can t",
+     "impossible",
+     "not possible"
+    ]
+   }
   },
   {
    "id": "2-math-induction",
@@ -798,15 +1015,25 @@
    "name": "Coin split problem",
    "kind": "problem",
    "page": 27,
-   "prompt": "Split 1000 coins into two piles of sizes $x$ and $y$ and record $xy$. Keep splitting any pile with more than one coin, each time adding the product of the two new pile sizes to your running total, until every pile has 1 coin. What is the final total, and does it depend on how you split?",
-   "answer": "Always $\\binom{1000}{2} = 499{,}500$, regardless of how you split",
+   "prompt": "Split 1000 coins into two piles of sizes $x$ and $y$ and record $xy$. Keep splitting any pile with more than one coin, each time adding the product of the two new pile sizes to your running total, until every pile has 1 coin. What is the final total?",
+   "answer": "499,500 — always $\\binom{1000}{2}$, no matter how you split",
    "explanation": "Small cases: $f(2) = 1$, $f(3) = 2 + 1 = 3$, $f(4) = 6$ (via 2+2 or 3+1), which suggests $f(n) = n(n-1)/2$. Prove it by strong induction: splitting $n$ into $x$ and $n - x$ gives\n$$f(n) = x(n-x) + \\frac{x(x-1)}{2} + \\frac{(n-x)(n-x-1)}{2} = \\frac{n(n-1)}{2}.$$\nSlicker view: a split into piles of sizes $x$ and $y$ separates exactly $xy$ pairs of coins, and every one of the $\\binom{n}{2}$ pairs is separated exactly once. For $n = 1000$ the total is 499,500.",
    "distractors": [
-    "Always $1000^2/4 = 250{,}000$, regardless of how you split",
-    "Always $\\binom{1001}{2} = 500{,}500$, regardless of how you split",
+    "250,000 — always $1000^2/4$, no matter how you split",
+    "500,500 — always $\\binom{1001}{2}$, no matter how you split",
     "It depends on the splits; halving every pile gives the maximum"
    ],
-   "hint": "Compute the total for 2, 3 and 4 coins."
+   "hint": "Compute the total for 2, 3 and 4 coins.",
+   "check": {
+    "type": "number",
+    "value": 499500.0,
+    "examples": [
+     "499500",
+     "499,500",
+     "C(1000,2)",
+     "1000*999/2"
+    ]
+   }
   },
   {
    "id": "2-chocolate-bar",
@@ -822,7 +1049,16 @@
     "24",
     "48"
    ],
-   "hint": "How does one break change the number of pieces?"
+   "hint": "How does one break change the number of pieces?",
+   "check": {
+    "type": "number",
+    "value": 47.0,
+    "examples": [
+     "47",
+     "48-1"
+    ],
+    "unit": "breaks"
+   }
   },
   {
    "id": "2-race-track",
@@ -838,7 +1074,14 @@
     "Only if some single can holds at least half of the total gas",
     "Only if the cans are equally spaced around the track"
    ],
-   "hint": "Solve $N = 1$ and $N = 2$ first, then try to merge two cans."
+   "hint": "Solve $N = 1$ and $N = 2$ first, then try to merge two cans.",
+   "check": {
+    "type": "text",
+    "accept": [
+     "yes",
+     "yes always"
+    ]
+   }
   },
   {
    "id": "2-race-track-start",
@@ -902,7 +1145,15 @@
     "Yes — everyone guesses the color they see most often on the others",
     "Yes — everyone guesses a color missing from the six hats they can see"
    ],
-   "hint": "$\\left(\\sum x_i\\right) \\bmod 7$ has 7 possible values, and there are 7 prisoners."
+   "hint": "$\\left(\\sum x_i\\right) \\bmod 7$ has 7 possible values, and there are 7 prisoners.",
+   "check": {
+    "type": "text",
+    "accept": [
+     "yes",
+     "yes there is",
+     "there is"
+    ]
+   }
   }
  ]
 }

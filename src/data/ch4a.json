@@ -92,7 +92,15 @@
     "$\\frac{1}{2}+\\frac{1}{2^{n+1}}$",
     "$\\frac{2}{3}$"
    ],
-   "hint": "Remove A's extra coin first and use symmetry."
+   "hint": "Remove A's extra coin first and use symmetry.",
+   "check": {
+    "type": "number",
+    "value": 0.5,
+    "examples": [
+     "1/2",
+     "0.5"
+    ]
+   }
   },
   {
    "id": "4-card-game-4-1",
@@ -108,7 +116,15 @@
     "$\\frac{6}{13}$",
     "$\\frac{9}{17}$"
    ],
-   "hint": "By symmetry, only the tie probability needs computing."
+   "hint": "By symmetry, only the tie probability needs computing.",
+   "check": {
+    "type": "number",
+    "value": 0.47058823529411764,
+    "examples": [
+     "8/17",
+     "0.4706"
+    ]
+   }
   },
   {
    "id": "4-drunk-passenger",
@@ -124,7 +140,15 @@
     "$\\frac{99}{100}$",
     "$\\frac{1}{e}$"
    ],
-   "hint": "Focus only on seats #1 and #100: which gets taken first?"
+   "hint": "Focus only on seats #1 and #100: which gets taken first?",
+   "check": {
+    "type": "number",
+    "value": 0.5,
+    "examples": [
+     "1/2",
+     "0.5"
+    ]
+   }
   },
   {
    "id": "4-n-points-on-circle",
@@ -155,7 +179,15 @@
     "$\\frac{1}{4}$",
     "$\\frac{1}{2}$",
     "$\\frac{3}{8}$"
-   ]
+   ],
+   "check": {
+    "type": "number",
+    "value": 0.75,
+    "examples": [
+     "3/4",
+     "0.75"
+    ]
+   }
   },
   {
    "id": "4-n-points-on-arc",
@@ -276,7 +308,16 @@
     "$52\\cdot51\\cdot50\\cdot49\\cdot48=311{,}875{,}200$",
     "$52^5=380{,}204{,}032$",
     "$\\binom{52}{4}=270{,}725$"
-   ]
+   ],
+   "check": {
+    "type": "number",
+    "value": 2598960.0,
+    "examples": [
+     "C(52,5)",
+     "2,598,960"
+    ],
+    "unit": "hands"
+   }
   },
   {
    "id": "4-poker-four-of-a-kind",
@@ -284,15 +325,24 @@
    "name": "Poker hands (four of a kind)",
    "kind": "problem",
    "page": 66,
-   "prompt": "How many 5-card hands contain four cards of the same rank (four of a kind), and what is the probability of being dealt one? (There are $\\binom{52}{5}=2{,}598{,}960$ hands in total.)",
-   "answer": "$13\\times48=624$ hands, probability $\\frac{1}{4165}\\approx0.024\\%$",
+   "prompt": "A poker hand is 5 cards dealt from a standard 52-card deck. How many different 5-card hands contain four cards of the same rank (four of a kind)?",
+   "answer": "624 hands ($13\\times48$)",
    "explanation": "Choose the rank of the four matching cards (13 ways); all four suits of that rank are then forced. The fifth card can be any of the other $52-4=48$ cards.\n- Count: $13\\times48=624$.\n- Probability: $\\frac{624}{2{,}598{,}960}=\\frac{1}{4165}\\approx0.024\\%$.\nThere's no suit-choice factor for the four matching cards, since all four suits are used.",
    "distractors": [
-    "$13\\times12=156$ hands, probability $\\approx0.006\\%$",
-    "$13\\times4\\times48=2{,}496$ hands, probability $\\approx0.096\\%$",
-    "$13\\times\\binom{48}{2}=14{,}664$ hands, probability $\\approx0.56\\%$"
+    "156 hands ($13\\times12$)",
+    "2,496 hands ($13\\times4\\times48$)",
+    "14,664 hands ($13\\times\\binom{48}{2}$)"
    ],
-   "hint": "Once the rank is fixed, how many choices remain for the odd card?"
+   "hint": "Once the rank is fixed, how many choices remain for the odd card?",
+   "check": {
+    "type": "number",
+    "value": 624.0,
+    "examples": [
+     "624",
+     "13*48"
+    ],
+    "unit": "hands"
+   }
   },
   {
    "id": "4-poker-full-house",
@@ -300,15 +350,24 @@
    "name": "Poker hands (full house)",
    "kind": "problem",
    "page": 66,
-   "prompt": "A full house is three cards of one rank plus two cards of a different rank. How many 5-card hands are full houses, and what is the probability of being dealt one? (Total hands: 2,598,960.)",
-   "answer": "$13\\binom43\\cdot12\\binom42=3{,}744$ hands, probability $\\approx0.144\\%$",
+   "prompt": "A full house is three cards of one rank plus two cards of a different rank. How many 5-card hands from a standard 52-card deck are full houses?",
+   "answer": "3,744 hands ($13\\binom43\\cdot12\\binom42$)",
    "explanation": "Build the hand step by step:\n- rank of the triple: 13 choices; its suits: $\\binom43=4$;\n- rank of the pair (a different rank): 12 choices; its suits: $\\binom42=6$.\nTotal $13\\cdot4\\cdot12\\cdot6=3{,}744$, so the probability is $\\frac{3744}{2{,}598{,}960}=\\frac{6}{4165}\\approx0.144\\%$.\nThe two ranks are chosen in order (13 then 12), not as $\\binom{13}{2}$, because the triple and the pair play different roles: three kings with two sevens differs from three sevens with two kings.",
    "distractors": [
-    "$\\binom{13}{2}\\binom43\\binom42=1{,}872$ hands, probability $\\approx0.072\\%$",
-    "$13\\cdot4\\cdot12\\cdot4=2{,}496$ hands, probability $\\approx0.096\\%$",
-    "$13\\binom43\\cdot12\\binom42\\cdot2=7{,}488$ hands, probability $\\approx0.288\\%$"
+    "1,872 hands ($\\binom{13}{2}\\binom43\\binom42$)",
+    "2,496 hands ($13\\cdot4\\cdot12\\cdot4$)",
+    "7,488 hands ($2\\cdot13\\binom43\\cdot12\\binom42$)"
    ],
-   "hint": "Are the triple's rank and the pair's rank interchangeable?"
+   "hint": "Are the triple's rank and the pair's rank interchangeable?",
+   "check": {
+    "type": "number",
+    "value": 3744.0,
+    "examples": [
+     "3744",
+     "13*C(4,3)*12*C(4,2)"
+    ],
+    "unit": "hands"
+   }
   },
   {
    "id": "4-poker-two-pairs",
@@ -316,15 +375,24 @@
    "name": "Poker hands (two pairs)",
    "kind": "problem",
    "page": 66,
-   "prompt": "How many 5-card hands contain exactly two pairs (two cards of one rank, two of a second rank, and a fifth card of a third rank), and what is the probability? (Total hands: 2,598,960.)",
-   "answer": "$\\binom{13}{2}\\binom42^2\\cdot44=123{,}552$ hands, probability $\\approx4.75\\%$",
+   "prompt": "How many 5-card hands from a standard 52-card deck contain exactly two pairs (two cards of one rank, two of a second rank, and a fifth card of a third rank)?",
+   "answer": "123,552 hands ($\\binom{13}{2}\\binom42^2\\cdot44$)",
    "explanation": "- The two pair ranks: $\\binom{13}{2}=78$ (unordered, because the two pairs play symmetric roles).\n- Suits within each pair: $\\binom42\\cdot\\binom42=36$.\n- The fifth card must avoid both pair ranks: $52-8=44$ choices.\nTotal $78\\cdot36\\cdot44=123{,}552$, a probability of about $4.75\\%$.\nCommon slips: ordering the pair ranks ($13\\cdot12$) double counts every hand, and allowing 48 choices for the fifth card lets full houses sneak in.",
    "distractors": [
-    "$13\\cdot12\\binom42^2\\cdot44=247{,}104$ hands, probability $\\approx9.51\\%$",
-    "$\\binom{13}{2}\\binom42^2\\cdot48=134{,}784$ hands, probability $\\approx5.19\\%$",
-    "$\\binom{13}{2}\\binom42^2\\cdot11=30{,}888$ hands, probability $\\approx1.19\\%$"
+    "247,104 hands ($13\\cdot12\\binom42^2\\cdot44$)",
+    "134,784 hands ($\\binom{13}{2}\\binom42^2\\cdot48$)",
+    "30,888 hands ($\\binom{13}{2}\\binom42^2\\cdot11$)"
    ],
-   "hint": "Unlike a full house, the two pairs are interchangeable."
+   "hint": "Unlike a full house, the two pairs are interchangeable.",
+   "check": {
+    "type": "number",
+    "value": 123552.0,
+    "examples": [
+     "123,552",
+     "C(13,2)*C(4,2)^2*44"
+    ],
+    "unit": "hands"
+   }
   },
   {
    "id": "4-hopping-rabbit",
@@ -355,7 +423,15 @@
     "55",
     "144",
     "512"
-   ]
+   ],
+   "check": {
+    "type": "number",
+    "value": 89.0,
+    "examples": [
+     "89"
+    ],
+    "unit": "ways"
+   }
   },
   {
    "id": "4-screwy-pirates-2-locks",
@@ -371,7 +447,16 @@
     "$\\binom{10}{5}=252$ locks",
     "$2^{11}-1=2{,}047$ locks"
    ],
-   "hint": "Every group of 5 pirates must be blocked by a lock that all the other 6 can open."
+   "hint": "Every group of 5 pirates must be blocked by a lock that all the other 6 can open.",
+   "check": {
+    "type": "number",
+    "value": 462.0,
+    "examples": [
+     "462",
+     "C(11,5)"
+    ],
+    "unit": "locks"
+   }
   },
   {
    "id": "4-screwy-pirates-2-keys",
@@ -387,7 +472,16 @@
     "$\\binom{10}{6}=210$ keys",
     "6 keys"
    ],
-   "hint": "Count the 5-groups that exclude a given pirate."
+   "hint": "Count the 5-groups that exclude a given pirate.",
+   "check": {
+    "type": "number",
+    "value": 252.0,
+    "examples": [
+     "252",
+     "C(10,5)"
+    ],
+    "unit": "keys"
+   }
   },
   {
    "id": "4-chess-tournament",
@@ -419,7 +513,16 @@
     "$\\left(\\frac{4}{5}\\right)^5$",
     "$\\frac{3}{8}$"
    ],
-   "hint": "Work with the complement: at least one letter is correct."
+   "hint": "Work with the complement: at least one letter is correct.",
+   "check": {
+    "type": "number",
+    "value": 0.36666666666666664,
+    "examples": [
+     "11/30",
+     "0.3667",
+     "44/120"
+    ]
+   }
   },
   {
    "id": "4-application-letters-n",
@@ -450,7 +553,15 @@
     "253",
     "57"
    ],
-   "hint": "Compute the probability that all birthdays are different."
+   "hint": "Compute the probability that all birthdays are different.",
+   "check": {
+    "type": "number",
+    "value": 23.0,
+    "examples": [
+     "23"
+    ],
+    "unit": "people"
+   }
   },
   {
    "id": "4-birthday-problem-23",
@@ -465,7 +576,15 @@
     "$\\approx 6.3\\%$",
     "$\\approx 69.3\\%$",
     "$\\approx 99.0\\%$"
-   ]
+   ],
+   "check": {
+    "type": "number",
+    "value": 0.5072972343239854,
+    "examples": [
+     "0.5073",
+     "50.7%"
+    ]
+   }
   },
   {
    "id": "4-100th-digit",
@@ -481,7 +600,14 @@
     "1",
     "4"
    ],
-   "hint": "What kind of number is $(1+\\sqrt2)^{n}+(1-\\sqrt2)^{n}$?"
+   "hint": "What kind of number is $(1+\\sqrt2)^{n}+(1-\\sqrt2)^{n}$?",
+   "check": {
+    "type": "number",
+    "value": 9.0,
+    "examples": [
+     "9"
+    ]
+   }
   },
   {
    "id": "4-cubic-of-integer",
@@ -497,7 +623,16 @@
     "$2\\%$ (the $x$ ending in 71 or 91)",
     "$0.1\\%$ (the $x$ ending in 711)"
    ],
-   "hint": "Only the last two digits of $x$ matter."
+   "hint": "Only the last two digits of $x$ matter.",
+   "check": {
+    "type": "number",
+    "value": 0.01,
+    "examples": [
+     "1%",
+     "0.01",
+     "1/100"
+    ]
+   }
   },
   {
    "id": "4-conditional-probability",
@@ -603,7 +738,15 @@
     "$\\frac14$",
     "$\\frac23$"
    ],
-   "hint": "List the equally likely two-child families and remove the ones ruled out."
+   "hint": "List the equally likely two-child families and remove the ones ruled out.",
+   "check": {
+    "type": "number",
+    "value": 0.3333333333333333,
+    "examples": [
+     "1/3",
+     "0.3333"
+    ]
+   }
   },
   {
    "id": "4-boys-and-girls-b",
@@ -619,7 +762,15 @@
     "$\\frac14$",
     "$\\frac23$"
    ],
-   "hint": "The boy you saw is one specific child. What about the other one?"
+   "hint": "The boy you saw is one specific child. What about the other one?",
+   "check": {
+    "type": "number",
+    "value": 0.5,
+    "examples": [
+     "1/2",
+     "0.5"
+    ]
+   }
   },
   {
    "id": "4-all-girl-world",
@@ -627,15 +778,23 @@
    "name": "All-girl world?",
    "kind": "problem",
    "page": 74,
-   "prompt": "In a society, every couple keeps having children until they have a girl, and then stops. Each birth is independently a girl with probability 50%. In the long run, what happens to the fraction of girls in the population?",
-   "answer": "It stays at 50%",
+   "prompt": "In a society, every couple keeps having children until they have a girl, and then stops. Each birth is independently a girl with probability 50%. In the long run, what fraction of all children born are girls?",
+   "answer": "$\\frac12$: the stopping rule leaves the ratio at 50%",
    "explanation": "A stopping rule can't change the odds of any single birth. Every birth is still a fair coin flip, independent of the past, so on average half of all babies are girls.\n- Per family: exactly 1 girl, and the number of boys before her is geometric with mean $\\frac{0.5}{0.5}=1$.\n- So the average family has 1 girl and 1 boy.\nThe preference changes what individual families look like, not the overall sex ratio.",
    "distractors": [
-    "It rises toward 100%",
-    "It settles near two-thirds",
-    "It falls below 50%"
+    "$\\frac23$",
+    "$\\frac34$",
+    "$\\frac13$"
    ],
-   "hint": "Does the stopping rule change the odds of any single birth?"
+   "hint": "Does the stopping rule change the odds of any single birth?",
+   "check": {
+    "type": "number",
+    "value": 0.5,
+    "examples": [
+     "1/2",
+     "50%"
+    ]
+   }
   },
   {
    "id": "4-unfair-coin",
@@ -651,7 +810,15 @@
     "$\\frac{1023}{1024}\\approx0.999$",
     "$\\frac{999}{2023}\\approx0.49$"
    ],
-   "hint": "Compare the prior odds with the likelihood ratio of ten heads."
+   "hint": "Compare the prior odds with the likelihood ratio of ten heads.",
+   "check": {
+    "type": "number",
+    "value": 0.5061789421651013,
+    "examples": [
+     "1024/2023",
+     "0.5062"
+    ]
+   }
   },
   {
    "id": "4-fair-from-unfair-coin",
@@ -698,7 +865,15 @@
     "$\\frac13$",
     "$\\frac34$"
    ],
-   "hint": "When is the third dart NOT farther than the first?"
+   "hint": "When is the third dart NOT farther than the first?",
+   "check": {
+    "type": "number",
+    "value": 0.6666666666666666,
+    "examples": [
+     "2/3",
+     "0.6667"
+    ]
+   }
   },
   {
    "id": "4-dart-game-n",
@@ -729,7 +904,15 @@
     "21st",
     "2nd"
    ],
-   "hint": "Find where p(n+1)/p(n) drops below 1."
+   "hint": "Find where p(n+1)/p(n) drops below 1.",
+   "check": {
+    "type": "number",
+    "value": 20.0,
+    "examples": [
+     "20",
+     "20th"
+    ]
+   }
   },
   {
    "id": "4-dice-order",
@@ -745,7 +928,16 @@
     "$\\frac{5}{9}$",
     "$\\frac{7}{27}$"
    ],
-   "hint": "First require distinct values, then ask which order they appear in."
+   "hint": "First require distinct values, then ask which order they appear in.",
+   "check": {
+    "type": "number",
+    "value": 0.09259259259259259,
+    "examples": [
+     "5/54",
+     "0.0926",
+     "20/216"
+    ]
+   }
   },
   {
    "id": "4-monty-hall",
@@ -753,15 +945,23 @@
    "name": "Monty Hall problem",
    "kind": "problem",
    "page": 78,
-   "prompt": "A car is behind one of 3 doors and goats are behind the other two. You pick a door. The host, who knows where the car is, then opens one of the other two doors to reveal a goat and offers you the chance to switch to the remaining closed door. Should you switch, and what is your probability of winning if you do?",
-   "answer": "Switch; switching wins with probability $\\frac23$",
+   "prompt": "A car is behind one of 3 doors and goats are behind the other two. You pick a door. The host, who knows where the car is, then opens one of the other two doors to reveal a goat and offers you the chance to switch to the remaining closed door. If you switch, what is your probability of winning the car?",
+   "answer": "$\\frac23$, so you should switch (staying wins only $\\frac13$)",
    "explanation": "Staying wins only if your first pick was the car, which has probability $\\frac13$; the host's reveal doesn't change that.\n- Switching wins exactly when your first pick was a goat (probability $\\frac23$). The host must then open the other goat door, so the remaining door hides the car.\nThe host's choice isn't random: it's constrained by what he knows, which is why the two closed doors aren't equally likely.",
    "distractors": [
-    "It doesn't matter; both doors win with probability $\\frac12$",
-    "Stay; staying wins with probability $\\frac23$",
-    "Switch; switching wins with probability $\\frac12$"
+    "$\\frac12$",
+    "$\\frac13$",
+    "$\\frac34$"
    ],
-   "hint": "When does switching lose?"
+   "hint": "When does switching lose?",
+   "check": {
+    "type": "number",
+    "value": 0.6666666666666666,
+    "examples": [
+     "2/3",
+     "0.6667"
+    ]
+   }
   },
   {
    "id": "4-amoeba-population",
@@ -777,7 +977,15 @@
     "$1$",
     "$\\frac{\\sqrt5-1}{2}\\approx0.618$"
    ],
-   "hint": "Condition on what the first amoeba does in the first minute."
+   "hint": "Condition on what the first amoeba does in the first minute.",
+   "check": {
+    "type": "number",
+    "value": 0.41421356237309515,
+    "examples": [
+     "sqrt(2)-1",
+     "0.4142"
+    ]
+   }
   },
   {
    "id": "4-candies-in-a-jar",
@@ -793,7 +1001,15 @@
     "$\\frac{1}{2}$",
     "$\\frac{5}{12}$"
    ],
-   "hint": "Condition on the color of the very last candy in the jar."
+   "hint": "Condition on the color of the very last candy in the jar.",
+   "check": {
+    "type": "number",
+    "value": 0.5833333333333334,
+    "examples": [
+     "7/12",
+     "0.5833"
+    ]
+   }
   },
   {
    "id": "4-coin-toss-game-4-3",
@@ -809,7 +1025,15 @@
     "$\\frac13$",
     "$\\frac59$"
    ],
-   "hint": "Condition on A's first toss and use symmetry between the players."
+   "hint": "Condition on A's first toss and use symmetry between the players.",
+   "check": {
+    "type": "number",
+    "value": 0.4444444444444444,
+    "examples": [
+     "4/9",
+     "0.4444"
+    ]
+   }
   },
   {
    "id": "4-russian-roulette-no-spin",
@@ -817,15 +1041,24 @@
    "name": "Russian roulette series (no re-spin)",
    "kind": "problem",
    "page": 81,
-   "prompt": "One bullet is loaded into a 6-chamber revolver and the cylinder is spun once. Two players take turns pulling the trigger, without spinning again, until the gun fires; the player it fires on loses. Should you go first or second, and what is your probability of losing?",
-   "answer": "It doesn't matter: either way you lose with probability $\\frac12$",
+   "prompt": "One bullet is loaded into a 6-chamber revolver and the cylinder is spun once. Two players take turns pulling the trigger, without spinning again, until the gun fires; the player it fires on loses. What is the probability that the player who goes first loses?",
+   "answer": "$\\frac12$, the same as the second player, so the order doesn't matter",
    "explanation": "The single spin fixes the bullet's position, and all 6 positions are equally likely. The first player faces pulls 1, 3 and 5; the second player faces pulls 2, 4 and 6.\n- Each player loses iff the bullet sits in one of his three positions: $\\frac36=\\frac12$.\nIntuition says going first is worse (a $\\frac16$ risk right away), but the second player's later pulls are riskier because fewer chambers remain.",
    "distractors": [
-    "Go second: you lose with probability $\\frac{5}{11}$",
-    "Go second: you lose with probability $\\frac{1}{3}$",
-    "Go first: you lose with probability $\\frac{1}{6}$"
+    "$\\frac16$",
+    "$\\frac{6}{11}$",
+    "$\\frac23$"
    ],
-   "hint": "The bullet's position is fixed after one spin."
+   "hint": "The bullet's position is fixed after one spin.",
+   "check": {
+    "type": "number",
+    "value": 0.5,
+    "examples": [
+     "1/2",
+     "0.5",
+     "3/6"
+    ]
+   }
   },
   {
    "id": "4-russian-roulette-respin",
@@ -833,15 +1066,23 @@
    "name": "Russian roulette series (re-spin)",
    "kind": "problem",
    "page": 81,
-   "prompt": "Same game (one bullet, 6-chamber revolver, two players alternate pulling the trigger), but now the cylinder is re-spun before every pull. Should you go first or second, and what is your probability of losing?",
-   "answer": "Go second: you lose with probability $\\frac{5}{11}$",
+   "prompt": "Same game (one bullet, 6-chamber revolver, two players alternate pulling the trigger), but now the cylinder is re-spun before every pull. What is the probability that the player who goes first loses?",
+   "answer": "$\\frac{6}{11}$, so go second (you then lose with probability $\\frac{5}{11}$)",
    "explanation": "Now every pull is an independent $\\frac16$ risk. Let $p$ be the first player's probability of losing, and condition on his first pull:\n- it fires (prob. $\\frac16$): he loses;\n- it clicks (prob. $\\frac56$): he is now effectively the second player, who loses with probability $1-p$.\n$$p=\\tfrac16+\\tfrac56(1-p)\\;\\Rightarrow\\;p=\\tfrac6{11}.$$\nThe first player loses with probability $\\frac6{11}$, so go second and lose with probability $\\frac5{11}$.",
    "distractors": [
-    "Go first: you lose with probability $\\frac{5}{11}$",
-    "It doesn't matter: either way you lose with probability $\\frac12$",
-    "Go second: you lose with probability $\\frac{5}{12}$"
+    "$\\frac12$",
+    "$\\frac{5}{11}$",
+    "$\\frac16$"
    ],
-   "hint": "Condition on the first pull; after a click, the roles swap."
+   "hint": "Condition on the first pull; after a click, the roles swap.",
+   "check": {
+    "type": "number",
+    "value": 0.5454545454545454,
+    "examples": [
+     "6/11",
+     "0.5455"
+    ]
+   }
   },
   {
    "id": "4-russian-roulette-two-bullets",
@@ -849,15 +1090,23 @@
    "name": "Russian roulette series (two random bullets)",
    "kind": "problem",
    "page": 81,
-   "prompt": "Two bullets are loaded into random chambers of a 6-chamber revolver, and the cylinder is spun. Your opponent pulls the trigger first and survives. Now it's your turn: should you spin the cylinder again before pulling?",
-   "answer": "Spin: you lose with probability $\\frac13$ versus $\\frac25$ without spinning",
+   "prompt": "Two bullets are loaded into random chambers of a 6-chamber revolver, and the cylinder is spun. Your opponent pulls the trigger first and survives. If you now pull the trigger **without** spinning again, what is your probability of losing?",
+   "answer": "$\\frac25$, worse than $\\frac13$ after a re-spin, so you should spin",
    "explanation": "- Spin: you get a fresh uniform chamber, and 2 of the 6 are loaded, so you lose with probability $\\frac26=\\frac13$.\n- No spin: the opponent's chamber was empty, so the 2 bullets are spread uniformly over the other 5 chambers, and the next one is loaded with probability $\\frac25$.\nSince $\\frac13<\\frac25$, spin. Surviving the first pull made the remaining chambers **more** dangerous on average.",
    "distractors": [
-    "Don't spin: you lose with probability $\\frac14$ versus $\\frac13$ with spinning",
-    "It doesn't matter: you lose with probability $\\frac13$ either way",
-    "Don't spin: you lose with probability $\\frac15$ versus $\\frac13$ with spinning"
+    "$\\frac13$",
+    "$\\frac14$",
+    "$\\frac15$"
    ],
-   "hint": "Given the first chamber was empty, where can the two bullets be?"
+   "hint": "Given the first chamber was empty, where can the two bullets be?",
+   "check": {
+    "type": "number",
+    "value": 0.4,
+    "examples": [
+     "2/5",
+     "0.4"
+    ]
+   }
   },
   {
    "id": "4-russian-roulette-adjacent",
@@ -865,15 +1114,23 @@
    "name": "Russian roulette series (adjacent bullets)",
    "kind": "problem",
    "page": 82,
-   "prompt": "Now two bullets are loaded into two **adjacent** chambers of a 6-chamber revolver, and the cylinder is spun. Your opponent pulls first and survives. Should you spin the cylinder again before your pull?",
-   "answer": "Don't spin: you lose with probability $\\frac14$ versus $\\frac13$ with spinning",
+   "prompt": "Now two bullets are loaded into two **adjacent** chambers of a 6-chamber revolver, and the cylinder is spun. Your opponent pulls first and survives. If you pull next **without** spinning, what is your probability of losing?",
+   "answer": "$\\frac14$, better than $\\frac13$ after a re-spin, so don't spin",
    "explanation": "Label the chambers in firing order so the four empty ones E1, E2, E3, E4 are followed by the two loaded ones.\n- The opponent survived, so he was equally likely to be on E1, E2, E3 or E4.\n- Without spinning, you get the next chamber, which is loaded only if he was on E4: probability $\\frac14$.\n- Spinning gives a fresh $\\frac26=\\frac13$ chance of a bullet.\nBecause the bullets are adjacent, an empty chamber is usually followed by another empty one, so don't spin.",
    "distractors": [
-    "Spin: you lose with probability $\\frac13$ versus $\\frac25$ without spinning",
-    "It doesn't matter: you lose with probability $\\frac13$ either way",
-    "Spin: you lose with probability $\\frac13$ versus $\\frac12$ without spinning"
+    "$\\frac13$",
+    "$\\frac25$",
+    "$\\frac12$"
    ],
-   "hint": "Which empty chambers are immediately followed by a bullet?"
+   "hint": "Which empty chambers are immediately followed by a bullet?",
+   "check": {
+    "type": "number",
+    "value": 0.25,
+    "examples": [
+     "1/4",
+     "0.25"
+    ]
+   }
   },
   {
    "id": "4-aces",
@@ -889,7 +1146,16 @@
     "$\\frac{1}{4^3}\\approx0.016$",
     "$\\frac{13}{49}\\approx0.265$"
    ],
-   "hint": "Place the aces one by one and count the slots still available in empty hands."
+   "hint": "Place the aces one by one and count the slots still available in empty hands.",
+   "check": {
+    "type": "number",
+    "value": 0.10549819927971188,
+    "examples": [
+     "39/51*26/50*13/49",
+     "0.1055",
+     "2197/20825"
+    ]
+   }
   },
   {
    "id": "4-gamblers-ruin",
@@ -936,7 +1202,15 @@
     "$\\frac{1}{100}$",
     "$\\frac{1}{2}$"
    ],
-   "hint": "Work out the distribution after 3 and 4 throws, then guess and prove the pattern."
+   "hint": "Work out the distribution after 3 and 4 throws, then guess and prove the pattern.",
+   "check": {
+    "type": "number",
+    "value": 0.010101010101010102,
+    "examples": [
+     "1/99",
+     "0.0101"
+    ]
+   }
   },
   {
    "id": "4-cars-on-road",
@@ -952,7 +1226,15 @@
     "$\\frac25$",
     "$\\frac45$"
    ],
-   "hint": "Work with the probability of seeing no car."
+   "hint": "Work with the probability of seeing no car.",
+   "check": {
+    "type": "number",
+    "value": 0.6,
+    "examples": [
+     "3/5",
+     "0.6"
+    ]
+   }
   }
  ]
 }

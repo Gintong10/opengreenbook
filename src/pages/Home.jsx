@@ -1,77 +1,49 @@
-import { chapters, allCards, getSet } from '../lib/data.js'
-import { useStore, statusCounts } from '../lib/store.js'
+import { chapters, allCards, cardById } from '../lib/data.js'
+import { useStore, tally } from '../lib/store.js'
 import { Die, Icon } from '../components/Icons.jsx'
-
-function Progress({ cards, progress }) {
-  const { known, learning } = statusCounts(cards, progress)
-  const n = cards.length || 1
-  return (
-    <div className="mini-progress" aria-label={`${known} mastered, ${learning} still learning`}>
-      <span className="mp-known" style={{ width: `${(known / n) * 100}%` }} />
-      <span className="mp-learning" style={{ width: `${(learning / n) * 100}%` }} />
-    </div>
-  )
-}
-
-export function SetCard({ set, progress }) {
-  const { known } = statusCounts(set.cards, progress)
-  return (
-    <a className="set-card" href={`#/set/${set.id}`}>
-      <div className="set-card-top">
-        <span className="eyebrow">{set.chapter ? `Chapter ${set.chapter}` : 'All chapters'}</span>
-        <h3>{set.title}</h3>
-        <div className="pills">
-          <span className="pill">{set.cards.length} cards</span>
-          <span className="pill pill-ghost">{set.sections.length} sections</span>
-        </div>
-      </div>
-      <div className="set-card-bottom">
-        <Progress cards={set.cards} progress={progress} />
-        <span className="muted small">{known ? `${known} mastered` : 'Not started'}</span>
-      </div>
-    </a>
-  )
-}
+import { ProgressBar } from '../components/Bits.jsx'
+import { goRandom } from '../lib/util.js'
 
 export default function Home() {
   const progress = useStore((s) => s.progress)
-  const all = getSet('all')
-  const { known, learning } = statusCounts(allCards, progress)
+  const last = useStore((s) => s.last)
+  const bestStreak = useStore((s) => s.bestStreak)
+  const t = tally(allCards, progress)
+  const attempted = t.solved + t.tried + t.revealed
+  const lastCard = last ? cardById.get(last) : null
 
   return (
     <div className="home">
       <section className="hero">
         <div className="hero-copy">
           <p className="hero-book">A Practical Guide to Quantitative Finance Interviews</p>
-          <h1>Master the Green Book, one card at a time.</h1>
+          <h1>Train on every Green Book problem.</h1>
           <p className="hero-sub">
-            Flashcards, adaptive learn mode, practice tests and a speed-match game covering every chapter: brain teasers,
-            calculus, probability, stochastic calculus, finance and algorithms.
+            {allCards.length} problems, from brain teasers to stochastic calculus. Type your answer, get instant feedback, and read a worked solution.
           </p>
           <div className="hero-cta">
-            <a className="btn btn-accent btn-lg" href="#/set/all/learn">
-              <Icon.Learn /> Start learning
+            <a className="btn btn-accent btn-lg" href="#/practice">
+              <Icon.Target /> Start practicing
             </a>
-            <a className="btn btn-glass btn-lg" href="#/set/all/test">
-              <Icon.Test /> Practice test
-            </a>
+            <button className="btn btn-glass btn-lg" onClick={() => goRandom(progress)}>
+              <Die n={3} className="btn-die" /> Random problem
+            </button>
           </div>
           <dl className="hero-stats">
             <div>
-              <dt>Cards</dt>
-              <dd>{allCards.length}</dd>
+              <dt>Solved</dt>
+              <dd>
+                {t.solved}
+                <small>/{allCards.length}</small>
+              </dd>
             </div>
             <div>
-              <dt>Chapters</dt>
-              <dd>{chapters.length}</dd>
+              <dt>First try</dt>
+              <dd>{attempted ? `${Math.round((t.first / attempted) * 100)}%` : '–'}</dd>
             </div>
             <div>
-              <dt>Mastered</dt>
-              <dd>{known}</dd>
-            </div>
-            <div>
-              <dt>Learning</dt>
-              <dd>{learning}</dd>
+              <dt>Best streak</dt>
+              <dd>{bestStreak}</dd>
             </div>
           </dl>
         </div>
@@ -84,16 +56,54 @@ export default function Home() {
         </div>
       </section>
 
+      {lastCard && (
+        <a className="continue" href={`#/p/${lastCard.id}`}>
+          <span className="continue-label">Continue</span>
+          <span className="continue-num">{lastCard.num}</span>
+          <span className="continue-name">{lastCard.name}</span>
+          <Icon.ArrowRight className="continue-arrow" />
+        </a>
+      )}
+
       <section className="home-section">
         <div className="section-head">
-          <h2>Study sets</h2>
-          <span className="muted">One set per chapter, or everything at once</span>
+          <h2>Chapters</h2>
+          <span className="muted small">Jump to any section, or open a chapter for the full problem list</span>
         </div>
-        <div className="set-grid">
-          <SetCard set={all} progress={progress} />
-          {chapters.map((c) => (
-            <SetCard key={c.id} set={c} progress={progress} />
-          ))}
+        <div className="toc-grid">
+          {chapters.map((c) => {
+            const ct = tally(c.cards, progress)
+            return (
+              <article key={c.id} className="toc-card">
+                <a className="toc-head" href={`#/ch/${c.chapter}`}>
+                  <span className="eyebrow">Chapter {c.chapter}</span>
+                  <h3>{c.title}</h3>
+                  <div className="toc-meta">
+                    <ProgressBar cards={c.cards} thin />
+                    <span className="muted small">
+                      {ct.solved}/{c.cards.length} solved
+                    </span>
+                  </div>
+                </a>
+                <ul className="toc-sections">
+                  {c.sections.map((s) => {
+                    const st = tally(s.cards, progress)
+                    return (
+                      <li key={s.id}>
+                        <a href={`#/ch/${c.chapter}?s=${s.id}`}>
+                          <span className="toc-sid">{s.id}</span>
+                          <span className="toc-stitle">{s.title}</span>
+                          <span className={`toc-count ${st.solved === s.cards.length ? 'done' : ''}`}>
+                            {st.solved}/{s.cards.length}
+                          </span>
+                        </a>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </article>
+            )
+          })}
         </div>
       </section>
     </div>

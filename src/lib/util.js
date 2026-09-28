@@ -21,13 +21,6 @@ export function choicesFor(card) {
   ])
 }
 
-export function formatTime(ms) {
-  const s = ms / 1000
-  if (s < 60) return `${s.toFixed(1)}s`
-  const m = Math.floor(s / 60)
-  return `${m}:${String(Math.floor(s % 60)).padStart(2, '0')}`
-}
-
 function parseHash() {
   const raw = window.location.hash.replace(/^#/, '') || '/'
   const [path, query = ''] = raw.split('?')
@@ -68,4 +61,12 @@ export function useKey(handler, deps) {
     return () => window.removeEventListener('keydown', onKey)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
+}
+
+// Jump to a random problem, preferring ones not yet solved.
+export async function goRandom(progress) {
+  const { allCards } = await import('./data.js')
+  const open = allCards.filter((c) => progress[c.id]?.s !== 'solved')
+  const pool = open.length ? open : allCards
+  go(`/p/${pool[Math.floor(Math.random() * pool.length)].id}`)
 }

@@ -212,7 +212,15 @@
     "$1/12 \\approx 0.08$",
     "$11/72 \\approx 0.15$"
    ],
-   "hint": "Draw the unit square of arrival times; they meet when $|X-Y|\\le 5$."
+   "hint": "Draw the unit square of arrival times; they meet when $|X-Y|\\le 5$.",
+   "check": {
+    "type": "number",
+    "value": 0.1597222222222222,
+    "examples": [
+     "23/144",
+     "0.1597"
+    ]
+   }
   },
   {
    "id": "4-meeting-probability-general",
@@ -243,7 +251,15 @@
     "$1/3$",
     "$1/8$"
    ],
-   "hint": "A triangle is possible exactly when no piece reaches half the stick."
+   "hint": "A triangle is possible exactly when no piece reaches half the stick.",
+   "check": {
+    "type": "number",
+    "value": 0.25,
+    "examples": [
+     "1/4",
+     "0.25"
+    ]
+   }
   },
   {
    "id": "4-memoryless-exponential",
@@ -289,7 +305,15 @@
     "20 minutes",
     "15 minutes"
    ],
-   "hint": "Use the memoryless property of exponential gaps."
+   "hint": "Use the memoryless property of exponential gaps.",
+   "check": {
+    "type": "number",
+    "value": 10.0,
+    "examples": [
+     "10"
+    ],
+    "unit": "minutes"
+   }
   },
   {
    "id": "4-poisson-bus-last",
@@ -305,7 +329,15 @@
     "20 minutes",
     "0 minutes: memorylessness only works forward in time"
    ],
-   "hint": "Run the process backward in time."
+   "hint": "Run the process backward in time.",
+   "check": {
+    "type": "number",
+    "value": 10.0,
+    "examples": [
+     "10"
+    ],
+    "unit": "minutes"
+   }
   },
   {
    "id": "4-inspection-paradox-gap",
@@ -320,7 +352,15 @@
     "10 minutes",
     "15 minutes",
     "5 minutes"
-   ]
+   ],
+   "check": {
+    "type": "number",
+    "value": 20.0,
+    "examples": [
+     "20"
+    ],
+    "unit": "minutes"
+   }
   },
   {
    "id": "4-residual-life",
@@ -343,15 +383,22 @@
    "name": "Moments of normal distribution",
    "kind": "problem",
    "page": 91,
-   "prompt": "If $X \\sim N(0, 1)$, what are $E[X]$, $E[X^2]$, $E[X^3]$ and $E[X^4]$?",
-   "answer": "$0,\\ 1,\\ 0,\\ 3$",
-   "explanation": "Odd moments vanish because the density is symmetric about 0 while $x^n$ is odd. $E[X^2] = \\mathrm{var}(X) = 1$. For higher moments use the MGF $M(t) = e^{t^2/2}$ and differentiate at $t = 0$: $M''(0) = 1$, $M'''(0) = 0$, $M^{(4)}(0) = 3$. So the skewness is 0 and the kurtosis is 3, the benchmark that excess kurtosis is measured against.",
+   "prompt": "If $X \\sim N(0, 1)$, what is its fourth moment $E[X^4]$?",
+   "answer": "$3$ (the lower moments $E[X], E[X^2], E[X^3]$ are $0, 1, 0$)",
+   "explanation": "Use the MGF $M(t) = e^{t^2/2}$ and differentiate at $t = 0$: $M'(0) = 0$, $M''(0) = 1$, $M'''(0) = 0$ and $M^{(4)}(0) = 3$. Faster: expand $e^{t^2/2} = 1 + \\frac{t^2}{2} + \\frac{t^4}{8} + \\cdots$ and read $E[X^4] = 4!\\cdot\\frac18 = 3$. Odd moments vanish because the density is symmetric about 0 while $x^n$ is odd, and $E[X^2] = \\mathrm{var}(X) = 1$. So the skewness is 0 and the kurtosis is 3, the benchmark that excess kurtosis is measured against.",
    "distractors": [
-    "$0,\\ 1,\\ 0,\\ 1$",
-    "$0,\\ 1,\\ 0,\\ 15$",
-    "$0,\\ 1,\\ 1,\\ 3$"
+    "$1$",
+    "$15$",
+    "$2$"
    ],
-   "hint": "Symmetry kills the odd moments; the MGF handles the rest."
+   "hint": "Differentiate the MGF $e^{t^2/2}$ four times at $t=0$, or expand it as a power series.",
+   "check": {
+    "type": "number",
+    "value": 3.0,
+    "examples": [
+     "3"
+    ]
+   }
   },
   {
    "id": "4-mgf-definition",
@@ -389,14 +436,22 @@
    "name": "Higher moments of N(0,1)",
    "kind": "concept",
    "page": 92,
-   "prompt": "For $X \\sim N(0,1)$, what is $E[X^{2k}]$ in general? What is $E[X^6]$?",
-   "answer": "$E[X^{2k}]=(2k-1)!!=1\\cdot 3\\cdots(2k-1)$, so $E[X^6]=15$",
+   "prompt": "For $X \\sim N(0,1)$, the even moments $E[X^{2k}]$ follow a simple pattern in $k$. Use it to find $E[X^6]$.",
+   "answer": "$15$, since $E[X^{2k}]=(2k-1)!!=1\\cdot 3\\cdots(2k-1)$ gives $1\\cdot3\\cdot5$",
    "explanation": "Expand the MGF: $e^{t^2/2} = \\sum_k \\frac{t^{2k}}{2^k k!}$. Matching with $\\sum_n E[X^n]\\,t^n/n!$ gives $E[X^{2k}] = \\frac{(2k)!}{2^k k!}$, the product of the odd numbers up to $2k-1$. This yields 1, 3, 15, 105 for $k = 1, 2, 3, 4$, and all odd moments are 0.",
    "distractors": [
-    "$E[X^{2k}]=(2k)!$, so $E[X^6]=720$",
-    "$E[X^{2k}]=k!$, so $E[X^6]=6$",
-    "$E[X^{2k}]=2^k$, so $E[X^6]=8$"
-   ]
+    "$720$",
+    "$105$",
+    "$8$"
+   ],
+   "check": {
+    "type": "number",
+    "value": 15.0,
+    "examples": [
+     "15",
+     "1*3*5"
+    ]
+   }
   },
   {
    "id": "4-linearity-of-expectation",
@@ -464,14 +519,22 @@
    "name": "Uncorrelated vs independent",
    "kind": "concept",
    "page": 92,
-   "prompt": "If $\\rho(X, Y) = 0$, must $X$ and $Y$ be independent?",
+   "prompt": "If $\\rho(X, Y) = 0$, must $X$ and $Y$ be independent? Answer yes or no.",
    "answer": "No. Independence implies $\\rho=0$, but not conversely (e.g. $X\\sim N(0,1)$, $Y=X^2$)",
    "explanation": "Correlation only captures linear dependence. With $X \\sim N(0,1)$ and $Y = X^2$, $\\mathrm{Cov}(X, Y) = E[X^3] - E[X]E[X^2] = 0$, yet $Y$ is completely determined by $X$. The reverse direction does hold: independent variables always have zero covariance. A notable special case: for jointly normal variables, zero correlation does imply independence.",
    "distractors": [
     "Yes: zero correlation always implies independence",
     "Yes, as long as both variables have finite variance",
     "No, and independence does not guarantee $\\rho=0$ either"
-   ]
+   ],
+   "check": {
+    "type": "text",
+    "accept": [
+     "no",
+     "not necessarily",
+     "not always"
+    ]
+   }
   },
   {
    "id": "4-covariance-bilinearity",
@@ -554,7 +617,7 @@
    "name": "Connecting noodles",
    "kind": "problem",
    "page": 93,
-   "prompt": "A bowl holds 100 noodles. Blindfolded, you repeatedly pick two free noodle ends uniformly at random and tie them together, until no free ends remain. What is the expected number of loops formed?",
+   "prompt": "A bowl holds 100 noodles. Blindfolded, you repeatedly pick two free noodle ends uniformly at random and tie them together, until no free ends remain. What is the expected number of loops formed? Give a decimal.",
    "answer": "$\\sum_{k=1}^{100}\\frac{1}{2k-1}=1+\\frac13+\\cdots+\\frac{1}{199}\\approx 3.28$",
    "explanation": "Let $E_n$ be the expected number of loops starting from $n$ noodles, so $E_1 = 1$.\n- Pick any free end. Its partner is one of the other $2n - 1$ ends, and only one of those is the other end of the same noodle.\n- With probability $1/(2n-1)$ you close a loop and $n - 1$ noodles remain; otherwise two noodles fuse into one and again $n - 1$ remain.\nSo $E_n = E_{n-1} + \\frac{1}{2n-1}$, and summing from 1 to 100 gives about 3.28.",
    "distractors": [
@@ -562,7 +625,16 @@
     "$\\frac12\\sum_{k=1}^{100}\\frac{1}{k}\\approx 2.59$",
     "$\\sum_{k=1}^{100}\\frac{1}{2k+1}\\approx 2.29$"
    ],
-   "hint": "Start with 1 and 2 noodles; each tie always reduces the noodle count by one."
+   "hint": "Start with 1 and 2 noodles; each tie always reduces the noodle count by one.",
+   "check": {
+    "type": "number",
+    "value": 3.2843421893016345,
+    "examples": [
+     "3.284",
+     "3.28"
+    ],
+    "unit": "loops"
+   }
   },
   {
    "id": "4-connecting-noodles-step",
@@ -624,7 +696,14 @@
     "$5$",
     "$10$"
    ],
-   "hint": "Use the law of total expectation on the first roll."
+   "hint": "Use the law of total expectation on the first roll.",
+   "check": {
+    "type": "number",
+    "value": 7.0,
+    "examples": [
+     "7"
+    ]
+   }
   },
   {
    "id": "4-card-game-4-5",
@@ -640,7 +719,16 @@
     "$52/5 = 10.4$",
     "$48/5 = 9.6$"
    ],
-   "hint": "Use one indicator per non-ace card."
+   "hint": "Use one indicator per non-ace card.",
+   "check": {
+    "type": "number",
+    "value": 10.6,
+    "examples": [
+     "53/5",
+     "10.6"
+    ],
+    "unit": "cards"
+   }
   },
   {
    "id": "4-first-special-card",
@@ -701,7 +789,16 @@
     "$2$",
     "$e-1\\approx 1.718$",
     "$3$"
-   ]
+   ],
+   "check": {
+    "type": "number",
+    "value": 2.718281828459045,
+    "examples": [
+     "e",
+     "2.718"
+    ],
+    "unit": "draws"
+   }
   },
   {
    "id": "4-coupon-collection-a",
@@ -748,7 +845,17 @@
     "$6\\left(\\frac12+\\cdots+\\frac16\\right)=8.7$",
     "$1+2+\\cdots+6=21$",
     "$6^2=36$"
-   ]
+   ],
+   "check": {
+    "type": "number",
+    "value": 14.7,
+    "examples": [
+     "14.7",
+     "147/10",
+     "6(1+1/2+1/3+1/4+1/5+1/6)"
+    ],
+    "unit": "rolls"
+   }
   },
   {
    "id": "4-empty-boxes",
@@ -763,7 +870,17 @@
     "$10(1-0.9^{18})\\approx 8.50$",
     "$10(0.9)^{10}\\approx 3.49$",
     "$18(0.9)^{10}\\approx 6.28$"
-   ]
+   ],
+   "check": {
+    "type": "number",
+    "value": 1.5009463529699911,
+    "examples": [
+     "10*0.9^18",
+     "1.501",
+     "1.5"
+    ],
+    "unit": "boxes"
+   }
   },
   {
    "id": "4-indicator-variance",
@@ -783,18 +900,27 @@
   {
    "id": "4-joint-default-range",
    "section": "4.5",
-   "name": "Joint default probability (range)",
+   "name": "Joint default probability (lower bound)",
    "kind": "problem",
    "page": 98,
-   "prompt": "Bond A defaults next year with probability 50% and bond B with probability 30%; their dependence is unknown. What is the range of possible values for the probability that at least one of them defaults?",
-   "answer": "From 50% to 80%",
-   "explanation": "$P(A \\cup B) = 0.5 + 0.3 - P(A \\cap B)$, so everything hinges on the overlap.\n- Largest: make defaults mutually exclusive, $P(A\\cap B) = 0$, giving 80% (possible because $0.5 + 0.3 \\le 1$).\n- Smallest: B defaults only when A does, $P(A\\cap B) = 0.3$, giving 50%.\nIndependence would sit in between at $1 - 0.5 \\times 0.7 = 65\\%$.",
+   "prompt": "Bond A defaults next year with probability 50% and bond B with probability 30%; their dependence is unknown. What is the smallest possible probability that at least one of them defaults?",
+   "answer": "50%, when B defaults only if A does (the largest possible value is 80%)",
+   "explanation": "$P(A \\cup B) = 0.5 + 0.3 - P(A \\cap B)$, so everything hinges on the overlap, which can be at most $\\min(0.5, 0.3) = 0.3$.\n- Smallest: B defaults only when A does, $P(A\\cap B) = 0.3$, giving 50%.\n- Largest: make defaults mutually exclusive, $P(A\\cap B) = 0$, giving 80% (possible because $0.5 + 0.3 \\le 1$).\nSo the range is 50% to 80%; independence would sit in between at $1 - 0.5 \\times 0.7 = 65\\%$.",
    "distractors": [
-    "From 30% to 80%",
-    "From 65% to 80%",
-    "From 50% to 100%"
+    "30%",
+    "65%",
+    "15%"
    ],
-   "hint": "Maximize and minimize the overlap $P(A\\cap B)$."
+   "hint": "Make the overlap $P(A\\cap B)$ as large as it can be.",
+   "check": {
+    "type": "number",
+    "value": 0.5,
+    "examples": [
+     "0.5",
+     "50%",
+     "1/2"
+    ]
+   }
   },
   {
    "id": "4-joint-default-correlation",
@@ -802,15 +928,24 @@
    "name": "Joint default probability (correlation)",
    "kind": "problem",
    "page": 98,
-   "prompt": "Same bonds: default probabilities 0.5 for A and 0.3 for B. Modeling defaults as indicators $I_A$, $I_B$, what range of values can their correlation take?",
-   "answer": "$[-\\sqrt{3/7},\\ \\sqrt{3/7}]\\approx[-0.65,\\ 0.65]$",
-   "explanation": "$\\sigma_A = \\sqrt{0.25} = 0.5$ and $\\sigma_B = \\sqrt{0.21}$. The covariance is $P(A\\cap B) - 0.15$, and the overlap ranges over $[0, 0.3]$, so the covariance ranges over $[-0.15, 0.15]$. Dividing by $0.5\\sqrt{0.21}$ gives $\\rho \\in [-0.3/\\sqrt{0.21},\\ 0.3/\\sqrt{0.21}] = [-\\sqrt{3/7}, \\sqrt{3/7}]$. Equivalently $P(A\\cup B) = 0.65 - \\frac{\\sqrt{0.21}}{2}\\rho$. Plugging $\\rho = \\pm 1$ into that formula is a trap: those correlations are unattainable here.",
+   "prompt": "Same bonds: default probabilities 0.5 for A and 0.3 for B. Modeling defaults as indicators $I_A$, $I_B$, what is the largest correlation they can have?",
+   "answer": "$\\sqrt{3/7}\\approx 0.65$; the attainable range is $[-\\sqrt{3/7},\\ \\sqrt{3/7}]$",
+   "explanation": "$\\sigma_A = \\sqrt{0.25} = 0.5$ and $\\sigma_B = \\sqrt{0.21}$. The covariance is $P(A\\cap B) - 0.15$, and the overlap ranges over $[0, 0.3]$, so the covariance ranges over $[-0.15, 0.15]$. The largest correlation is $0.15/(0.5\\sqrt{0.21}) = 0.3/\\sqrt{0.21} = \\sqrt{3/7} \\approx 0.65$, reached when B defaults only if A does; the smallest is $-\\sqrt{3/7}$. Equivalently $P(A\\cup B) = 0.65 - \\frac{\\sqrt{0.21}}{2}\\rho$. Plugging $\\rho = \\pm 1$ into that formula is a trap: those correlations are unattainable here.",
    "distractors": [
-    "$[-1,\\ 1]$",
-    "$[-0.15,\\ 0.15]$",
-    "$[-\\sqrt{3}/7,\\ \\sqrt{3}/7]\\approx[-0.25,\\ 0.25]$"
+    "$1$",
+    "$0.15$",
+    "$\\sqrt{3}/7\\approx 0.25$"
    ],
-   "hint": "Correlation = covariance divided by $\\sigma_A\\sigma_B$; find the covariance range first."
+   "hint": "Correlation = covariance divided by $\\sigma_A\\sigma_B$; find the largest possible covariance first.",
+   "check": {
+    "type": "number",
+    "value": 0.6546536707079771,
+    "examples": [
+     "sqrt(3/7)",
+     "0.6547",
+     "0.3/sqrt(0.21)"
+    ]
+   }
   },
   {
    "id": "4-bernoulli-correlation-bounds",
@@ -918,7 +1053,15 @@
     "$1/3$",
     "$1/4$"
    ],
-   "hint": "The product of the min and max equals $X_1X_2$."
+   "hint": "The product of the min and max equals $X_1X_2$.",
+   "check": {
+    "type": "number",
+    "value": 0.5,
+    "examples": [
+     "1/2",
+     "0.5"
+    ]
+   }
   },
   {
    "id": "4-var-min-equals-var-max",
@@ -926,14 +1069,23 @@
    "name": "Variance of min vs max",
    "kind": "concept",
    "page": 101,
-   "prompt": "For $n$ i.i.d. Uniform(0,1) variables, how does $\\mathrm{var}(\\min_i X_i)$ compare with $\\mathrm{var}(\\max_i X_i)$, and why?",
+   "prompt": "For $n$ i.i.d. Uniform(0,1) variables, is $\\mathrm{var}(\\min_i X_i)$ larger than, smaller than, or equal to $\\mathrm{var}(\\max_i X_i)$?",
    "answer": "Equal, since $\\min_i X_i=1-\\max_i(1-X_i)$ and each $1-X_i$ is also uniform",
    "explanation": "Reflecting every point via $x \\mapsto 1 - x$ leaves the joint distribution unchanged and turns the minimum into one minus the maximum. Since $\\mathrm{var}(1 - W) = \\mathrm{var}(W)$, the two variances match for every $n$. The common value is $\\frac{n}{(n+1)^2(n+2)}$, which is $1/18$ for $n = 2$.",
    "distractors": [
     "$\\mathrm{var}(\\max)>\\mathrm{var}(\\min)$, because the max has the larger mean",
     "$\\mathrm{var}(\\min)>\\mathrm{var}(\\max)$, because the min is pinned near 0",
     "Equal only for $n=2$; for larger $n$ the max varies less"
-   ]
+   ],
+   "check": {
+    "type": "text",
+    "accept": [
+     "equal",
+     "same",
+     "identical",
+     "equals"
+    ]
+   }
   },
   {
    "id": "4-random-ants",
@@ -945,11 +1097,21 @@
    "answer": "$500/501$ minutes",
    "explanation": "- Collisions do not matter: two ants bouncing off each other look exactly like two ants passing through each other with their labels swapped. So the set of fall-off times is the same as for 500 non-interacting ants.\n- A free ant at position $x$ falls off after $x$ or $1 - x$ minutes depending on direction; either way its time is Uniform(0,1), independent of the other ants.\n- The last fall is the max of 500 i.i.d. uniforms, whose mean is $n/(n+1) = 500/501$.\nNote: the book prints 499/500, but the max-of-uniforms formula it relies on gives 500/501.",
    "distractors": [
-    "$499/500$ minutes",
     "$1/2$ minute",
-    "$1$ minute"
+    "$1/501$ minutes",
+    "$1001/1002$ minutes"
    ],
-   "hint": "Relabel the ants at each collision so that they pass through each other."
+   "hint": "Relabel the ants at each collision so that they pass through each other.",
+   "check": {
+    "type": "number",
+    "value": 0.998003992015968,
+    "examples": [
+     "500/501",
+     "0.9980",
+     "0.998"
+    ],
+    "unit": "minutes"
+   }
   }
  ]
 }

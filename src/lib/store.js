@@ -1,8 +1,8 @@
-// Per-viewer study state (progress, stars, filters, best times) kept in localStorage.
+// Per-viewer trainer state (progress, bookmarks, streaks) kept in localStorage.
 import { useSyncExternalStore } from 'react'
 
-const KEY = 'ogb:v1'
-const EMPTY = { progress: {}, stars: {}, scopes: {}, best: {} }
+const KEY = 'ogb:v2'
+const EMPTY = { progress: {}, stars: {}, last: null, streak: 0, bestStreak: 0 }
 
 function load() {
   try {
@@ -25,6 +25,15 @@ function commit(next) {
   listeners.forEach((l) => l())
 }
 
+// Keep tabs in sync: another tab's write replaces this tab's copy instead of being overwritten later.
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (e) => {
+    if (e.key !== KEY) return
+    state = load()
+    listeners.forEach((l) => l())
+  })
+}
+
 function subscribe(l) {
   listeners.add(l)
   return () => listeners.delete(l)
@@ -35,8 +44,29 @@ export function useStore(selector) {
   return useSyncExternalStore(subscribe, () => selector(state))
 }
 
-export function setStatus(id, status) {
-  commit({ ...state, progress: { ...state.progress, [id]: status } })
+// progress[id] = { s: 'solved' | 'tried' | 'revealed', a: wrong attempts, first: solved on first try }
+function put(id, entry, extra = {}) {
+  commit({ ...state, ...extra, progress: { ...state.progress, [id]: entry } })
+}
+
+export function recordWrong(id) {
+  const p = state.progress[id]
+  if (p?.s === 'solved') return commit({ ...state, streak: 0 })
+  put(id, { s: p?.s ?? 'tried', a: (p?.a ?? 0) + 1, first: false }, { streak: 0 })
+}
+
+export function recordCorrect(id) {
+  const p = state.progress[id]
+  if (p?.s === 'solved') return
+  const first = !p
+  const streak = first ? state.streak + 1 : 0
+  put(id, { s: 'solved', a: p?.a ?? 0, first }, { streak, bestStreak: Math.max(state.bestStreak, streak) })
+}
+
+export function recordReveal(id) {
+  const p = state.progress[id]
+  if (p?.s === 'solved') return
+  put(id, { s: 'revealed', a: p?.a ?? 0, first: false }, { streak: 0 })
 }
 
 export function toggleStar(id) {
@@ -46,19 +76,8 @@ export function toggleStar(id) {
   commit({ ...state, stars })
 }
 
-const NO_SCOPE = { sections: [], starred: false }
-export function getScope(scopes, setId) {
-  return scopes[setId] ?? NO_SCOPE
-}
-
-export function setScope(setId, scope) {
-  commit({ ...state, scopes: { ...state.scopes, [setId]: scope } })
-}
-
-export function recordBest(key, ms) {
-  const prev = state.best[key]
-  if (prev == null || ms < prev) commit({ ...state, best: { ...state.best, [key]: ms } })
-  return prev
+export function setLast(id) {
+  if (state.last !== id) commit({ ...state, last: id })
 }
 
 export function resetProgress(ids) {
@@ -67,12 +86,16 @@ export function resetProgress(ids) {
   commit({ ...state, progress })
 }
 
-export function statusCounts(cards, progress) {
-  let known = 0
-  let learning = 0
+export function statusOf(progress, id) {
+  return progress[id]?.s ?? 'new'
+}
+
+export function tally(cards, progress) {
+  const t = { solved: 0, tried: 0, revealed: 0, new: 0, first: 0 }
   for (const c of cards) {
-    if (progress[c.id] === 'known') known++
-    else if (progress[c.id] === 'learning') learning++
+    const p = progress[c.id]
+    t[p?.s ?? 'new']++
+    if (p?.first) t.first++
   }
-  return { known, learning, fresh: cards.length - known - learning }
+  return t
 }

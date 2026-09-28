@@ -123,6 +123,37 @@ export const Icon = {
       <path d="M3 3v5h5" />
     </svg>
   ),
+  Menu: (p) => (
+    <svg {...base} {...p}>
+      <path d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  ),
+  Eye: (p) => (
+    <svg {...base} {...p}>
+      <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  ),
+  Flame: (p) => (
+    <svg {...base} {...p}>
+      <path d="M12 22c4 0 7-2.7 7-6.8 0-3.2-2-5.6-3.6-7.3-.3 1.9-1.3 3.1-2.4 3.6.3-3.3-1.2-6.6-4-8.5.2 3-1.4 5.2-2.9 7A8.6 8.6 0 0 0 5 15.2C5 19.3 8 22 12 22z" />
+    </svg>
+  ),
+  Target: (p) => (
+    <svg {...base} {...p}>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="5" />
+      <circle cx="12" cy="12" r="1.2" fill="currentColor" />
+    </svg>
+  ),
+  List: (p) => (
+    <svg {...base} {...p}>
+      <path d="M9 6h11M9 12h11M9 18h11" />
+      <circle cx="4.5" cy="6" r="1" fill="currentColor" />
+      <circle cx="4.5" cy="12" r="1" fill="currentColor" />
+      <circle cx="4.5" cy="18" r="1" fill="currentColor" />
+    </svg>
+  ),
 }
 
 // The Green Book cover is five dice on felt; the brand mark is one die.

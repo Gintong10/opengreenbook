@@ -1,15 +1,18 @@
 import { useMemo } from 'react'
 import Rich from '../components/Rich.jsx'
-import { allCards, sectionTitle } from '../lib/data.js'
+import { StatusIcon, TypeTag } from '../components/Bits.jsx'
+import { allCards, sectionById } from '../lib/data.js'
 import { plain } from '../lib/tokenize.js'
+import { useStore } from '../lib/store.js'
 
 const index = allCards.map((c) => ({
   card: c,
-  name: c.name.toLowerCase(),
-  body: `${plain(c.prompt)} ${plain(c.answer)} ${plain(c.explanation)} ${sectionTitle.get(c.section) ?? ''}`.toLowerCase(),
+  name: `${c.num} ${c.name}`.toLowerCase(),
+  body: `${plain(c.prompt)} ${plain(c.explanation)} ${sectionById.get(c.section)?.title ?? ''}`.toLowerCase(),
 }))
 
 export default function Search({ q }) {
+  const progress = useStore((s) => s.progress)
   const results = useMemo(() => {
     const words = q.toLowerCase().split(/\s+/).filter(Boolean)
     if (!words.length) return []
@@ -24,36 +27,31 @@ export default function Search({ q }) {
         return { card: e.card, s }
       })
       .filter(Boolean)
-      .sort((a, b) => b.s - a.s)
+      .sort((a, b) => b.s - a.s || a.card.order - b.card.order)
   }, [q])
 
   return (
-    <div className="set-page">
+    <div className="page">
       <p className="eyebrow">Search</p>
-      <h1 className="set-title">
+      <h1 className="page-title">
         {results.length} {results.length === 1 ? 'result' : 'results'} for “{q}”
       </h1>
-      {!results.length && <p className="muted">Try a problem name (“Monty Hall”), a topic (“martingale”) or a formula (“put-call”).</p>}
-      <ul className="term-list">
+      {!results.length && <p className="muted">Try a problem name (“Monty Hall”), a topic (“martingale”) or a number (“4.3.7”).</p>}
+      <ol className="search-list">
         {results.map(({ card }) => (
-          <li key={card.id} className="term-row">
-            <a className="term-main" href={`#/set/ch${card.chapter}?card=${encodeURIComponent(card.id)}`}>
-              <div className="term-left">
-                <span className="term-name">
-                  {card.name}
-                  <span className="kind-tag">
-                    Ch {card.chapter} · §{card.section}
-                  </span>
-                </span>
-                <Rich text={card.prompt} className="term-prompt" />
+          <li key={card.id}>
+            <a className="search-row" href={`#/p/${card.id}`}>
+              <div className="sr-top">
+                <StatusIcon status={progress[card.id]?.s ?? 'new'} first={progress[card.id]?.first} />
+                <span className="pr-num">{card.num}</span>
+                <span className="pr-name">{card.name}</span>
+                <TypeTag card={card} />
               </div>
-              <div className="term-right">
-                <Rich text={card.answer} className="term-answer" big />
-              </div>
+              <Rich text={card.prompt} className="sr-prompt" />
             </a>
           </li>
         ))}
-      </ul>
+      </ol>
     </div>
   )
 }
