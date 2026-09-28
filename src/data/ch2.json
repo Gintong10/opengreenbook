@@ -1,0 +1,908 @@
+{
+ "chapter": 2,
+ "title": "Brain Teasers",
+ "sections": [
+  {
+   "id": "2.1",
+   "title": "Problem Simplification"
+  },
+  {
+   "id": "2.2",
+   "title": "Logic Reasoning"
+  },
+  {
+   "id": "2.3",
+   "title": "Thinking Out of the Box"
+  },
+  {
+   "id": "2.4",
+   "title": "Application of Symmetry"
+  },
+  {
+   "id": "2.5",
+   "title": "Series Summation"
+  },
+  {
+   "id": "2.6",
+   "title": "The Pigeon Hole Principle"
+  },
+  {
+   "id": "2.7",
+   "title": "Modular Arithmetic"
+  },
+  {
+   "id": "2.8",
+   "title": "Math Induction"
+  },
+  {
+   "id": "2.9",
+   "title": "Proof by Contradiction"
+  }
+ ],
+ "cards": [
+  {
+   "id": "2-problem-simplification",
+   "section": "2.1",
+   "name": "Problem simplification",
+   "kind": "concept",
+   "page": 3,
+   "prompt": "A brain teaser looks too big to attack head-on (100 pirates, 100 tigers, 1000 coins...). What is the \"problem simplification\" strategy?",
+   "answer": "Solve the smallest cases first, then add complexity one step at a time until a pattern appears",
+   "explanation": "Shrink the parameter: solve $n = 1, 2, 3, \\dots$ and pay attention to why each answer holds, not just what it is.\n- In strategic games this is backward induction: each larger case depends on how everyone expects the next-smaller case to play out.\n- Once a pattern emerges, extend it to the full problem and, if needed, prove it by induction.\nYou don't need a master plan up front; the small cases usually reveal it.",
+   "distractors": [
+    "Guess the answer for the full problem, then check it by brute-force enumeration",
+    "Simulate the problem at random many times and average the outcomes",
+    "Start from the largest case and halve the problem size at every step"
+   ],
+   "hint": "Think about how you would solve 5 pirates if 2 pirates were already solved."
+  },
+  {
+   "id": "2-screwy-pirates",
+   "section": "2.1",
+   "name": "Screwy pirates",
+   "kind": "problem",
+   "page": 3,
+   "prompt": "Five perfectly rational pirates, labeled 1 (most junior) to 5 (most senior), must split 100 gold coins. The most senior pirate still alive proposes a split and everyone votes, proposer included. If at least half vote yes, the split is final; otherwise the proposer is thrown to the sharks and the next most senior pirate proposes. Each pirate wants, in order: to survive, to get as much gold as possible, and (all else equal) to see fewer pirates left. How are the coins divided?",
+   "answer": "Pirate 5 keeps 98; pirates 3 and 1 get 1 coin each; pirates 4 and 2 get nothing",
+   "explanation": "Work backward from small groups:\n- 2 pirates: pirate 2's own vote is already 50%, so he takes all 100.\n- 3 pirates: pirate 1 gets 0 if it falls to 2 pirates, so 1 coin buys his vote: (3: 99, 1: 1).\n- 4 pirates: needs 2 votes; pirate 2 gets 0 in the 3-pirate outcome, so 1 coin buys him: (4: 99, 2: 1).\n- 5 pirates: needs 3 votes; pirates 3 and 1 get 0 in the 4-pirate outcome, so 1 coin each buys both: (5: 98, 3: 1, 1: 1).\nOffering 0 doesn't work: a pirate who would get 0 either way votes no because he prefers fewer pirates.",
+   "distractors": [
+    "Pirate 5 keeps 98; pirates 4 and 2 get 1 coin each; pirates 3 and 1 get nothing",
+    "Pirate 5 keeps 99; pirate 1 gets 1 coin; pirates 4, 3 and 2 get nothing",
+    "Pirate 5 keeps 97; pirates 3, 2 and 1 get 1 coin each; pirate 4 gets nothing"
+   ],
+   "hint": "Solve the 2-pirate game first, then add one pirate at a time."
+  },
+  {
+   "id": "2-screwy-pirates-general",
+   "section": "2.1",
+   "name": "Screwy pirates (2n+1 pirates)",
+   "kind": "problem",
+   "page": 4,
+   "prompt": "Same rules as the 5-pirate game (100 coins; a proposal passes with at least half the votes; pirates want to survive, then maximize gold, then see fewer rivals). With $2n+1$ pirates, labeled 1 (most junior) to $2n+1$ (most senior), and $n$ small enough that the coins go around, how does the most senior pirate split the gold?",
+   "answer": "He keeps $100-n$; pirates $1, 3, \\dots, 2n-1$ get 1 coin each; everyone else gets 0",
+   "explanation": "With $2n+1$ pirates the proposer needs $n+1$ yes votes, i.e. $n$ besides his own.\n- In the fallback $2n$-pirate game, that proposer pays the even-numbered pirates $2, 4, \\dots, 2n-2$, so the odd-numbered pirates $1, 3, \\dots, 2n-1$ get nothing.\n- Those $n$ pirates are the cheapest votes: 1 coin beats their fallback of 0.\nSo the senior pirate spends $n$ coins and keeps $100 - n$. For 5 pirates ($n = 2$) this gives 98. (The clean pattern needs enough coins; with 100 coins it stops working this simply once there are more than about 200 pirates.)",
+   "distractors": [
+    "He keeps $100-n$; pirates $2, 4, \\dots, 2n$ get 1 coin each; everyone else gets 0",
+    "He keeps $100-2n$; every other pirate gets exactly 1 coin",
+    "He keeps $99-n$; pirates $1, 2, \\dots, n+1$ get 1 coin each; everyone else gets 0"
+   ],
+   "hint": "Which pirates would get nothing if the proposer were thrown overboard?"
+  },
+  {
+   "id": "2-tiger-and-sheep",
+   "section": "2.1",
+   "name": "Tiger and sheep",
+   "kind": "problem",
+   "page": 4,
+   "prompt": "100 tigers and 1 sheep are on a magic island covered in grass. Tigers can live on grass but would rather eat sheep. Only one tiger can eat a sheep at a time, and a tiger that eats a sheep turns into a sheep itself. All tigers are perfectly rational and want above all to survive. Will the sheep be eaten?",
+   "answer": "No — with 100 tigers (an even number), no tiger dares to eat the sheep",
+   "explanation": "Shrink the problem:\n- 1 tiger: it eats the sheep; nobody is left to eat it afterward.\n- 2 tigers: whichever eats becomes a sheep facing 1 tiger, and gets eaten. So neither eats.\n- 3 tigers: eating leaves a sheep facing 2 tigers, which we just showed is safe. So a tiger eats.\n- 4 tigers: eating leads to the 3-tiger case, where the new sheep is eaten. So nobody eats.\nThe outcome alternates with parity. 100 is even, so the sheep survives.",
+   "distractors": [
+    "Yes — the first tiger to reach the sheep eats it immediately",
+    "Yes — it is eaten, then each new sheep is eaten, in a chain of 100",
+    "Yes — with 100 tigers, one of them can always eat it safely"
+   ],
+   "hint": "What happens with just 1 tiger? With 2?"
+  },
+  {
+   "id": "2-tiger-and-sheep-general",
+   "section": "2.1",
+   "name": "Tiger and sheep (n tigers)",
+   "kind": "problem",
+   "page": 5,
+   "prompt": "In the tiger-and-sheep puzzle (a tiger that eats the sheep turns into the sheep; all tigers are rational and want to survive), for which numbers $n$ of tigers does the sheep get eaten?",
+   "answer": "Exactly when $n$ is odd",
+   "explanation": "Induction on $n$. With 1 tiger the sheep is eaten. A tiger facing $n$ tigers only eats if, as the new sheep, it would be safe among the remaining $n - 1$ tigers.\n- If the sheep is safe with $n-1$ tigers, some tiger eats when there are $n$.\n- If the sheep is eaten with $n-1$ tigers, eating is suicide, so nobody eats when there are $n$.\nSo the answer flips with each added tiger: eaten for $n = 1, 3, 5, \\dots$ and safe for $n = 2, 4, 6, \\dots$",
+   "distractors": [
+    "Exactly when $n$ is even",
+    "Only when $n = 1$",
+    "Always, for every $n \\ge 1$"
+   ],
+   "hint": "Relate the $n$-tiger case to the $(n-1)$-tiger case."
+  },
+  {
+   "id": "2-river-crossing",
+   "section": "2.2",
+   "name": "River crossing",
+   "kind": "problem",
+   "page": 5,
+   "prompt": "Four people must cross an old bridge at night. The bridge holds at most 2 people at a time, and they have a single torch that must go with every crossing, so someone has to bring it back each time. Alone, A takes 10 minutes, B 5 minutes, C 2 minutes and D 1 minute; a pair walks at the slower person's pace. What is the minimum time to get all four across?",
+   "answer": "17 minutes",
+   "explanation": "Let the two slowest (A and B) cross together, so the 5-minute walk hides inside the 10-minute one, and make sure neither of them ever has to walk back.\n- C and D cross (2), D returns (1).\n- A and B cross (10), C returns (2).\n- C and D cross (2).\nTotal $2 + 1 + 10 + 2 + 2 = 17$. The obvious plan of letting D escort everyone costs $10 + 1 + 5 + 1 + 2 = 19$.",
+   "distractors": [
+    "19 minutes",
+    "18 minutes",
+    "16 minutes"
+   ],
+   "hint": "Which two people should share a crossing?"
+  },
+  {
+   "id": "2-birthday-problem",
+   "section": "2.2",
+   "name": "Birthday problem",
+   "kind": "problem",
+   "page": 5,
+   "prompt": "Your boss's birthday is one of these 10 dates: Mar 4, Mar 5, Mar 8, Jun 4, Jun 7, Sep 1, Sep 5, Dec 1, Dec 2, Dec 8. The boss tells you only the month and tells your colleague C only the day. You say: \"I don't know the birthday, and I'm sure C doesn't either.\" C then says: \"I didn't know before, but now I do.\" You reply: \"Now I know too.\" What is the birthday?",
+   "answer": "September 1",
+   "explanation": "- Days 7 (Jun 7) and 2 (Dec 2) appear only once, so a colleague told 7 or 2 would know at once. You are sure C doesn't know, so your month contains neither: it is March or September.\n- C now narrows to Mar 4, Mar 5, Mar 8, Sep 1, Sep 5. Day 5 would still be ambiguous, so since C now knows, the date is Mar 4, Mar 8 or Sep 1.\n- If your month were March you couldn't choose between Mar 4 and Mar 8. You can, so it must be Sep 1.",
+   "distractors": [
+    "March 4",
+    "June 7",
+    "September 5"
+   ],
+   "hint": "Your first statement tells C something about the month. Which months?"
+  },
+  {
+   "id": "2-card-game",
+   "section": "2.2",
+   "name": "Card game",
+   "kind": "problem",
+   "page": 6,
+   "prompt": "A casino game uses a standard 52-card deck. Cards are turned over two at a time: two blacks go to the dealer's pile, two reds go to your pile, and a red-black pair is discarded. After all 52 cards are used, you win 100 dollars if your pile has more cards than the dealer's; a tie or a loss pays nothing. How much should you be willing to pay to play?",
+   "answer": "Nothing — the two piles always end up equal, so you can never win",
+   "explanation": "Every discarded pair has exactly one red and one black card, so the discards remove the same number of each color. The deck starts with 26 of each, so the reds left for your pile always equal the blacks left for the dealer's pile, whatever the order of the cards. Every game is a tie, ties pay nothing, and the game is worth zero.",
+   "distractors": [
+    "50 dollars — by symmetry you win half the time",
+    "Just under 50 dollars, since ties pay nothing",
+    "25 dollars — you win roughly one game in four"
+   ],
+   "hint": "What do you know about the colors in the discard pile?"
+  },
+  {
+   "id": "2-burning-ropes",
+   "section": "2.2",
+   "name": "Burning ropes",
+   "kind": "problem",
+   "page": 7,
+   "prompt": "You have two ropes. Each burns completely in exactly 1 hour, but they burn unevenly: different sections take different amounts of time. Using only the ropes and a lighter, how can you measure exactly 45 minutes?",
+   "answer": "Light rope 1 at both ends, rope 2 at one end; when rope 1 is gone, light rope 2's other end",
+   "explanation": "A rope that burns for $x$ minutes from one end burns out in exactly $x/2$ minutes when lit at both ends, however uneven it is: the two flames together consume all of its burn time and meet when half has elapsed.\n- Rope 1, lit at both ends, is gone after 30 minutes.\n- At that moment rope 2 (lit at one end) has 30 minutes of burn time left; lighting its other end halves that to 15.\nTotal: $30 + 15 = 45$ minutes. Cutting a rope at its midpoint doesn't help, because length isn't proportional to burn time.",
+   "distractors": [
+    "Light rope 1 at both ends; when it burns out, light rope 2 at one end",
+    "Light both ropes at both ends; stop when both are completely burned",
+    "Cut rope 2 at its midpoint and burn one half while rope 1 burns from both ends"
+   ],
+   "hint": "How long does a 1-hour rope last if you light both ends?"
+  },
+  {
+   "id": "2-defective-ball-nine",
+   "section": "2.2",
+   "name": "Defective ball (9-ball warm-up)",
+   "kind": "problem",
+   "page": 7,
+   "prompt": "You have 9 identical-looking balls; one is heavier than the others. Using a two-pan balance that only shows which side is heavier, how do you find the heavy ball in 2 weighings?",
+   "answer": "Weigh 3 vs 3 to find the heavy trio (the unweighed 3 if balanced), then weigh 1 vs 1 from it",
+   "explanation": "A balance has three outcomes (left heavier, right heavier, balanced), so each weighing should split the candidates into three equal groups, not two.\n- Weigh 3 vs 3. If one side sinks, the heavy ball is among those 3; if they balance, it's among the 3 left off.\n- From that trio, weigh 1 vs 1. The heavier one is it; if they balance, it's the third.\nIn general, $n$ weighings handle up to $3^n$ balls when you know the odd ball is heavy.",
+   "distractors": [
+    "Weigh 4 vs 4 (the 9th is heavy if balanced), then weigh 2 vs 2 from the heavier side",
+    "Weigh 2 vs 2 twice, keeping the ninth ball aside as a spare",
+    "Weigh 4 vs 5, then split the heavier pan in half and weigh again"
+   ],
+   "hint": "A weighing has three possible outcomes, not two."
+  },
+  {
+   "id": "2-defective-ball",
+   "section": "2.2",
+   "name": "Defective ball (12 balls)",
+   "kind": "problem",
+   "page": 7,
+   "prompt": "Among 12 identical-looking balls, exactly one is defective: it is either heavier or lighter than the rest, and you don't know which. With a two-pan balance used 3 times, how do you identify the defective ball and whether it is heavy or light? What is the first weighing, and what's the key idea?",
+   "answer": "Weigh 4 vs 4 (4 left off), then weigh mixed groups of suspects and known-good balls",
+   "explanation": "There are 24 possibilities (12 balls, heavy or light) and $3^3 = 27$ outcome paths, so every weighing must split the suspects roughly into thirds. Label the balls 1–12.\n- Weigh 1–4 vs 5–8. If balanced, the fault is in 9–12: weigh 9, 10, 11 vs three good balls. Balanced means 12 is bad (weigh it against a good ball for heavy/light); otherwise you now know the direction and 9 vs 10 settles it.\n- If 1–4 is lighter (the heavier case is symmetric), the suspects are 1–4 light or 5–8 heavy. Weigh 1, 2, 5 vs 3, 6, 9.\n- Left lighter: 1L, 2L or 6H, so weigh 1 vs 2. Balanced: 4L, 7H or 8H, so weigh 7 vs 8. Left heavier: 5H or 3L, so weigh 5 vs a good ball.",
+   "distractors": [
+    "Weigh 6 vs 6; then 3 vs 3 from the heavier side; then 1 vs 1",
+    "Weigh 5 vs 5 (2 left off); then split the suspects in half each time",
+    "Weigh 3 vs 3 (6 left off); then weigh the 6 leftovers 3 vs 3"
+   ],
+   "hint": "Try the 9-ball version with a known heavy ball first; always split into three groups."
+  },
+  {
+   "id": "2-weighing-capacity",
+   "section": "2.2",
+   "name": "Weighing capacity (n weighings)",
+   "kind": "concept",
+   "page": 9,
+   "prompt": "With a two-pan balance and $n$ weighings (and no extra ball known to be good), what is the largest number of balls among which you can always find the single defective one (a) if you know it is heavier, and (b) if it may be heavier or lighter and you must also say which?",
+   "answer": "(a) $3^n$ balls; (b) $(3^n-3)/2$ balls",
+   "explanation": "Each weighing has three outcomes, so $n$ weighings can separate at most $3^n$ scenarios.\n- Known heavy: $N$ balls means $N$ scenarios, and splitting into thirds each time achieves $N = 3^n$ (e.g. 9 balls in 2 weighings).\n- Unknown direction: there are $2N$ scenarios, and without a spare known-good ball the first weighing can't use every outcome path efficiently. The exact limit is $(3^n - 3)/2$: 3 balls for $n = 2$, 12 balls for $n = 3$.",
+   "distractors": [
+    "(a) $2^n$ balls; (b) $2^{n-1}$ balls",
+    "(a) $3^n$ balls; (b) $3^n/2$ balls",
+    "(a) $3^n - 1$ balls; (b) $(3^n-1)/2$ balls"
+   ],
+   "hint": "Count outcomes: a balance gives three results per weighing."
+  },
+  {
+   "id": "2-trailing-zeros",
+   "section": "2.2",
+   "name": "Trailing zeros",
+   "kind": "problem",
+   "page": 9,
+   "prompt": "How many trailing zeros does $100!$ have?",
+   "answer": "24",
+   "explanation": "Each trailing zero needs a factor $10 = 2 \\times 5$. There are far more factors of 2 than factors of 5 in $100!$, so count the 5s.\n- Multiples of 5 up to 100: $\\lfloor 100/5 \\rfloor = 20$.\n- Multiples of 25 (25, 50, 75, 100) contribute a second 5 each: $\\lfloor 100/25 \\rfloor = 4$.\nTotal $20 + 4 = 24$. In general, the count is $\\sum_{k \\ge 1} \\lfloor n/5^k \\rfloor$.",
+   "distractors": [
+    "20",
+    "25",
+    "11"
+   ],
+   "hint": "Which prime factor of 10 is scarcer?"
+  },
+  {
+   "id": "2-horse-race",
+   "section": "2.2",
+   "name": "Horse race",
+   "kind": "problem",
+   "page": 9,
+   "prompt": "There are 25 horses, each running at its own constant speed (all speeds different). The track has 5 lanes, so a race holds at most 5 horses and tells you only their finishing order. What is the minimum number of races needed to identify the 3 fastest horses?",
+   "answer": "7 races",
+   "explanation": "- Races 1–5: race five groups of 5 to rank each group.\n- Race 6: race the five group winners. Call the groups A–E in the order their winners finish, so A1 is the fastest horse overall.\n- Only five horses can still be 2nd or 3rd overall: A2, A3, B1, B2, C1. Groups D and E are out, and so are B3 and C2 (each already has 3 known faster horses).\n- Race 7: race those five; the top two join A1.\nFive races can't compare horses across groups, and after race 6 there are still five candidates for two spots, so a 7th race is needed.",
+   "distractors": [
+    "6 races",
+    "8 races",
+    "10 races"
+   ],
+   "hint": "After racing the group winners, which horses can still make the top 3?"
+  },
+  {
+   "id": "2-infinite-sequence",
+   "section": "2.2",
+   "name": "Infinite sequence",
+   "kind": "problem",
+   "page": 10,
+   "prompt": "Solve for $x$: $x^{x^{x^{\\cdots}}} = 2$, an infinite tower of powers of $x$.",
+   "answer": "$x = \\sqrt{2}$",
+   "explanation": "The tower is infinite, so the exponent sitting on the bottom $x$ is the whole tower again, which also equals 2. Therefore $x^2 = 2$ and $x = \\sqrt{2}$ (taking the positive root). Check: the sequence $\\sqrt2,\\ \\sqrt2^{\\sqrt2},\\ \\dots$ increases and converges to 2. (The same trick applied to 'tower $= 4$' also gives $\\sqrt2$, but that tower converges to 2, not 4, so always sanity-check convergence.)",
+   "distractors": [
+    "$x = 2$",
+    "$x = e^{1/e}$",
+    "$x = 2^{1/4}$"
+   ],
+   "hint": "Removing one $x$ from an infinite tower leaves the same tower."
+  },
+  {
+   "id": "2-mutilated-chessboard",
+   "section": "2.3",
+   "name": "Chessboard with corners removed",
+   "kind": "problem",
+   "page": 10,
+   "prompt": "Two diagonally opposite corner squares are removed from an $8 \\times 8$ chessboard, leaving 62 squares. Can you cover the rest of the board exactly with 31 dominoes ($1 \\times 2$ tiles), with no overlaps and nothing hanging off the board?",
+   "answer": "No — both removed corners are the same color, leaving 30 of one color and 32 of the other",
+   "explanation": "Color the board in the usual checkerboard pattern. Opposite corners share a color, so removing them leaves 30 squares of that color and 32 of the other. Every domino covers one black and one white square, so 31 dominoes would need 31 of each. Impossible. The lesson: a coloring invariant can rule out a tiling even when the areas match.",
+   "distractors": [
+    "Yes — 62 squares is exactly 31 dominoes' worth of area",
+    "Yes — tile row by row and pair up the leftover squares at the ends",
+    "Yes, but only if some dominoes are placed vertically"
+   ],
+   "hint": "What does a single domino always cover on a checkerboard?"
+  },
+  {
+   "id": "2-box-packing",
+   "section": "2.3",
+   "name": "Box packing",
+   "kind": "problem",
+   "page": 10,
+   "prompt": "Can you pack 53 bricks of size $1 \\times 1 \\times 4$ into a $6 \\times 6 \\times 6$ box?",
+   "answer": "No — checkerboard-color 27 blocks of size $2\\times2\\times2$; at most 52 bricks can fit",
+   "explanation": "Volume alone doesn't decide it: $53 \\times 4 = 212 \\le 216$.\n- Split the box into 27 blocks of size $2\\times2\\times2$ and color them like a 3D checkerboard: 14 of one color, 13 of the other.\n- Along any axis the color switches every 2 units, so any $1\\times1\\times4$ brick has exactly half its volume (2 units) in each color.\n- The 13 minority blocks have total volume $13 \\times 8 = 104$, enough for at most $104/2 = 52$ bricks.\nSo the 53rd brick can't fit.",
+   "distractors": [
+    "Yes — 53 bricks have volume 212, less than the box's 216",
+    "Yes — 54 bricks fit in the box, so 53 certainly do",
+    "No — at most 48 bricks fit, one layer of 36 plus 12 more"
+   ],
+   "hint": "Generalize the chessboard-coloring trick to 3D, using $2\\times2\\times2$ blocks."
+  },
+  {
+   "id": "2-calendar-cubes",
+   "section": "2.3",
+   "name": "Calendar cubes",
+   "kind": "problem",
+   "page": 11,
+   "prompt": "You want two cubes with a single digit on each of their 6 faces, so that every morning you can set them side by side to show the day of the month, 01 to 31. Both cubes must always be used (days 1–9 appear as 01–09), and you may swap the cubes' order. Which digits go on each cube?",
+   "answer": "Cube 1: 0, 1, 2, 3, 4, 5; Cube 2: 0, 1, 2, 6, 7, 8 (the 6 doubles as a 9)",
+   "explanation": "- Days 11 and 22 force a 1 and a 2 onto both cubes.\n- Days 01–09 need a 0 next to every digit 1–9. One cube can't hold all of 1–9, so both cubes need a 0.\n- That uses 3 faces per cube, leaving 6 faces for the 7 digits 3–9.\nThe out-of-the-box step: an upside-down 6 is a 9, and you never need both at once. So 3, 4, 5 go on one cube and 6, 7, 8 on the other.",
+   "distractors": [
+    "Cube 1: 0, 1, 2, 3, 4, 5; Cube 2: 1, 2, 6, 7, 8, 9",
+    "Cube 1: 0, 1, 2, 3, 4, 5; Cube 2: 0, 1, 6, 7, 8, 9",
+    "Cube 1: 0, 1, 3, 5, 7, 9; Cube 2: 0, 2, 4, 6, 8, 9"
+   ],
+   "hint": "Count the digits you need, then look for one that can do double duty."
+  },
+  {
+   "id": "2-door-to-offer",
+   "section": "2.3",
+   "name": "Door to offer",
+   "kind": "problem",
+   "page": 12,
+   "prompt": "You face two doors: one leads to your job offer, the other to the exit. Each door has a guard; one guard always lies and the other always tells the truth, but you don't know which is which. You may ask one guard a single yes/no question. What should you ask?",
+   "answer": "Ask: \"Would the other guard say your door is the offer?\" Yes: other door; no: his door",
+   "explanation": "Routing the question through both guards applies exactly one lie either way, so the reply is always the false answer to \"Is your door the offer?\".\n- Ask the truth-teller: he honestly reports the liar's false claim.\n- Ask the liar: he twists the truth-teller's honest claim.\nSo \"yes\" means his door is the exit (take the other one), and \"no\" means his door is the offer. A direct question like \"Is your door the offer?\" fails: in any given setup both guards give the same answer, so you learn nothing about the door in front of you.",
+   "distractors": [
+    "Ask: \"Is your door the offer?\" Yes: his door; no: the other door",
+    "Ask: \"Would the other guard say your door is the offer?\" Yes: his door; no: other door",
+    "Ask: \"Are you the truth-teller?\" Yes: his door; no: the other door"
+   ],
+   "hint": "Make the question involve both guards."
+  },
+  {
+   "id": "2-message-delivery",
+   "section": "2.3",
+   "name": "Message delivery",
+   "kind": "problem",
+   "page": 13,
+   "prompt": "You need to send a document to a colleague through a courier who steals the contents of any unlocked box, including any locks or keys inside. You and your colleague each own padlocks, and only a lock's owner has its key. How can you get the document to your colleague securely?",
+   "answer": "Lock it and send it; he adds his own lock and returns it; you remove yours and send it back",
+   "explanation": "The box must always travel locked, and your colleague can't open your lock, so the box has to come back to you at some point. The trick is that a box can carry two locks.\n- Trip 1: you lock the box and send it.\n- Trip 2: he adds his own lock and sends it back.\n- Trip 3: you remove your lock and send it again. Now only his lock is on it, and he opens it.\nThe box is never unlocked in transit. (This is the idea behind \"three-pass\" encryption protocols.)",
+   "distractors": [
+    "Lock it and send it; then mail your key to him in a second locked box",
+    "Lock it with two of your own padlocks so the courier can't break in",
+    "Send it unlocked but hidden inside a second, locked box"
+   ],
+   "hint": "A box can have more than one lock on it."
+  },
+  {
+   "id": "2-last-ball",
+   "section": "2.3",
+   "name": "Last ball (20 blue, 14 red)",
+   "kind": "problem",
+   "page": 13,
+   "prompt": "A bag holds 20 blue balls and 14 red balls. Repeatedly draw two balls at random without replacing them: if they're the same color, add a blue ball to the bag; if they differ, add a red ball (you have unlimited spares). What color is the last ball left?",
+   "answer": "Blue",
+   "explanation": "Track the counts $(B, R)$ after each draw:\n- two blue: $(B-1,\\ R)$\n- two red: $(B+1,\\ R-2)$\n- one of each: $(B-1,\\ R)$\nThe red count either stays the same or drops by 2, so its parity never changes. Each step removes one ball in total, so eventually one ball is left. Starting from 14 reds (even), the red count can never equal 1, so the last ball is blue.",
+   "distractors": [
+    "Red",
+    "Either color, each with probability 1/2",
+    "It depends on the order of the draws"
+   ],
+   "hint": "How can the number of red balls change in one step?"
+  },
+  {
+   "id": "2-last-ball-odd",
+   "section": "2.3",
+   "name": "Last ball (20 blue, 13 red)",
+   "kind": "problem",
+   "page": 13,
+   "prompt": "Same process as before (draw two balls; same color: add a blue; different colors: add a red), but the bag starts with 20 blue and 13 red balls. What color is the last ball?",
+   "answer": "Red",
+   "explanation": "The number of red balls changes only by 0 or $-2$ per step, so starting from 13 it stays odd forever. An odd count can never reach 0, so there is always at least one red ball in the bag. When only one ball remains, it has to be that red one.",
+   "distractors": [
+    "Blue",
+    "Either color, each with probability 1/2",
+    "Blue with probability 20/33"
+   ],
+   "hint": "Look at the parity of the red count."
+  },
+  {
+   "id": "2-light-switches",
+   "section": "2.3",
+   "name": "Light switches",
+   "kind": "problem",
+   "page": 14,
+   "prompt": "Outside a closed room are four switches, all off; exactly one controls the single light bulb inside. You can flip switches as often as you like while outside. How many times do you need to enter the room to determine which switch controls the bulb?",
+   "answer": "Once — read two things off the bulb: whether it's on and whether it's hot",
+   "explanation": "On/off alone is one bit, enough for only 2 switches. A bulb also heats up when it has been on for a while, giving a second bit, and $2 \\times 2 = 4$ combinations cover 4 switches.\n- Turn on switches 1 and 2 and wait several minutes.\n- Turn off switch 2, turn on switch 3, and go in immediately.\n- On and hot: switch 1. Off and hot: switch 2. On and cold: switch 3. Off and cold: switch 4.",
+   "distractors": [
+    "Twice — each visit only shows on/off, one bit per visit",
+    "Three times — test one switch per visit, the last by elimination",
+    "It can't be determined with certainty"
+   ],
+   "hint": "A light bulb gives off more than light."
+  },
+  {
+   "id": "2-quant-salary",
+   "section": "2.3",
+   "name": "Quant salary",
+   "kind": "problem",
+   "page": 15,
+   "prompt": "Eight quants at a bar want to know their average salary, but nobody wants to reveal their own salary to the others. How can they compute the average?",
+   "answer": "Seed a running total with a secret random number; the seeder removes it and divides by 8",
+   "explanation": "Nobody ever sees an unmasked partial total.\n- Quant 1 picks a secret random number $r$, adds his salary to it, and passes the sum to quant 2.\n- Each quant adds their own salary and passes the running total on; quant 8 hands it back to quant 1.\n- Quant 1 subtracts $r$ to get the true total and divides by 8.\nEvery intermediate number is hidden by $r$, so no one learns anyone else's salary (as long as no two quants collude). The same masking idea is used to share data anonymously in practice.",
+   "distractors": [
+    "Each announces salary plus a private random number; average the announced values",
+    "Each tells a neighbor his salary; each neighboring pair announces its combined total",
+    "Each announces salary rounded to the nearest 10,000; average the rounded values"
+   ],
+   "hint": "Hide the running total behind a number only one person knows."
+  },
+  {
+   "id": "2-coin-piles",
+   "section": "2.4",
+   "name": "Coin piles",
+   "kind": "problem",
+   "page": 15,
+   "prompt": "You are blindfolded in a room with 1000 coins on the floor: 20 show heads and 980 show tails. You can't tell by touch which side is up, but you may flip any coins you like. How can you split the coins into two piles that have the same number of heads?",
+   "answer": "Take any 20 coins as one pile and flip every coin in that pile",
+   "explanation": "Say the 20-coin pile happens to contain $m$ heads. Then the other 980 coins contain the remaining $20 - m$ heads. The small pile has $20 - m$ tails, and flipping every coin in it turns them into exactly $20 - m$ heads, matching the big pile. This holds for every possible $m$, so you never need to know where the heads are.",
+   "distractors": [
+    "Split into two piles of 500 without flipping anything",
+    "Take any 10 coins as one pile and flip every coin in that pile",
+    "Take any 20 coins as one pile and leave all coins unflipped"
+   ],
+   "hint": "Flipping a whole pile swaps its heads and tails counts."
+  },
+  {
+   "id": "2-mislabeled-bags",
+   "section": "2.4",
+   "name": "Mislabeled bags",
+   "kind": "problem",
+   "page": 16,
+   "prompt": "Three bags hold only apples, only oranges, and a mix of apples and oranges. They're labeled \"apple\", \"orange\" and \"mix\", but every label is wrong. What is the smallest number of fruits you must draw to identify all three bags, and from which bag?",
+   "answer": "One fruit, drawn from the bag labeled \"mix\"",
+   "explanation": "The bag labeled \"mix\" can't be the mix, so it is pure, and one fruit tells you exactly what it holds.\n- Say you draw an orange: that bag is the orange bag.\n- The bag labeled \"apple\" can't be apples (wrong label) and can't be oranges (already found), so it is the mix.\n- The bag labeled \"orange\" therefore holds apples.\nDrawing an apple works the same way. Drawing from the \"apple\" or \"orange\" bag can fail, since one fruit can't tell a pure bag from the mix.",
+   "distractors": [
+    "One fruit, drawn from the bag labeled \"apple\"",
+    "Two fruits, one each from the \"apple\" and \"orange\" bags",
+    "Three fruits, one from each bag"
+   ],
+   "hint": "Which label tells you the most when you know it's wrong?"
+  },
+  {
+   "id": "2-wise-men",
+   "section": "2.4",
+   "name": "Wise men",
+   "kind": "problem",
+   "page": 17,
+   "prompt": "A sultan holds 50 wise men and a glass that starts upright. Every minute he summons one wise man at random (anyone may be called any number of times), who may flip the glass over or leave it. At any call, a wise man may declare \"everyone has now been called at least once\": if true, all go free; if false, all are executed. They can agree on a plan once, and are then isolated. What strategy guarantees their freedom?",
+   "answer": "49 others each tip an upright glass over once; a leader resets it, counting to 49, then declares",
+   "explanation": "The leader is the only one who counts; the other 49 are interchangeable and follow the same rule.\n- Non-leader: the first time he is called and finds the glass upright, he turns it upside down. After that he never touches it.\n- Leader: whenever he finds the glass upside down, he sets it upright and adds 1 to his count; otherwise he does nothing.\nEach upside-down glass is a signal from a new non-leader, and the leader collects them one at a time. When his count hits 49, all 49 others have been called (and so has he), so he declares.",
+   "distractors": [
+    "Everyone flips the glass on every call; declare once it has been flipped 50 times",
+    "Each man flips the glass on his first call only; whoever finds it upright again declares",
+    "A leader declares once he has been called 50 times, since the others surely were too"
+   ],
+   "hint": "The 49 non-leaders are symmetric, so they should act identically; one person should act differently."
+  },
+  {
+   "id": "2-gauss-sum",
+   "section": "2.5",
+   "name": "Sum of the first N integers",
+   "kind": "concept",
+   "page": 17,
+   "prompt": "What is $\\sum_{n=1}^{N} n$, and what is the quick \"Gauss\" argument for it?",
+   "answer": "$N(N+1)/2$ — add the list to its reverse to get $N$ pairs that each sum to $N+1$",
+   "explanation": "Write $S = 1 + 2 + \\dots + N$ and also $S = N + (N-1) + \\dots + 1$. Adding the two lines term by term gives $N$ pairs that each total $N + 1$, so\n$$2S = N(N+1) \\quad\\Rightarrow\\quad S = \\frac{N(N+1)}{2}.$$\nFor $N = 100$ that's 5050. The average term is $(N+1)/2$, not $N/2$.",
+   "distractors": [
+    "$N(N-1)/2$ — there are $N-1$ gaps between consecutive terms",
+    "$N^2/2$ — there are $N$ terms and the average term is $N/2$",
+    "$N(N+1)$ — add the list to its reverse to get $N$ pairs summing to $N+1$"
+   ],
+   "hint": "Pair the first term with the last."
+  },
+  {
+   "id": "2-sum-of-squares",
+   "section": "2.5",
+   "name": "Sum of the first N squares",
+   "kind": "concept",
+   "page": 18,
+   "prompt": "What is $\\sum_{n=1}^{N} n^2$, and how can you rederive it if you forget it?",
+   "answer": "$N(N+1)(2N+1)/6$; fit a cubic $aN^3+bN^2+cN+d$ to small cases",
+   "explanation": "Summing a degree-2 expression gives a degree-3 result, so guess $\\sum_{n=1}^N n^2 = aN^3 + bN^2 + cN + d$. Plug in $N = 0, 1, 2, 3$ (sums 0, 1, 5, 14) to get four linear equations; the solution is $a = \\tfrac13$, $b = \\tfrac12$, $c = \\tfrac16$, $d = 0$:\n$$\\sum_{n=1}^N n^2 = \\frac{N^3}{3} + \\frac{N^2}{2} + \\frac{N}{6} = \\frac{N(N+1)(2N+1)}{6}.$$\nThen prove it for all $N$ by induction. Check: $N = 3$ gives $3 \\cdot 4 \\cdot 7 / 6 = 14$.",
+   "distractors": [
+    "$N^2(N+1)^2/4$; square the formula for $\\sum n$",
+    "$N(N+1)(2N+1)/3$; fit a cubic $aN^3+bN^2+cN+d$ to small cases",
+    "$N(N+1)(N+2)/6$; fit a cubic $aN^3+bN^2+cN+d$ to small cases"
+   ],
+   "hint": "What degree should the answer have?"
+  },
+  {
+   "id": "2-clock-pieces",
+   "section": "2.5",
+   "name": "Clock pieces",
+   "kind": "problem",
+   "page": 18,
+   "prompt": "A clock face numbered 1 to 12 falls off the wall and breaks into three pieces (no oddly shaped pieces). The numbers on each piece add up to the same total. Which numbers are on each piece?",
+   "answer": "{11, 12, 1, 2}, {3, 4, 9, 10} and {5, 6, 7, 8}, each summing to 26",
+   "explanation": "The numbers total $1 + 2 + \\dots + 12 = 12 \\cdot 13 / 2 = 78$, so each piece sums to 26.\n- The only runs of neighboring numbers that sum to 26 are 5–8 and, wrapping past 12, 11, 12, 1, 2. The usual trap is forgetting that 12 and 1 are neighbors.\n- Two straight cuts leave two end caps and a middle band; the band gets 3, 4 on one side and 9, 10 on the other, which also sum to 26.",
+   "distractors": [
+    "Impossible — no three pieces of a clock can have equal sums",
+    "{11, 12, 1, 2}, {3, 4, 5, 6, 8} and {7, 9, 10}, each summing to 26",
+    "{12, 1, 2, 3, 8}, {4, 5, 6, 11} and {7, 9, 10}, each summing to 26"
+   ],
+   "hint": "First find the target sum per piece. Are 12 and 1 adjacent?"
+  },
+  {
+   "id": "2-missing-integers",
+   "section": "2.5",
+   "name": "Missing integers",
+   "kind": "problem",
+   "page": 18,
+   "prompt": "You are given 98 distinct integers from 1 to 100, so two numbers in that range are missing. What is an efficient way to find the two missing numbers?",
+   "answer": "Use the sum and the sum of squares to get $x+y$ and $x^2+y^2$, then solve for $x, y$",
+   "explanation": "Call the missing numbers $x, y$ and the given ones $z_i$. From the known totals:\n$$x + y = \\frac{100 \\cdot 101}{2} - \\sum z_i, \\qquad x^2 + y^2 = \\frac{100 \\cdot 101 \\cdot 201}{6} - \\sum z_i^2.$$\nThen $xy = \\frac{(x+y)^2 - (x^2+y^2)}{2}$, so $x$ and $y$ are the roots of $t^2 - (x+y)\\,t + xy = 0$. One pass over the data computes both sums: $O(n)$ time and $O(1)$ memory. The sum alone isn't enough, because many pairs share the same sum.",
+   "distractors": [
+    "Compare the list's sum with $\\sum n$; that difference alone pins down both numbers",
+    "Compare the list's product with $100!$; that ratio alone pins down both numbers",
+    "XOR the list with 1 to 100; the result is the sum of the two missing numbers"
+   ],
+   "hint": "One equation gives $x + y$. What gives a second equation?"
+  },
+  {
+   "id": "2-counterfeit-coins-1",
+   "section": "2.5",
+   "name": "Counterfeit coins I",
+   "kind": "problem",
+   "page": 19,
+   "prompt": "There are 10 bags of 100 coins. Genuine coins weigh 10 g. One bag is entirely counterfeit: all its coins weigh 9 g, or all weigh 11 g (you don't know which). How can you find the counterfeit bag with a single weighing on a digital scale?",
+   "answer": "Weigh $i$ coins from each bag $i$; a reading of $550 \\pm i$ g flags bag $i$ and its direction",
+   "explanation": "Taking a different number of coins from each bag gives every bag its own signature.\n- With $i$ coins from bag $i$, the sample has $1 + 2 + \\dots + 10 = 55$ coins, which would weigh 550 g if all were genuine.\n- If bag $i$ is counterfeit, exactly $i$ coins are off by 1 g each, so the scale reads $550 + i$ (heavy fakes) or $550 - i$ (light fakes).\nBoth the bag and the direction come from one reading. Any 10 distinct counts would work; equal counts from two bags would make those bags indistinguishable.",
+   "distractors": [
+    "Take 1 coin from each bag; the deviation from 100 g reveals which bag is fake",
+    "Take 10 coins from each of bags 1–5; if the weight is off, the fake is among them",
+    "Weigh $i$ coins from each bag $i$; a reading of $550 \\pm i^2$ g flags bag $i$"
+   ],
+   "hint": "The number of coins taken from each bag must be different."
+  },
+  {
+   "id": "2-glass-balls",
+   "section": "2.5",
+   "name": "Glass balls",
+   "kind": "problem",
+   "page": 19,
+   "prompt": "You have two identical glass balls in a 100-story building. A ball dropped from floor $X$ or higher always breaks; from any lower floor it survives and can be reused. What strategy finds $X$ with the fewest drops in the worst case, and how many drops is that?",
+   "answer": "14 drops: drop ball 1 at floors 14, 27, 39, 50, … (gaps shrink by 1), then scan with ball 2",
+   "explanation": "If the worst case allows $N$ drops, ball 1's first drop can be at most floor $N$: if it breaks, ball 2 must test floors $1, \\dots, N-1$ one at a time. If it survives, only $N - 1$ drops remain, so the next jump can be at most $N - 1$ floors, then $N - 2$, and so on.\n- Two balls and $N$ drops therefore cover $N + (N-1) + \\dots + 1 = N(N+1)/2$ floors.\n- The smallest $N$ with $N(N+1)/2 \\ge 100$ is 14 ($13 \\cdot 14/2 = 91$, $14 \\cdot 15/2 = 105$).\nSo drop ball 1 at 14, 27, 39, 50, 60, 69, 77, 84, 90, 95, 99 until it breaks, then walk ball 2 up from the last safe floor.",
+   "distractors": [
+    "19 drops: drop ball 1 every 10 floors, then scan the gap with ball 2",
+    "7 drops: binary-search the floors with ball 1, then finish with ball 2",
+    "13 drops: drop ball 1 at floors 13, 25, 36, … (gaps shrink by 1), then scan with ball 2"
+   ],
+   "hint": "If the first ball breaks on drop $k$, how many drops does the second ball have left?"
+  },
+  {
+   "id": "2-pigeonhole-principle",
+   "section": "2.6",
+   "name": "Pigeonhole principle",
+   "kind": "concept",
+   "page": 20,
+   "prompt": "State the pigeonhole principle and its generalized form.",
+   "answer": "$n+1$ pigeons in $n$ holes force a shared hole; $mn+1$ pigeons force some hole to hold $m+1$",
+   "explanation": "If every hole held at most one pigeon, $n$ holes would hold at most $n$ pigeons, so $n + 1$ pigeons must double up somewhere. Likewise, if every hole held at most $m$, the total would be at most $mn$, so $mn + 1$ pigeons force some hole to contain at least $m + 1$. (Just $n + 1$ pigeons are enough for the basic version.) The skill lies in choosing what the pigeons and holes are: colors, handshake counts, regions of a square, possible weighing totals.",
+   "distractors": [
+    "$n$ pigeons in $n$ holes force a shared hole; $mn$ pigeons force some hole to hold $m+1$",
+    "$n+1$ pigeons in $n$ holes force a shared hole; $mn+1$ pigeons put $m$ in every hole",
+    "$2n$ pigeons in $n$ holes force a shared hole; $mn+1$ pigeons force some hole to hold $m+2$"
+   ],
+   "hint": "Assume the opposite: every hole is as empty as possible."
+  },
+  {
+   "id": "2-matching-socks",
+   "section": "2.6",
+   "name": "Matching socks",
+   "kind": "problem",
+   "page": 21,
+   "prompt": "A drawer holds 2 red, 20 yellow and 31 blue socks. Grabbing socks at random without looking, what is the minimum number you must take to be sure of getting a pair of the same color?",
+   "answer": "4",
+   "explanation": "There are 3 colors (the holes). With 3 socks you might get one of each color, so no pair is guaranteed. A 4th sock must share a color with one of the first three, by the pigeonhole principle. The particular counts (2, 20, 31) don't matter here.",
+   "distractors": [
+    "3",
+    "5",
+    "24"
+   ],
+   "hint": "How many colors are there?"
+  },
+  {
+   "id": "2-handshakes",
+   "section": "2.6",
+   "name": "Handshakes",
+   "kind": "problem",
+   "page": 21,
+   "prompt": "You arrive at a welcome party with 25 teammates (26 people in total). Every teammate shakes your hand, and some unknown number of handshakes also happen among the others. Can you be sure that two people present shook hands with exactly the same number of people?",
+   "answer": "Yes — 26 people but only 25 possible handshake counts (1 to 25)",
+   "explanation": "Everyone shakes your hand, so each of the 26 people shook between 1 and 25 hands: nobody has 0, and 25 is the maximum because there are only 25 others. That's 26 people (pigeons) and 25 possible counts (holes), so two people must share a count. It works even without the \"everyone greets you\" detail: counts 0 and 25 can't both occur, so again only 25 values are possible.",
+   "distractors": [
+    "No — the counts could be 0, 1, …, 25, all different",
+    "Only if the total number of handshakes is even",
+    "Not necessarily — it depends on who had met before the party"
+   ],
+   "hint": "What range of values can each person's handshake count take?"
+  },
+  {
+   "id": "2-have-we-met-before",
+   "section": "2.6",
+   "name": "Have we met before?",
+   "kind": "problem",
+   "page": 21,
+   "prompt": "Show that at any party of 6 people, there are either 3 people who all knew each other before, or 3 people who were all strangers to each other. What is the key step?",
+   "answer": "Pick one person; 3 of the other 5 relate to them the same way; then check that trio",
+   "explanation": "Call yourself person 6. Each of the other 5 either knows you or doesn't: 2 types and 5 people, so at least 3 are the same type.\n- If at least 3 know you: if any two of them know each other, those two plus you all know each other; if none do, those 3 are mutual strangers.\n- If at least 3 don't know you: if any two of them are strangers, those two plus you are mutual strangers; otherwise those 3 all know each other.\nEither way the claim holds. (This is the Ramsey number $R(3,3) = 6$; with only 5 people it can fail.)",
+   "distractors": [
+    "It isn't guaranteed for 6 people; you need at least 7",
+    "Pick one person; if they know 3 others, those 3 must all know each other",
+    "15 pairs split into two types, so 8 same-type pairs must form a triangle"
+   ],
+   "hint": "Focus on one person and their relationships with the other five."
+  },
+  {
+   "id": "2-ants-on-a-square",
+   "section": "2.6",
+   "name": "Ants on a square",
+   "kind": "problem",
+   "page": 22,
+   "prompt": "51 ants are on a square of side length 1. You have a circular glass of radius $1/7$. Can you always place the glass on the square so that it covers at least 3 ants?",
+   "answer": "Yes — split into 25 squares of side 1/5; one has at least 3 ants, and the glass covers it",
+   "explanation": "Cut the square into a $5 \\times 5$ grid of 25 small squares of side $1/5$. Since $51 = 2 \\cdot 25 + 1$, the generalized pigeonhole principle puts at least 3 ants in some small square. A circle of radius $r$ covers any square of side up to $\\sqrt{2}\\,r$: here the small square's half-diagonal is $\\sqrt2/10 \\approx 0.1414$, just under $1/7 \\approx 0.1429$. Center the glass on that small square and it covers all its ants.",
+   "distractors": [
+    "No — the ants can be spread so that no radius-1/7 disk ever holds 3",
+    "Yes — split into 49 squares of side 1/7; one holds at least 2 ants, then add one more",
+    "Yes — split into 16 squares of side 1/4; one has at least 4 ants, and the glass covers it"
+   ],
+   "hint": "How many regions do you need so that 51 ants force 3 into one region?"
+  },
+  {
+   "id": "2-counterfeit-coins-2-two-bags",
+   "section": "2.6",
+   "name": "Counterfeit coins II (two bags)",
+   "kind": "problem",
+   "page": 22,
+   "prompt": "Two bags each contain coins of a single unknown type: all 9 g, all 10 g, or all 11 g. You put 1 coin from bag 1 and some coins from bag 2 on a digital scale together, once. What is the fewest coins from bag 2 that lets you identify both bags' types?",
+   "answer": "3",
+   "explanation": "Measure each coin's deviation from 10 g, so each bag contributes $-1$, $0$ or $+1$ per coin. With $k$ coins from bag 2, the total deviation is $c_1 + k\\,c_2$, and there are $3 \\times 3 = 9$ type combinations to tell apart.\n- $k = 2$: the total ranges only over $-3, \\dots, 3$ (7 values), so two combinations must collide (pigeonhole).\n- $k = 3$: $c_1 + 3c_2$ takes all 9 values $-4, \\dots, 4$ exactly once, so every combination is identifiable.",
+   "distractors": [
+    "1",
+    "2",
+    "9"
+   ],
+   "hint": "Count the combinations (pigeons) and the possible totals (holes)."
+  },
+  {
+   "id": "2-counterfeit-coins-2",
+   "section": "2.6",
+   "name": "Counterfeit coins II",
+   "kind": "problem",
+   "page": 22,
+   "prompt": "There are 5 bags of 100 coins. Within a bag all coins weigh the same, either 9 g, 10 g or 11 g, but each bag's type is unknown. With a digital scale that shows the exact weight, how many weighings do you need to determine every bag's type, and how?",
+   "answer": "One: weigh 1, 3, 9, 27 and 81 coins from bags 1–5 together",
+   "explanation": "Subtract 10 g per coin, so bag $i$'s coins each deviate by $c_i \\in \\{-1, 0, 1\\}$. Taking $3^{i-1}$ coins from bag $i$ makes the total deviation\n$$D = c_1 + 3c_2 + 9c_3 + 27c_4 + 81c_5,$$\nwhich is a number written in balanced ternary. Each of the $3^5 = 243$ combinations gives a different $D$ between $-121$ and $121$, so a single reading decodes all five bags. Powers of 2 fail because deviations can be negative: with 1 and 2 coins, $(c_1, c_2) = (1, -1)$ and $(-1, 0)$ both give $-1$. The 100-coin bags are just big enough to supply 81 coins.",
+   "distractors": [
+    "Five: weigh one coin from each bag separately",
+    "One: weigh 1, 2, 4, 8 and 16 coins from bags 1–5 together",
+    "Two: one weighing for bags 1–3, then one for bags 4–5"
+   ],
+   "hint": "Start with two bags: how many coins from bag 2 per coin from bag 1?"
+  },
+  {
+   "id": "2-modular-arithmetic",
+   "section": "2.7",
+   "name": "Modular arithmetic basics",
+   "kind": "concept",
+   "page": 23,
+   "prompt": "Two basic facts about remainders ($x \\bmod y$, also written $x \\% y$) drive the puzzles in the modular arithmetic section. What are they?",
+   "answer": "Equal remainders mean $y \\mid x_1 - x_2$; $y$ consecutive integers have distinct remainders",
+   "explanation": "If $x_1 \\bmod y = x_2 \\bmod y$, then $x_1 - x_2$ is a multiple of $y$. It follows that $x, x+1, \\dots, x+y-1$ all have different remainders: any two differ by more than 0 and less than $y$, so the difference can't be a multiple of $y$. This is what lets a hat-guessing prisoner recover his own color from one announced remainder: exactly one of the candidate values for his hat produces that remainder.",
+   "distractors": [
+    "Equal remainders mean $y \\mid x_1 + x_2$; $y$ consecutive integers share one remainder",
+    "Equal remainders mean $x_1 = x_2$; any $y$ integers have distinct remainders",
+    "Equal remainders mean $y \\mid x_1 x_2$; $y$ consecutive integers repeat a remainder"
+   ],
+   "hint": "Think about $x_1 - x_2$ when the remainders match."
+  },
+  {
+   "id": "2-prisoner-problem",
+   "section": "2.7",
+   "name": "Prisoner problem (two colors)",
+   "kind": "problem",
+   "page": 24,
+   "prompt": "100 prisoners each receive a red or blue hat at random. Each sees every other hat but not his own. They are called one at a time in random order; each announces a guess of his own hat color out loud, so everyone hears it, and is freed if right or executed if wrong. No other communication is allowed. With a strategy agreed the night before, how many can they guarantee to save?",
+   "answer": "99 — the first prisoner called announces the parity of the red hats he sees",
+   "explanation": "The first prisoner called learns nothing about his own hat, so he uses his guess as a signal: \"red\" if he sees an odd number of red hats among the other 99, \"blue\" if even. He survives with probability 1/2.\n- Every later prisoner now knows the parity of red hats among those 99, and can see 98 of them (everyone except the first prisoner and himself).\n- If the red count he sees already has the announced parity, his own hat is blue; otherwise it is red.\nSo all 99 remaining prisoners are guaranteed to be right.",
+   "distractors": [
+    "50 — pair up so that exactly one of each pair guesses correctly",
+    "100 — the first prisoner can also deduce his own color",
+    "98 — the first two prisoners must sacrifice themselves to send signals"
+   ],
+   "hint": "The first speaker can't help himself, but he can help everyone else."
+  },
+  {
+   "id": "2-prisoner-problem-three-colors",
+   "section": "2.7",
+   "name": "Prisoner problem (three colors)",
+   "kind": "problem",
+   "page": 24,
+   "prompt": "Same setup as the 100-prisoner hat game (called in random order, every guess heard by all), but now each hat is red, green or blue. How many prisoners can be guaranteed to survive, and what should the first prisoner announce?",
+   "answer": "99 — code colors 0, 1, 2; the first announces the color equal to (sum of codes he sees) mod 3",
+   "explanation": "Code red = 0, green = 1, blue = 2. The first prisoner adds up the codes of the other 99 hats and names the color whose code equals that sum mod 3 (his own chance is 1/3).\n- Any other prisoner adds up the 98 hats he can see (excluding the first prisoner and himself) to get $s$.\n- His own code $c$ must satisfy $(s + c) \\bmod 3 =$ the announced value, and since $s$, $s+1$, $s+2$ have distinct remainders, exactly one $c$ works.\nExample: $s = 103 \\equiv 1$ and the announcement is blue (2), so $c = 1$: green. The same trick works mod $k$ for $k$ colors.",
+   "distractors": [
+    "66 — only two-thirds of the prisoners can decode a three-color signal",
+    "99 — the first announces whichever color he sees most often",
+    "98 — the first two prisoners must each announce one bit of information"
+   ],
+   "hint": "Replace \"odd or even\" with a remainder mod 3."
+  },
+  {
+   "id": "2-division-by-9",
+   "section": "2.7",
+   "name": "Division by 9",
+   "kind": "problem",
+   "page": 25,
+   "prompt": "Give a rule for deciding whether an integer is divisible by 9, and explain why it works.",
+   "answer": "Divisible by 9 exactly when its digit sum is, because $10^k \\equiv 1 \\pmod 9$",
+   "explanation": "Write $a = a_n 10^n + \\dots + a_1 10 + a_0$. Each $10^k - 1 = 99\\dots9$ is a multiple of 9, so\n$$a - (a_n + \\dots + a_1 + a_0) = \\sum_k a_k (10^k - 1)$$\nis a multiple of 9. Hence $a$ and its digit sum leave the same remainder mod 9, and one is divisible by 9 exactly when the other is. Example: 7209 has digit sum 18, and indeed $7209 = 9 \\times 801$.",
+   "distractors": [
+    "Divisible by 9 exactly when its alternating digit sum is, because $10 \\equiv -1 \\pmod 9$",
+    "Divisible by 9 exactly when its last two digits are, because 100 is a multiple of 9",
+    "Divisible by 9 exactly when its digit sum is divisible by 3, because $9 = 3^2$"
+   ],
+   "hint": "What is $10^k - 1$ divisible by?"
+  },
+  {
+   "id": "2-division-by-11",
+   "section": "2.7",
+   "name": "Division by 11",
+   "kind": "problem",
+   "page": 25,
+   "prompt": "What is the analogous divisibility test for 11, and why does it work?",
+   "answer": "Its alternating digit sum must be divisible by 11, since $10 \\equiv -1 \\pmod{11}$",
+   "explanation": "Since $10 \\equiv -1 \\pmod{11}$, we have $10^k \\equiv (-1)^k$, so\n$$a = \\sum_k a_k 10^k \\equiv \\sum_k (-1)^k a_k \\pmod{11}.$$\nThe alternating digit sum, with a plus sign on the units digit, therefore has the same remainder mod 11 as the number itself. Example: 918082 gives $2 - 8 + 0 - 8 + 1 - 9 = -22$, a multiple of 11, and indeed $918082 = 11 \\times 83462$.",
+   "distractors": [
+    "Its digit sum must be divisible by 11, since $10 \\equiv 1 \\pmod{11}$",
+    "Its last two digits must form a multiple of 11, since $100 \\equiv 0 \\pmod{11}$",
+    "Its odd-position digits must sum to a multiple of 11, since $11 = 10 + 1$"
+   ],
+   "hint": "What is 10 congruent to mod 11?"
+  },
+  {
+   "id": "2-chameleon-colors",
+   "section": "2.7",
+   "name": "Chameleon colors",
+   "kind": "problem",
+   "page": 26,
+   "prompt": "An island has 13 red, 15 green and 17 blue chameleons. Whenever two chameleons of different colors meet, both change to the third color (e.g. a red and a green both become blue). Is it possible for all the chameleons to end up the same color?",
+   "answer": "No — the differences between color counts never change mod 3, and none of them is 0 mod 3",
+   "explanation": "Look at the counts mod 3: $(R, G, B) = (13, 15, 17) \\equiv (1, 0, 2)$, three different remainders.\n- A meeting changes the counts by $-1, -1, +2$ in some order, and $-1 \\equiv +2 \\pmod 3$, so all three counts shift by the same amount mod 3.\n- Hence the difference between any two counts is unchanged mod 3.\nTo end with one color, two counts must both be 0, so their difference must be $\\equiv 0$. Here every pairwise difference is 1 or 2 mod 3, forever. So it's impossible.",
+   "distractors": [
+    "Yes — keep pairing off red and green chameleons until all are blue",
+    "Yes — the total of 45 is divisible by 3, so one color can absorb the rest",
+    "No — the total number of chameleons is odd, so they can't all match"
+   ],
+   "hint": "Consider the counts modulo 3."
+  },
+  {
+   "id": "2-math-induction",
+   "section": "2.8",
+   "name": "Proof by induction",
+   "kind": "concept",
+   "page": 27,
+   "prompt": "What are the steps of a proof by mathematical induction, and how does strong induction differ?",
+   "answer": "Base case plus $P(n) \\Rightarrow P(n+1)$; strong induction may assume $P(1), \\dots, P(n)$",
+   "explanation": "- State the predicate $P(n)$ you want to prove for all $n$.\n- Prove the base case: $P(1)$, or the smallest $n$ that makes sense.\n- Prove the step: assuming $P(n)$, show $P(n+1)$.\nIn strong induction the step may use all of $P(1), \\dots, P(n)$, which helps when a problem splits into two smaller pieces of arbitrary size (coin splits, chocolate bars). Usually the hard part is finding the right $P(n)$, and working out small cases is the best way to spot it.",
+   "distractors": [
+    "Prove $P(n+1) \\Rightarrow P(n)$ plus one large case; strong induction checks all cases directly",
+    "Prove $P(1)$ and $P(2)$ only; strong induction then covers every $n$ automatically",
+    "Base case plus $P(n) \\Rightarrow P(n+1)$; strong induction needs no base case at all"
+   ],
+   "hint": "Think of a row of dominoes."
+  },
+  {
+   "id": "2-coin-split",
+   "section": "2.8",
+   "name": "Coin split problem",
+   "kind": "problem",
+   "page": 27,
+   "prompt": "Split 1000 coins into two piles of sizes $x$ and $y$ and record $xy$. Keep splitting any pile with more than one coin, each time adding the product of the two new pile sizes to your running total, until every pile has 1 coin. What is the final total, and does it depend on how you split?",
+   "answer": "Always $\\binom{1000}{2} = 499{,}500$, regardless of how you split",
+   "explanation": "Small cases: $f(2) = 1$, $f(3) = 2 + 1 = 3$, $f(4) = 6$ (via 2+2 or 3+1), which suggests $f(n) = n(n-1)/2$. Prove it by strong induction: splitting $n$ into $x$ and $n - x$ gives\n$$f(n) = x(n-x) + \\frac{x(x-1)}{2} + \\frac{(n-x)(n-x-1)}{2} = \\frac{n(n-1)}{2}.$$\nSlicker view: a split into piles of sizes $x$ and $y$ separates exactly $xy$ pairs of coins, and every one of the $\\binom{n}{2}$ pairs is separated exactly once. For $n = 1000$ the total is 499,500.",
+   "distractors": [
+    "Always $1000^2/4 = 250{,}000$, regardless of how you split",
+    "Always $\\binom{1001}{2} = 500{,}500$, regardless of how you split",
+    "It depends on the splits; halving every pile gives the maximum"
+   ],
+   "hint": "Compute the total for 2, 3 and 4 coins."
+  },
+  {
+   "id": "2-chocolate-bar",
+   "section": "2.8",
+   "name": "Chocolate bar problem",
+   "kind": "problem",
+   "page": 28,
+   "prompt": "A $6 \\times 8$ chocolate bar (48 unit squares) must be broken into single squares. Each break splits one rectangular piece into two smaller rectangles. How many breaks are needed?",
+   "answer": "47",
+   "explanation": "Every break turns one piece into two, so it increases the number of pieces by exactly 1. You start with 1 piece and finish with 48, so exactly 47 breaks are needed, whatever order you break in. In general an $m \\times n$ bar takes $mn - 1$ breaks (you can also prove this by strong induction on the dimensions).",
+   "distractors": [
+    "12",
+    "24",
+    "48"
+   ],
+   "hint": "How does one break change the number of pieces?"
+  },
+  {
+   "id": "2-race-track",
+   "section": "2.8",
+   "name": "Race track",
+   "kind": "problem",
+   "page": 29,
+   "prompt": "On a one-way circular race track, $N$ gas cans sit at different spots, and together they hold exactly enough gas for one lap. Your car starts with an empty tank, but you may start anywhere and pick up each can as you pass it. Can you always choose a starting point that lets you complete the lap?",
+   "answer": "Yes — for any placement of the cans, some starting can works",
+   "explanation": "Induction on $N$. For $N = 1$, start at the can. For more cans, let $x_i$ be the distance can $i$'s gas can cover and $y_i$ the distance from can $i$ to the next can.\n- Since $\\sum x_i = \\sum y_i$ (one lap each), some can has $x_i \\ge y_i$: a car at that can, even with an empty tank, always reaches the next can.\n- So merge the next can's gas into can $i$ and delete that can. A start that works for these $N - 1$ cans also works for the original $N$.\nBy the induction hypothesis the smaller problem has a valid start, so the original does too.",
+   "distractors": [
+    "No — if the cans are unevenly spread, you get stranded wherever you start",
+    "Only if some single can holds at least half of the total gas",
+    "Only if the cans are equally spaced around the track"
+   ],
+   "hint": "Solve $N = 1$ and $N = 2$ first, then try to merge two cans."
+  },
+  {
+   "id": "2-race-track-start",
+   "section": "2.8",
+   "name": "Race track (where to start)",
+   "kind": "problem",
+   "page": 31,
+   "prompt": "In the gas-can race-track puzzle (cans hold exactly one lap's worth of gas in total, and your car starts empty), how can you actually find a starting point that works?",
+   "answer": "Drive one lap from any can in a fueled car; start where the tank is lowest on arrival",
+   "explanation": "Picture a second car with plenty of gas driving one lap from any can, noting its tank level on arriving at each can (before adding that can's gas).\n- Starting empty at can $j$ instead shifts every reading on the lap down by $j$'s reading $m_j$.\n- Choose $j$ with the lowest reading: after the shift, every reading is still $\\ge 0$, so the empty-tank car never runs dry.\nThe tank only drains between cans, so checking levels on arrival at each can is enough.",
+   "distractors": [
+    "Start at the can holding the most gas",
+    "Start at the first can after the longest empty stretch of track",
+    "Drive one lap in a fueled car; start where the tank is fullest on arrival"
+   ],
+   "hint": "Record the tank level of a car that never runs out."
+  },
+  {
+   "id": "2-proof-by-contradiction",
+   "section": "2.9",
+   "name": "Proof by contradiction",
+   "kind": "concept",
+   "page": 31,
+   "prompt": "What is a proof by contradiction (indirect proof)?",
+   "answer": "Assume the statement is false and derive a logical impossibility, so the statement must be true",
+   "explanation": "To prove $P$, assume $\\neg P$ and reason until something absurd appears: a fraction in lowest terms with both parts even, or a remainder that must differ from every possible value. Valid reasoning from $\\neg P$ produced a falsehood, so $\\neg P$ is false and $P$ holds. It's especially handy for \"impossible\" and \"irrational\" claims, and for showing a strategy can never fail.",
+   "distractors": [
+    "Prove a base case and show that each case implies the next one",
+    "Check the statement on enough examples that a counterexample becomes unlikely",
+    "Prove the converse of the statement, which is logically equivalent"
+   ],
+   "hint": "Start by supposing the opposite."
+  },
+  {
+   "id": "2-irrational-number",
+   "section": "2.9",
+   "name": "Irrational number",
+   "kind": "problem",
+   "page": 31,
+   "prompt": "Prove that $\\sqrt{2}$ is irrational (not a ratio of two integers). What is the key contradiction?",
+   "answer": "If $\\sqrt2 = m/n$ in lowest terms, then $m^2 = 2n^2$ forces both $m$ and $n$ to be even",
+   "explanation": "Suppose $\\sqrt2 = m/n$ with integers $m, n$ sharing no common factor (any fraction can be reduced this far). Squaring gives $m^2 = 2n^2$, so $m^2$ is even, and therefore $m$ is even (an odd number squared is odd). Write $m = 2k$: then $4k^2 = 2n^2$, so $n^2 = 2k^2$ and $n$ is even too. Both even contradicts \"no common factor\", so no such fraction exists.",
+   "distractors": [
+    "Its decimal expansion $1.41421\\dots$ never ends, so it can't be a fraction",
+    "If $\\sqrt2 = m/n$ in lowest terms, then $m^2 = 2n^2$ forces $m$ to be odd",
+    "It lies strictly between 1 and 2, so it can't be a ratio of integers"
+   ],
+   "hint": "Assume a fraction in lowest terms and look at parity."
+  },
+  {
+   "id": "2-rainbow-hats",
+   "section": "2.9",
+   "name": "Rainbow hats",
+   "kind": "problem",
+   "page": 31,
+   "prompt": "Seven prisoners each get a hat in one of the 7 rainbow colors, chosen however the executioner likes (repeats allowed). Each sees the other six hats but not his own. They can't communicate, and all write down a guess of their own color at the same time. If at least one guess is correct, all go free. Is there a strategy that guarantees freedom?",
+   "answer": "Yes — code colors 0–6; prisoner $i$ guesses so that the sum of all codes is $\\equiv i \\pmod 7$",
+   "explanation": "Number both the colors and the prisoners 0–6, and let $S$ be the sum of all seven hat codes. Prisoner $i$ assumes $S \\bmod 7 = i$ and guesses the one code that makes this true, given the six hats he sees. The real value of $S \\bmod 7$ is one of $0, \\dots, 6$, so exactly one prisoner's assumption is right, and his guess must be his actual color. If everyone were wrong, $S \\bmod 7$ would differ from all of $0, \\dots, 6$, which is impossible (proof by contradiction).",
+   "distractors": [
+    "No — each guess is right with probability 1/7, so some risk always remains",
+    "Yes — everyone guesses the color they see most often on the others",
+    "Yes — everyone guesses a color missing from the six hats they can see"
+   ],
+   "hint": "$\\left(\\sum x_i\\right) \\bmod 7$ has 7 possible values, and there are 7 prisoners."
+  }
+ ]
+}

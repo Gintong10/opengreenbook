@@ -1,0 +1,955 @@
+{
+ "chapter": 4,
+ "title": "Probability Theory",
+ "sections": [
+  {
+   "id": "4.4",
+   "title": "Discrete and Continuous Distributions"
+  },
+  {
+   "id": "4.5",
+   "title": "Expected Value, Variance & Covariance"
+  },
+  {
+   "id": "4.6",
+   "title": "Order Statistics"
+  }
+ ],
+ "cards": [
+  {
+   "id": "4-variance-identity",
+   "section": "4.4",
+   "name": "Variance shortcut formula",
+   "kind": "concept",
+   "page": 86,
+   "prompt": "Express $\\mathrm{var}(X)$ using only the raw moments $E[X]$ and $E[X^2]$.",
+   "answer": "$\\mathrm{var}(X) = E[X^2] - (E[X])^2$",
+   "explanation": "By definition $\\mathrm{var}(X) = E[(X-\\mu)^2]$ with $\\mu = E[X]$. Expanding the square gives $E[X^2] - 2\\mu E[X] + \\mu^2 = E[X^2] - \\mu^2$. The identity works for discrete and continuous variables alike, and it is usually the fastest route because $E[X^2]$ is often easy to integrate or sum. The standard deviation is simply $\\sqrt{\\mathrm{var}(X)}$.",
+   "distractors": [
+    "$\\mathrm{var}(X) = (E[X])^2 - E[X^2]$",
+    "$\\mathrm{var}(X) = E[X^2] + (E[X])^2$",
+    "$\\mathrm{var}(X) = E[X^2] - E[X]$"
+   ],
+   "hint": "Expand $(X-\\mu)^2$ and take expectations term by term."
+  },
+  {
+   "id": "4-pdf-cdf-relation",
+   "section": "4.4",
+   "name": "pdf, cdf and point probabilities",
+   "kind": "concept",
+   "page": 86,
+   "prompt": "For a continuous random variable $X$ with cdf $F$ and pdf $f$, how are $F$ and $f$ related, and what is $P(X = a)$ for a single point $a$?",
+   "answer": "$f = F'$, $F(a)=\\int_{-\\infty}^{a} f(x)\\,dx$, and $P(X=a)=0$",
+   "explanation": "The cdf accumulates density from the far left, so it is the integral of the pdf and the pdf is its derivative. A single point has zero width, so it carries zero probability for a continuous variable. That is why $P(X \\le a)$ and $P(X < a)$ coincide in the continuous case. A density value $f(a)$ is not a probability; it can even exceed 1.",
+   "distractors": [
+    "$f=\\int F\\,dx$, $F(a)=f'(a)$, and $P(X=a)=0$",
+    "$f = F'$, $F(a)=\\int_{-\\infty}^{a} f(x)\\,dx$, and $P(X=a)=f(a)$",
+    "$f = F'$, $F(a)=\\int_{a}^{\\infty} f(x)\\,dx$, and $P(X=a)=0$"
+   ]
+  },
+  {
+   "id": "4-dist-discrete-uniform",
+   "section": "4.4",
+   "name": "Discrete uniform distribution",
+   "kind": "concept",
+   "page": 87,
+   "prompt": "$X$ is equally likely to be any integer in $\\{a, a+1, \\dots, b\\}$. What are $E[X]$ and $\\mathrm{var}(X)$?",
+   "answer": "$E[X]=\\frac{a+b}{2}$, $\\mathrm{var}(X)=\\frac{(b-a+1)^2-1}{12}$",
+   "explanation": "Each of the $n = b-a+1$ values has probability $1/n$, and by symmetry the mean is the midpoint $(a+b)/2$. The variance depends only on the number of values: $(n^2-1)/12$. Sanity check with a fair die ($n = 6$): $35/12 \\approx 2.92$. For large $n$ this approaches the continuous-uniform variance $(b-a)^2/12$, but for small $n$ the difference matters.",
+   "distractors": [
+    "$E[X]=\\frac{a+b}{2}$, $\\mathrm{var}(X)=\\frac{(b-a)^2}{12}$",
+    "$E[X]=\\frac{a+b+1}{2}$, $\\mathrm{var}(X)=\\frac{(b-a+1)^2-1}{12}$",
+    "$E[X]=\\frac{a+b}{2}$, $\\mathrm{var}(X)=\\frac{(b-a+1)^2}{12}$"
+   ],
+   "hint": "Check your formula on a fair six-sided die."
+  },
+  {
+   "id": "4-dist-binomial",
+   "section": "4.4",
+   "name": "Binomial distribution",
+   "kind": "concept",
+   "page": 87,
+   "prompt": "$X$ counts the successes in $n$ independent trials, each a success with probability $p$. Give $P(X=x)$, $E[X]$ and $\\mathrm{var}(X)$.",
+   "answer": "$\\binom{n}{x}p^x(1-p)^{n-x}$; mean $np$; variance $np(1-p)$",
+   "explanation": "Any particular arrangement of $x$ successes and $n-x$ failures has probability $p^x(1-p)^{n-x}$, and $\\binom{n}{x}$ counts the arrangements. Writing $X$ as a sum of $n$ independent Bernoulli($p$) indicators, each with mean $p$ and variance $p(1-p)$, gives the mean and variance immediately. Variances add here because the trials are independent.",
+   "distractors": [
+    "$\\binom{n}{x}p^x(1-p)^{n-x}$; mean $np$; variance $np^2$",
+    "$\\binom{n}{x}p^x(1-p)^{x}$; mean $np$; variance $np(1-p)$",
+    "$p^x(1-p)^{n-x}$; mean $np$; variance $n(1-p)$"
+   ]
+  },
+  {
+   "id": "4-dist-poisson",
+   "section": "4.4",
+   "name": "Poisson distribution",
+   "kind": "concept",
+   "page": 87,
+   "prompt": "Events occur at average rate $\\lambda$, independently of the time since the last event. Let $N$ be the number of events in a window of length $t$. Give $P(N=x)$, $E[N]$ and $\\mathrm{var}(N)$.",
+   "answer": "$P(N=x)=e^{-\\lambda t}\\frac{(\\lambda t)^x}{x!}$; mean and variance both $\\lambda t$",
+   "explanation": "The Poisson law is the limit of a binomial with many tiny trials: split the window into $n$ slices, each with success chance $\\lambda t/n$, and let $n \\to \\infty$. The binomial mean $np$ stays $\\lambda t$ and the variance $np(1-p)$ also tends to $\\lambda t$. Mean equal to variance is the signature of a Poisson count. The factor $e^{-\\lambda t}$ is what makes the probabilities sum to 1.",
+   "distractors": [
+    "$P(N=x)=e^{-\\lambda t}\\frac{(\\lambda t)^x}{x!}$; mean $\\lambda t$, variance $(\\lambda t)^2$",
+    "$P(N=x)=\\frac{(\\lambda t)^x}{x!}$; mean and variance both $\\lambda t$",
+    "$P(N=x)=\\lambda e^{-\\lambda x}$; mean $1/\\lambda$, variance $1/\\lambda^2$"
+   ]
+  },
+  {
+   "id": "4-dist-geometric",
+   "section": "4.4",
+   "name": "Geometric distribution",
+   "kind": "concept",
+   "page": 87,
+   "prompt": "Independent trials each succeed with probability $p$. $X$ is the number of the trial on which the first success happens ($X = 1, 2, \\dots$). Give $P(X=x)$, $E[X]$ and $\\mathrm{var}(X)$.",
+   "answer": "$(1-p)^{x-1}p$; mean $1/p$; variance $(1-p)/p^2$",
+   "explanation": "The first success on trial $x$ needs $x-1$ failures followed by one success. For the mean, condition on the first trial: $E[X] = 1 + (1-p)E[X]$, so $E[X] = 1/p$ (e.g. 6 rolls on average to see a six). The variance is $(1-p)/p^2$. Be careful with conventions: if $X$ counts failures before the first success instead, the mean drops to $(1-p)/p$.",
+   "distractors": [
+    "$(1-p)^{x}p$; mean $(1-p)/p$; variance $(1-p)/p^2$",
+    "$(1-p)^{x-1}p$; mean $1/p$; variance $1/p^2$",
+    "$(1-p)^{x-1}p$; mean $1/(1-p)$; variance $p/(1-p)^2$"
+   ]
+  },
+  {
+   "id": "4-dist-negative-binomial",
+   "section": "4.4",
+   "name": "Negative binomial distribution",
+   "kind": "concept",
+   "page": 87,
+   "prompt": "Independent trials each succeed with probability $p$. $X$ is the trial number on which the $r$-th success occurs. What are $E[X]$ and $\\mathrm{var}(X)$?",
+   "answer": "$E[X]=r/p$, $\\mathrm{var}(X)=r(1-p)/p^2$",
+   "explanation": "The waiting time for $r$ successes is the sum of $r$ independent geometric waits (first success, then the next, and so on). Means and variances of independent pieces add, so multiply the geometric results by $r$. The pmf is $\\binom{x-1}{r-1}p^r(1-p)^{x-r}$ for $x = r, r+1, \\dots$: the last trial must be a success, and the other $r-1$ successes sit somewhere in the first $x-1$ trials.",
+   "distractors": [
+    "$E[X]=r/p$, $\\mathrm{var}(X)=r(1-p)/p$",
+    "$E[X]=r(1-p)/p$, $\\mathrm{var}(X)=r(1-p)/p^2$",
+    "$E[X]=r/p$, $\\mathrm{var}(X)=r^2(1-p)/p^2$"
+   ]
+  },
+  {
+   "id": "4-dist-continuous-uniform",
+   "section": "4.4",
+   "name": "Continuous uniform distribution",
+   "kind": "concept",
+   "page": 88,
+   "prompt": "$X$ is uniform on $[a, b]$. Give its pdf, $E[X]$ and $\\mathrm{var}(X)$.",
+   "answer": "$f=\\frac{1}{b-a}$ on $[a,b]$; mean $\\frac{a+b}{2}$; variance $\\frac{(b-a)^2}{12}$",
+   "explanation": "The density is flat and must integrate to 1, so it equals $1/(b-a)$. For Uniform(0,1), $E[X^2] = 1/3$ and $E[X] = 1/2$, so the variance is $1/3 - 1/4 = 1/12$. Stretching the interval by a factor $(b-a)$ multiplies the variance by $(b-a)^2$, and shifting it changes nothing.",
+   "distractors": [
+    "$f=\\frac{1}{b-a}$ on $[a,b]$; mean $\\frac{a+b}{2}$; variance $\\frac{(b-a)^2}{4}$",
+    "$f=\\frac{1}{b-a}$ on $[a,b]$; mean $\\frac{a+b}{2}$; variance $\\frac{b-a}{12}$",
+    "$f=b-a$ on $[a,b]$; mean $\\frac{a+b}{2}$; variance $\\frac{(b-a)^2}{12}$"
+   ]
+  },
+  {
+   "id": "4-dist-normal",
+   "section": "4.4",
+   "name": "Normal density",
+   "kind": "concept",
+   "page": 88,
+   "prompt": "Write the probability density function of $N(\\mu, \\sigma^2)$.",
+   "answer": "$f(x)=\\frac{1}{\\sqrt{2\\pi}\\,\\sigma}\\,e^{-(x-\\mu)^2/(2\\sigma^2)}$",
+   "explanation": "The Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-z^2/2}\\,dz = \\sqrt{2\\pi}$ fixes the constant for the standard normal. Substituting $z = (x-\\mu)/\\sigma$ shifts the center to $\\mu$ and contributes a factor $1/\\sigma$ from $dz = dx/\\sigma$. The mean is $\\mu$ and the variance is $\\sigma^2$. Thanks to the central limit theorem, this is the most widely used continuous distribution.",
+   "distractors": [
+    "$f(x)=\\frac{1}{\\sqrt{2\\pi}\\,\\sigma^2}\\,e^{-(x-\\mu)^2/(2\\sigma^2)}$",
+    "$f(x)=\\frac{1}{\\sqrt{2\\pi}\\,\\sigma}\\,e^{-(x-\\mu)^2/(2\\sigma)}$",
+    "$f(x)=\\frac{1}{2\\pi\\sigma}\\,e^{-(x-\\mu)^2/\\sigma^2}$"
+   ]
+  },
+  {
+   "id": "4-dist-exponential",
+   "section": "4.4",
+   "name": "Exponential distribution",
+   "kind": "concept",
+   "page": 88,
+   "prompt": "$\\tau$ is exponential with rate $\\lambda$. Give its pdf, the tail $P(\\tau>t)$, $E[\\tau]$ and $\\mathrm{var}(\\tau)$.",
+   "answer": "$\\lambda e^{-\\lambda x}$; $P(\\tau>t)=e^{-\\lambda t}$; mean $1/\\lambda$; var $1/\\lambda^2$",
+   "explanation": "Integrating the density from $t$ to $\\infty$ gives the tail $e^{-\\lambda t}$, so the cdf is $1 - e^{-\\lambda t}$. The mean waiting time is $1/\\lambda$ and the standard deviation equals the mean, so the variance is $1/\\lambda^2$. It models the time between events that occur at a constant average rate, i.e. the gaps of a Poisson process.",
+   "distractors": [
+    "$\\lambda e^{-\\lambda x}$; $P(\\tau>t)=1-e^{-\\lambda t}$; mean $1/\\lambda$; var $1/\\lambda^2$",
+    "$\\lambda e^{-\\lambda x}$; $P(\\tau>t)=e^{-\\lambda t}$; mean $1/\\lambda$; var $1/\\lambda$",
+    "$e^{-\\lambda x}$; $P(\\tau>t)=e^{-\\lambda t}$; mean $\\lambda$; var $\\lambda^2$"
+   ]
+  },
+  {
+   "id": "4-dist-gamma",
+   "section": "4.4",
+   "name": "Gamma distribution",
+   "kind": "concept",
+   "page": 88,
+   "prompt": "A Gamma$(\\alpha, \\lambda)$ random variable has density $\\frac{\\lambda e^{-\\lambda x}(\\lambda x)^{\\alpha-1}}{\\Gamma(\\alpha)}$ for $x \\ge 0$. What are its mean and variance?",
+   "answer": "Mean $\\alpha/\\lambda$, variance $\\alpha/\\lambda^2$",
+   "explanation": "For integer $\\alpha$, a Gamma$(\\alpha,\\lambda)$ variable is the waiting time until the $\\alpha$-th event of a rate-$\\lambda$ Poisson process, i.e. a sum of $\\alpha$ independent Exponential($\\lambda$) gaps. Each gap has mean $1/\\lambda$ and variance $1/\\lambda^2$, and independence lets both add. With $\\alpha = 1$ you recover the exponential distribution.",
+   "distractors": [
+    "Mean $\\alpha/\\lambda$, variance $\\alpha^2/\\lambda^2$",
+    "Mean $\\alpha\\lambda$, variance $\\alpha\\lambda^2$",
+    "Mean $\\lambda/\\alpha$, variance $\\lambda/\\alpha^2$"
+   ]
+  },
+  {
+   "id": "4-dist-beta",
+   "section": "4.4",
+   "name": "Beta distribution",
+   "kind": "concept",
+   "page": 88,
+   "prompt": "A Beta$(\\alpha, \\beta)$ random variable on $(0,1)$ has density proportional to $x^{\\alpha-1}(1-x)^{\\beta-1}$. What are its mean and variance?",
+   "answer": "Mean $\\frac{\\alpha}{s}$, variance $\\frac{\\alpha\\beta}{s^2(s+1)}$, where $s=\\alpha+\\beta$",
+   "explanation": "The normalizing constant is $\\Gamma(\\alpha+\\beta)/(\\Gamma(\\alpha)\\Gamma(\\beta))$. Sanity check: Beta(1,1) is Uniform(0,1), and the formulas give mean $1/2$ and variance $1/(4\\cdot 3) = 1/12$. Tuning $\\alpha$ and $\\beta$ produces many shapes on a bounded interval, which is why it is used for recovery rates and loss-given-default, and as the conjugate prior for a probability. Note $\\frac{\\alpha-1}{\\alpha+\\beta-2}$ is the mode, not the mean.",
+   "distractors": [
+    "Mean $\\frac{\\beta}{s}$, variance $\\frac{\\alpha\\beta}{s^2(s+1)}$, where $s=\\alpha+\\beta$",
+    "Mean $\\frac{\\alpha}{s}$, variance $\\frac{\\alpha\\beta}{s^2}$, where $s=\\alpha+\\beta$",
+    "Mean $\\frac{\\alpha-1}{s-2}$, variance $\\frac{\\alpha\\beta}{s(s+1)}$, where $s=\\alpha+\\beta$"
+   ]
+  },
+  {
+   "id": "4-meeting-probability",
+   "section": "4.4",
+   "name": "Meeting probability",
+   "kind": "problem",
+   "page": 88,
+   "prompt": "Two bankers each arrive at a station at an independent, uniformly random time between 5:00 and 6:00 am. Each stays exactly 5 minutes and then leaves. What is the probability that they meet?",
+   "answer": "$23/144 \\approx 0.16$",
+   "explanation": "Let $X$ and $Y$ be the arrival times in minutes after 5:00, uniform on the $60 \\times 60$ square. They overlap exactly when $|X - Y| \\le 5$, a diagonal band.\n- The complement is two corner triangles with legs 55, which together form a $55 \\times 55$ square.\n- So $P = 1 - (55/60)^2 = 1 - 121/144 = 23/144$.\nThe quick guess $10/60 = 1/6$ is slightly too high because near 5:00 and 6:00 the window is cut off.",
+   "distractors": [
+    "$1/6 \\approx 0.17$",
+    "$1/12 \\approx 0.08$",
+    "$11/72 \\approx 0.15$"
+   ],
+   "hint": "Draw the unit square of arrival times; they meet when $|X-Y|\\le 5$."
+  },
+  {
+   "id": "4-meeting-probability-general",
+   "section": "4.4",
+   "name": "Meeting probability (general)",
+   "kind": "problem",
+   "page": 88,
+   "prompt": "Generalize the meeting problem: two people arrive independently and uniformly in a window of length $T$, and each waits $w \\le T$. What is the probability they meet?",
+   "answer": "$1-(1-w/T)^2$",
+   "explanation": "They meet iff $|X - Y| \\le w$. The two non-meeting corner triangles of the $T \\times T$ square each have legs $T - w$, so together they cover a fraction $(1 - w/T)^2$ of the square. Subtracting from 1 gives the answer; with $w = 5$ and $T = 60$ it is $23/144$. For small $w$ it is about $2w/T$, which is where the naive guess comes from.",
+   "distractors": [
+    "$2w/T$",
+    "$w/T$",
+    "$1-(1-2w/T)^2$"
+   ]
+  },
+  {
+   "id": "4-probability-of-triangle",
+   "section": "4.4",
+   "name": "Probability of triangle",
+   "kind": "problem",
+   "page": 89,
+   "prompt": "A stick is broken at two points, each chosen independently and uniformly along its length. What is the probability that the three pieces can form a triangle?",
+   "answer": "$1/4$",
+   "explanation": "Take length 1. Three pieces form a triangle iff every piece is shorter than $1/2$ (otherwise one piece is at least the sum of the other two).\n- If the cuts are $x < y$, the pieces are $x$, $y - x$, $1 - y$, so we need $x < 1/2$, $y > 1/2$ and $y - x < 1/2$.\n- In the unit square this is a triangle of area $1/8$; the mirror case $y < x$ adds another $1/8$.\nA quicker route: at most one piece can be $\\ge 1/2$, and each specific piece is that long with probability $1/4$, so $P(\\text{fail}) = 3/4$.",
+   "distractors": [
+    "$1/2$",
+    "$1/3$",
+    "$1/8$"
+   ],
+   "hint": "A triangle is possible exactly when no piece reaches half the stick."
+  },
+  {
+   "id": "4-memoryless-exponential",
+   "section": "4.4",
+   "name": "Memoryless property",
+   "kind": "concept",
+   "page": 90,
+   "prompt": "State the memoryless property of an exponential waiting time $\\tau$.",
+   "answer": "$P(\\tau > s+t \\mid \\tau > s) = P(\\tau > t)$ for all $s, t \\ge 0$",
+   "explanation": "Using the tail $P(\\tau > t) = e^{-\\lambda t}$: the conditional probability is $e^{-\\lambda(s+t)}/e^{-\\lambda s} = e^{-\\lambda t}$. So after waiting $s$ units without an event, the remaining wait has the same distribution as a fresh wait. The exponential is the only continuous distribution with this property (the geometric is the discrete analogue). It is the key to Poisson-process puzzles such as the bus waiting-time question.",
+   "distractors": [
+    "$P(\\tau > s+t \\mid \\tau > s) = P(\\tau > s+t)$ for all $s, t \\ge 0$",
+    "$P(\\tau > s+t) = P(\\tau > s) + P(\\tau > t)$ for all $s, t \\ge 0$",
+    "$P(\\tau > s+t \\mid \\tau > s) = P(\\tau > s)$ for all $s, t \\ge 0$"
+   ]
+  },
+  {
+   "id": "4-poisson-process-increments",
+   "section": "4.4",
+   "name": "Poisson process counts",
+   "kind": "concept",
+   "page": 90,
+   "prompt": "In a Poisson process with rate $\\lambda$, what is the distribution of the number of arrivals in the time interval $(s, t]$?",
+   "answer": "Poisson with mean $\\lambda(t-s)$",
+   "explanation": "Because exponential gaps are memoryless, the process restarts statistically at any time $s$. The count over $(s, t]$ therefore depends only on the length $t - s$, and it is Poisson with parameter $\\lambda(t-s)$: $P = e^{-\\lambda(t-s)}(\\lambda(t-s))^x/x!$. Counts over non-overlapping intervals are independent.",
+   "distractors": [
+    "Poisson with mean $\\lambda t$",
+    "Exponential with rate $\\lambda(t-s)$",
+    "Binomial with mean $\\lambda(t-s)$"
+   ]
+  },
+  {
+   "id": "4-poisson-bus-wait",
+   "section": "4.4",
+   "name": "Property of Poisson process (wait)",
+   "kind": "problem",
+   "page": 90,
+   "prompt": "Buses arrive at a stop as a Poisson process with rate $\\lambda = 0.1$ per minute (on average one every 10 minutes), and they have been running for a long time. You arrive at a random moment. What is your expected waiting time for the next bus?",
+   "answer": "10 minutes",
+   "explanation": "The time until the next bus is exponential, and by memorylessness it does not matter how long ago the previous bus came. So the remaining wait is still Exponential(0.1) with mean $1/\\lambda = 10$ minutes. The tempting answer of 5 minutes (half a gap) would be right only if buses were evenly spaced.",
+   "distractors": [
+    "5 minutes",
+    "20 minutes",
+    "15 minutes"
+   ],
+   "hint": "Use the memoryless property of exponential gaps."
+  },
+  {
+   "id": "4-poisson-bus-last",
+   "section": "4.4",
+   "name": "Property of Poisson process (last bus)",
+   "kind": "problem",
+   "page": 90,
+   "prompt": "Same bus stop: buses arrive as a Poisson process with rate $0.1$ per minute and have been running for a long time. When you arrive at a random moment, on average how many minutes ago did the previous bus leave?",
+   "answer": "10 minutes",
+   "explanation": "A long-running Poisson process looks the same when time is reversed, so the time back to the most recent arrival is also Exponential(0.1). Its mean is again $1/\\lambda = 10$ minutes. Together with the 10-minute expected wait, the gap you land in averages 20 minutes, twice the typical gap; see the inspection paradox.",
+   "distractors": [
+    "5 minutes",
+    "20 minutes",
+    "0 minutes: memorylessness only works forward in time"
+   ],
+   "hint": "Run the process backward in time."
+  },
+  {
+   "id": "4-inspection-paradox-gap",
+   "section": "4.4",
+   "name": "Inspection paradox",
+   "kind": "concept",
+   "page": 91,
+   "prompt": "Buses form a Poisson process with a mean gap of 10 minutes. You arrive at a random time. What is the expected length of the particular gap (between the previous and the next bus) that contains your arrival?",
+   "answer": "20 minutes",
+   "explanation": "The expected time since the last bus is 10 minutes and the expected wait is 10 minutes, so your gap averages 20. This is not a contradiction: a random arrival is more likely to land in a long gap than a short one (length-biased sampling). If gaps of 30 and 5 minutes alternate, you fall into the 30-minute one six times as often. The average over all gaps is 10, but the gap you observe is not a typical one.",
+   "distractors": [
+    "10 minutes",
+    "15 minutes",
+    "5 minutes"
+   ]
+  },
+  {
+   "id": "4-residual-life",
+   "section": "4.4",
+   "name": "Expected residual life",
+   "kind": "concept",
+   "page": 91,
+   "prompt": "Arrivals are separated by i.i.d. gaps with the same distribution as $X$ (a renewal process running for a long time). If you show up at a random time, what is the expected time until the next arrival?",
+   "answer": "$\\frac{E[X^2]}{2E[X]}$",
+   "explanation": "The gap you land in is length-biased: its density is proportional to $x f(x)$, so its mean is $E[X^2]/E[X]$. You land uniformly inside it, so on average halfway, giving $E[X^2]/(2E[X])$.\n- Evenly spaced gaps of length $c$: $c^2/(2c) = c/2$.\n- Exponential gaps: $E[X^2] = 2/\\lambda^2$, so the result is $1/\\lambda$, matching memorylessness.",
+   "distractors": [
+    "$\\frac{E[X]}{2}$",
+    "$\\frac{E[X^2]}{E[X]}$",
+    "$\\frac{\\mathrm{var}(X)}{2E[X]}$"
+   ]
+  },
+  {
+   "id": "4-moments-of-normal",
+   "section": "4.4",
+   "name": "Moments of normal distribution",
+   "kind": "problem",
+   "page": 91,
+   "prompt": "If $X \\sim N(0, 1)$, what are $E[X]$, $E[X^2]$, $E[X^3]$ and $E[X^4]$?",
+   "answer": "$0,\\ 1,\\ 0,\\ 3$",
+   "explanation": "Odd moments vanish because the density is symmetric about 0 while $x^n$ is odd. $E[X^2] = \\mathrm{var}(X) = 1$. For higher moments use the MGF $M(t) = e^{t^2/2}$ and differentiate at $t = 0$: $M''(0) = 1$, $M'''(0) = 0$, $M^{(4)}(0) = 3$. So the skewness is 0 and the kurtosis is 3, the benchmark that excess kurtosis is measured against.",
+   "distractors": [
+    "$0,\\ 1,\\ 0,\\ 1$",
+    "$0,\\ 1,\\ 0,\\ 15$",
+    "$0,\\ 1,\\ 1,\\ 3$"
+   ],
+   "hint": "Symmetry kills the odd moments; the MGF handles the rest."
+  },
+  {
+   "id": "4-mgf-definition",
+   "section": "4.4",
+   "name": "Moment generating function",
+   "kind": "concept",
+   "page": 91,
+   "prompt": "Define the moment generating function $M(t)$ of a random variable $X$. How do you get $E[X^n]$ from it?",
+   "answer": "$M(t)=E[e^{tX}]$ and $E[X^n]=M^{(n)}(0)$, the $n$-th derivative at 0",
+   "explanation": "$M(t)$ is $\\sum_x e^{tx}p(x)$ for a discrete variable and $\\int e^{tx}f(x)\\,dx$ for a continuous one. Differentiating $n$ times under the expectation turns $e^{tX}$ into $X^n e^{tX}$, which equals $X^n$ at $t = 0$. Equivalently, $M(t) = \\sum_n E[X^n]\\,t^n/n!$, so the moments are read off from the Taylor coefficients.",
+   "distractors": [
+    "$M(t)=E[e^{tX}]$ and $E[X^n]=M^{(n)}(1)$, the $n$-th derivative at 1",
+    "$M(t)=E[X^t]$ and $E[X^n]=M(n)$, the function value at $n$",
+    "$M(t)=E[e^{tX}]$ and $E[X^n]=n!\\,M^{(n)}(0)$"
+   ]
+  },
+  {
+   "id": "4-mgf-standard-normal",
+   "section": "4.4",
+   "name": "MGF of the standard normal",
+   "kind": "concept",
+   "page": 92,
+   "prompt": "What is the moment generating function of $X \\sim N(0,1)$?",
+   "answer": "$M(t)=e^{t^2/2}$",
+   "explanation": "Combine the exponents: $tx - x^2/2 = -(x-t)^2/2 + t^2/2$. The factor $e^{t^2/2}$ comes out of the integral, and what remains is the density of $N(t, 1)$, which integrates to 1. More generally, $N(\\mu, \\sigma^2)$ has MGF $e^{\\mu t + \\sigma^2 t^2/2}$.",
+   "distractors": [
+    "$M(t)=e^{t^2}$",
+    "$M(t)=e^{t/2}$",
+    "$M(t)=\\frac{1}{1-t^2}$"
+   ]
+  },
+  {
+   "id": "4-normal-even-moments",
+   "section": "4.4",
+   "name": "Higher moments of N(0,1)",
+   "kind": "concept",
+   "page": 92,
+   "prompt": "For $X \\sim N(0,1)$, what is $E[X^{2k}]$ in general? What is $E[X^6]$?",
+   "answer": "$E[X^{2k}]=(2k-1)!!=1\\cdot 3\\cdots(2k-1)$, so $E[X^6]=15$",
+   "explanation": "Expand the MGF: $e^{t^2/2} = \\sum_k \\frac{t^{2k}}{2^k k!}$. Matching with $\\sum_n E[X^n]\\,t^n/n!$ gives $E[X^{2k}] = \\frac{(2k)!}{2^k k!}$, the product of the odd numbers up to $2k-1$. This yields 1, 3, 15, 105 for $k = 1, 2, 3, 4$, and all odd moments are 0.",
+   "distractors": [
+    "$E[X^{2k}]=(2k)!$, so $E[X^6]=720$",
+    "$E[X^{2k}]=k!$, so $E[X^6]=6$",
+    "$E[X^{2k}]=2^k$, so $E[X^6]=8$"
+   ]
+  },
+  {
+   "id": "4-linearity-of-expectation",
+   "section": "4.5",
+   "name": "Linearity of expectation",
+   "kind": "concept",
+   "page": 92,
+   "prompt": "Under what condition does $E[X_1 + \\cdots + X_n] = E[X_1] + \\cdots + E[X_n]$ hold?",
+   "answer": "Always, provided each $E[X_i]$ is finite; independence is not required",
+   "explanation": "Expectation is a sum or integral, and sums and integrals are linear, so dependence between the $X_i$ never enters. This is what makes indicator-variable arguments so powerful: in the card and coupon problems the indicators are strongly dependent, yet their expectations still add. Contrast this with variances, where the covariances between terms do matter.",
+   "distractors": [
+    "Only when the $X_i$ are independent",
+    "Only when the $X_i$ are pairwise uncorrelated",
+    "Only when the $X_i$ are identically distributed"
+   ]
+  },
+  {
+   "id": "4-independence-product",
+   "section": "4.5",
+   "name": "Expectation of a product",
+   "kind": "concept",
+   "page": 92,
+   "prompt": "If $X$ and $Y$ are independent, what is $E[g(X)\\,h(Y)]$ for functions $g$ and $h$?",
+   "answer": "$E[g(X)]\\,E[h(Y)]$",
+   "explanation": "Independence means the joint density (or pmf) factors as $f_X(x)f_Y(y)$, so the double integral splits into a product of two single integrals. Taking $g$ and $h$ to be the identity gives $E[XY] = E[X]E[Y]$, hence $\\mathrm{Cov}(X, Y) = 0$. Do not confuse this with $g(E[X])$: in general $E[g(X)] \\not= g(E[X])$ unless $g$ is linear.",
+   "distractors": [
+    "$g(E[X])\\,h(E[Y])$",
+    "$E[g(X)] + E[h(Y)]$",
+    "$\\sqrt{E[g(X)^2]\\,E[h(Y)^2]}$"
+   ]
+  },
+  {
+   "id": "4-covariance-definition",
+   "section": "4.5",
+   "name": "Covariance",
+   "kind": "concept",
+   "page": 92,
+   "prompt": "Give two equivalent formulas for $\\mathrm{Cov}(X, Y)$.",
+   "answer": "$E[(X-E[X])(Y-E[Y])] = E[XY]-E[X]E[Y]$",
+   "explanation": "The first form measures how the two deviations from their means move together. Expanding the product and using linearity leaves $E[XY] - E[X]E[Y]$, which is usually easier to compute. $\\mathrm{Cov}(X, X) = \\mathrm{var}(X)$, and adding constants to either variable does not change the covariance.",
+   "distractors": [
+    "$E[(X-E[X])(Y-E[Y])] = E[XY]+E[X]E[Y]$",
+    "$E[(X-E[X])(Y-E[Y])] = E[X]E[Y]-E[XY]$",
+    "$E[(X-E[X])(Y-E[Y])] = E[XY]-E[X^2]E[Y^2]$"
+   ]
+  },
+  {
+   "id": "4-correlation-definition",
+   "section": "4.5",
+   "name": "Correlation coefficient",
+   "kind": "concept",
+   "page": 92,
+   "prompt": "Define the correlation $\\rho(X, Y)$ and state the range of values it can take.",
+   "answer": "$\\rho=\\frac{\\mathrm{Cov}(X,Y)}{\\sigma_X\\sigma_Y}$, with $-1\\le\\rho\\le 1$",
+   "explanation": "Dividing by both standard deviations makes the measure scale-free. The Cauchy–Schwarz inequality gives $|\\mathrm{Cov}(X,Y)| \\le \\sigma_X\\sigma_Y$, hence $|\\rho| \\le 1$. The extremes $\\pm 1$ occur only when $Y$ is exactly a linear function of $X$. For particular distributions the attainable range can be narrower (see the joint default problem).",
+   "distractors": [
+    "$\\rho=\\frac{\\mathrm{Cov}(X,Y)}{\\sigma_X^2\\sigma_Y^2}$, with $-1\\le\\rho\\le 1$",
+    "$\\rho=\\frac{\\mathrm{Cov}(X,Y)}{\\sigma_X\\sigma_Y}$, with $0\\le\\rho\\le 1$",
+    "$\\rho=\\frac{E[XY]}{\\sigma_X\\sigma_Y}$, with $-1\\le\\rho\\le 1$"
+   ]
+  },
+  {
+   "id": "4-uncorrelated-vs-independent",
+   "section": "4.5",
+   "name": "Uncorrelated vs independent",
+   "kind": "concept",
+   "page": 92,
+   "prompt": "If $\\rho(X, Y) = 0$, must $X$ and $Y$ be independent?",
+   "answer": "No. Independence implies $\\rho=0$, but not conversely (e.g. $X\\sim N(0,1)$, $Y=X^2$)",
+   "explanation": "Correlation only captures linear dependence. With $X \\sim N(0,1)$ and $Y = X^2$, $\\mathrm{Cov}(X, Y) = E[X^3] - E[X]E[X^2] = 0$, yet $Y$ is completely determined by $X$. The reverse direction does hold: independent variables always have zero covariance. A notable special case: for jointly normal variables, zero correlation does imply independence.",
+   "distractors": [
+    "Yes: zero correlation always implies independence",
+    "Yes, as long as both variables have finite variance",
+    "No, and independence does not guarantee $\\rho=0$ either"
+   ]
+  },
+  {
+   "id": "4-covariance-bilinearity",
+   "section": "4.5",
+   "name": "Covariance of linear combinations",
+   "kind": "concept",
+   "page": 92,
+   "prompt": "Expand $\\mathrm{Cov}\\left(\\sum_{i=1}^n a_i X_i,\\ \\sum_{j=1}^m b_j Y_j\\right)$.",
+   "answer": "$\\sum_{i=1}^n\\sum_{j=1}^m a_i b_j\\,\\mathrm{Cov}(X_i, Y_j)$",
+   "explanation": "Covariance is linear in each argument separately (bilinear), so constants pull out and every pair $(X_i, Y_j)$ contributes one term. A common slip is to keep only the matched pairs $i = j$. Setting both sides equal to the same sum gives the variance-of-a-sum formula.",
+   "distractors": [
+    "$\\sum_{i=1}^{\\min(n,m)} a_i b_i\\,\\mathrm{Cov}(X_i, Y_i)$",
+    "$\\sum_{i=1}^n\\sum_{j=1}^m a_i^2 b_j^2\\,\\mathrm{Cov}(X_i, Y_j)$",
+    "$\\sum_{i=1}^n\\sum_{j=1}^m a_i b_j\\,\\mathrm{var}(X_i)\\,\\mathrm{var}(Y_j)$"
+   ]
+  },
+  {
+   "id": "4-variance-of-sum",
+   "section": "4.5",
+   "name": "Variance of a sum",
+   "kind": "concept",
+   "page": 92,
+   "prompt": "Write $\\mathrm{var}(X_1 + \\cdots + X_n)$ in terms of variances and covariances.",
+   "answer": "$\\sum_i \\mathrm{var}(X_i) + 2\\sum_{i<j}\\mathrm{Cov}(X_i,X_j)$",
+   "explanation": "$\\mathrm{var}(\\sum X_i) = \\mathrm{Cov}(\\sum X_i, \\sum X_j)$, which is the sum of covariances over all ordered pairs $(i, j)$. The diagonal terms are the variances, and each unordered pair $i < j$ appears twice. When the variables are uncorrelated (in particular independent), only the variances remain.",
+   "distractors": [
+    "$\\sum_i \\mathrm{var}(X_i)$, with no correction terms",
+    "$\\sum_i \\mathrm{var}(X_i) + \\sum_{i<j}\\mathrm{Cov}(X_i,X_j)$",
+    "$\\sum_i \\mathrm{var}(X_i) + 2\\sum_{i\\ne j}\\mathrm{Cov}(X_i,X_j)$"
+   ]
+  },
+  {
+   "id": "4-conditional-expectation",
+   "section": "4.5",
+   "name": "Conditional expectation",
+   "kind": "concept",
+   "page": 93,
+   "prompt": "For continuous random variables, how is $E[g(X) \\mid Y = y]$ computed?",
+   "answer": "$\\int g(x)\\,f_{X|Y}(x|y)\\,dx$, where $f_{X|Y}=f_{X,Y}/f_Y$",
+   "explanation": "It is an ordinary expectation, just taken with respect to the conditional density of $X$ given $Y = y$. That density is the joint density sliced at $Y = y$ and renormalized by $f_Y(y)$. The discrete version replaces the integral by $\\sum_x g(x)\\,P(X = x \\mid Y = y)$.",
+   "distractors": [
+    "$\\int g(x)\\,f_{X,Y}(x,y)\\,dx$",
+    "$\\int g(x)\\,f_{X}(x)\\,dx$",
+    "$\\int g(x)\\,f_{Y|X}(y|x)\\,dx$"
+   ]
+  },
+  {
+   "id": "4-law-of-total-expectation",
+   "section": "4.5",
+   "name": "Law of total expectation",
+   "kind": "concept",
+   "page": 93,
+   "prompt": "State the law of total expectation (tower property) when conditioning on a discrete random variable $Y$.",
+   "answer": "$E[X]=E\\big[E[X\\mid Y]\\big]=\\sum_y E[X\\mid Y=y]\\,P(Y=y)$",
+   "explanation": "Break the world into scenarios $Y = y$, compute the average of $X$ within each, and weight by how likely each scenario is. For continuous $Y$ the sum becomes $\\int E[X \\mid Y=y] f_Y(y)\\,dy$. It is the engine behind recursive expectation puzzles: condition on the first step, and often the same unknown reappears on the right-hand side (as in the dice game).",
+   "distractors": [
+    "$E[X]=\\sum_y E[X\\mid Y=y]$",
+    "$E[X]=\\sum_y E[X\\mid Y=y]\\,/\\,P(Y=y)$",
+    "$E[X]=\\sum_y E[Y\\mid X=y]\\,P(X=y)$"
+   ]
+  },
+  {
+   "id": "4-law-of-total-variance",
+   "section": "4.5",
+   "name": "Law of total variance",
+   "kind": "concept",
+   "page": 93,
+   "prompt": "State the law of total variance (conditional variance formula) for $X$ conditioned on $Y$.",
+   "answer": "$\\mathrm{var}(X)=E[\\mathrm{var}(X\\mid Y)]+\\mathrm{var}(E[X\\mid Y])$",
+   "explanation": "Total variability splits into the average spread within each scenario plus the spread of the scenario means. It follows from applying the tower property to both $E[X^2]$ and $E[X]$. Both pieces are non-negative, so conditioning can only reduce the variance on average: $E[\\mathrm{var}(X \\mid Y)] \\le \\mathrm{var}(X)$.",
+   "distractors": [
+    "$\\mathrm{var}(X)=E[\\mathrm{var}(X\\mid Y)]$",
+    "$\\mathrm{var}(X)=\\mathrm{var}(E[X\\mid Y])-E[\\mathrm{var}(X\\mid Y)]$",
+    "$\\mathrm{var}(X)=E[\\mathrm{var}(X\\mid Y)]+E[\\mathrm{var}(Y\\mid X)]$"
+   ]
+  },
+  {
+   "id": "4-connecting-noodles",
+   "section": "4.5",
+   "name": "Connecting noodles",
+   "kind": "problem",
+   "page": 93,
+   "prompt": "A bowl holds 100 noodles. Blindfolded, you repeatedly pick two free noodle ends uniformly at random and tie them together, until no free ends remain. What is the expected number of loops formed?",
+   "answer": "$\\sum_{k=1}^{100}\\frac{1}{2k-1}=1+\\frac13+\\cdots+\\frac{1}{199}\\approx 3.28$",
+   "explanation": "Let $E_n$ be the expected number of loops starting from $n$ noodles, so $E_1 = 1$.\n- Pick any free end. Its partner is one of the other $2n - 1$ ends, and only one of those is the other end of the same noodle.\n- With probability $1/(2n-1)$ you close a loop and $n - 1$ noodles remain; otherwise two noodles fuse into one and again $n - 1$ remain.\nSo $E_n = E_{n-1} + \\frac{1}{2n-1}$, and summing from 1 to 100 gives about 3.28.",
+   "distractors": [
+    "$\\sum_{k=1}^{100}\\frac{1}{k}\\approx 5.19$",
+    "$\\frac12\\sum_{k=1}^{100}\\frac{1}{k}\\approx 2.59$",
+    "$\\sum_{k=1}^{100}\\frac{1}{2k+1}\\approx 2.29$"
+   ],
+   "hint": "Start with 1 and 2 noodles; each tie always reduces the noodle count by one."
+  },
+  {
+   "id": "4-connecting-noodles-step",
+   "section": "4.5",
+   "name": "Connecting noodles (loop probability)",
+   "kind": "problem",
+   "page": 94,
+   "prompt": "In the noodle problem, suppose $n$ noodles (so $2n$ free ends) remain. What is the probability that the next random tie closes a loop, and what recursion does that give for the expected number of loops $E_n$?",
+   "answer": "$\\frac{1}{2n-1}$, giving $E_n=E_{n-1}+\\frac{1}{2n-1}$",
+   "explanation": "Out of $\\binom{2n}{2} = n(2n-1)$ equally likely pairs of ends, exactly $n$ pairs join a noodle to itself, so the chance is $n / (n(2n-1)) = 1/(2n-1)$. Whether or not a loop forms, the number of noodle pieces drops from $n$ to $n - 1$. Adding the expected $1/(2n-1)$ new loop to the $n-1$ case gives the recursion.",
+   "distractors": [
+    "$\\frac{1}{n}$, giving $E_n=E_{n-1}+\\frac{1}{n}$",
+    "$\\frac{1}{2n}$, giving $E_n=E_{n-1}+\\frac{1}{2n}$",
+    "$\\frac{2}{2n-1}$, giving $E_n=E_{n-1}+\\frac{2}{2n-1}$"
+   ]
+  },
+  {
+   "id": "4-optimal-hedge-ratio",
+   "section": "4.5",
+   "name": "Optimal hedge ratio",
+   "kind": "problem",
+   "page": 94,
+   "prompt": "You are long one share of stock A and will short $h$ shares of stock B to hedge. The returns have standard deviations $\\sigma_A$, $\\sigma_B$ and correlation $\\rho$. Which $h$ minimizes the variance of the hedged position?",
+   "answer": "$h^*=\\rho\\,\\sigma_A/\\sigma_B$",
+   "explanation": "The hedged return is $r_A - h r_B$ with variance $\\sigma_A^2 - 2h\\rho\\sigma_A\\sigma_B + h^2\\sigma_B^2$. This is a convex quadratic in $h$ (the $h^2$ coefficient $\\sigma_B^2$ is positive). Setting the derivative $-2\\rho\\sigma_A\\sigma_B + 2h\\sigma_B^2$ to zero gives $h^* = \\rho\\sigma_A/\\sigma_B = \\mathrm{Cov}(r_A, r_B)/\\mathrm{var}(r_B)$, the regression beta of A on B.",
+   "distractors": [
+    "$h^*=\\rho\\,\\sigma_B/\\sigma_A$",
+    "$h^*=\\sigma_A/\\sigma_B$",
+    "$h^*=\\rho\\,\\sigma_A^2/\\sigma_B^2$"
+   ],
+   "hint": "Write the portfolio variance as a quadratic in $h$ and minimize."
+  },
+  {
+   "id": "4-hedge-residual-variance",
+   "section": "4.5",
+   "name": "Minimum hedged variance",
+   "kind": "concept",
+   "page": 94,
+   "prompt": "With the variance-minimizing hedge $h^* = \\rho\\sigma_A/\\sigma_B$ (long 1 share of A, short $h^*$ of B), what variance remains in the hedged position?",
+   "answer": "$\\sigma_A^2(1-\\rho^2)$",
+   "explanation": "Substitute $h^*$ into $\\sigma_A^2 - 2h\\rho\\sigma_A\\sigma_B + h^2\\sigma_B^2$. The cross term becomes $-2\\rho^2\\sigma_A^2$ and the last term $\\rho^2\\sigma_A^2$, leaving $\\sigma_A^2(1 - \\rho^2)$. Only a perfectly correlated hedge ($|\\rho| = 1$) removes all risk; with $\\rho = 0.5$ you still keep 75% of the variance.",
+   "distractors": [
+    "$\\sigma_A^2(1-\\rho)$",
+    "$\\sigma_A^2-\\sigma_B^2$",
+    "$(\\sigma_A-\\rho\\,\\sigma_B)^2$"
+   ]
+  },
+  {
+   "id": "4-dice-game-4-5",
+   "section": "4.5",
+   "name": "Dice game",
+   "kind": "problem",
+   "page": 94,
+   "prompt": "You roll a fair die and are paid its face value. If the roll is 4, 5 or 6 you roll again (and are paid again); the game ends as soon as you roll 1, 2 or 3 (that roll is still paid). What is the expected total payoff?",
+   "answer": "$7$",
+   "explanation": "Condition on the first roll and let $E$ be the expected total.\n- With probability $1/2$ it is 1, 2 or 3 (average 2) and the game ends.\n- With probability $1/2$ it is 4, 5 or 6 (average 5) and the game effectively restarts, worth another $E$.\nSo $E = \\frac12 \\cdot 2 + \\frac12(5 + E)$, giving $E = 7$. Check: the number of rolls is geometric with mean 2, and each roll averages 3.5, so $2 \\times 3.5 = 7$ (Wald's identity).",
+   "distractors": [
+    "$3.5$",
+    "$5$",
+    "$10$"
+   ],
+   "hint": "Use the law of total expectation on the first roll."
+  },
+  {
+   "id": "4-card-game-4-5",
+   "section": "4.5",
+   "name": "Card game",
+   "kind": "problem",
+   "page": 95,
+   "prompt": "A standard 52-card deck is shuffled and cards are turned face up one at a time. What is the expected number of cards turned, up to and including the first ace?",
+   "answer": "$53/5 = 10.6$",
+   "explanation": "Count the first ace itself plus every non-ace that appears before all four aces. The four aces split the deck into five slots, and each of the 48 non-aces is equally likely to fall in any slot, so each lands before the first ace with probability $1/5$. By linearity, $E = 1 + 48/5 = 10.6$. The naive $52/4 = 13$ ignores that four aces spread across the deck arrive sooner.",
+   "distractors": [
+    "$13$",
+    "$52/5 = 10.4$",
+    "$48/5 = 9.6$"
+   ],
+   "hint": "Use one indicator per non-ace card."
+  },
+  {
+   "id": "4-first-special-card",
+   "section": "4.5",
+   "name": "Card game (general formula)",
+   "kind": "concept",
+   "page": 95,
+   "prompt": "A random ordering contains $m$ ordinary cards and $n$ special cards. What is the expected position of the first special card?",
+   "answer": "$1+\\frac{m}{n+1}=\\frac{m+n+1}{n+1}$",
+   "explanation": "The $n$ special cards create $n + 1$ gaps, and by symmetry each ordinary card is equally likely to sit in any gap. So each ordinary card precedes all special cards with probability $1/(n+1)$. Add 1 for the special card itself. With $m = 48$ and $n = 4$ (aces) you get $53/5 = 10.6$.",
+   "distractors": [
+    "$\\frac{m+n}{n}$",
+    "$1+\\frac{m}{n}$",
+    "$\\frac{m+n}{n+1}$"
+   ]
+  },
+  {
+   "id": "4-indicator-trick",
+   "section": "4.5",
+   "name": "Indicator method for counts",
+   "kind": "concept",
+   "page": 95,
+   "prompt": "Events $A_1, \\dots, A_n$ may be arbitrarily dependent. What is the expected number of them that occur?",
+   "answer": "$\\sum_{i=1}^n P(A_i)$",
+   "explanation": "Write the count as $\\sum_i I_{A_i}$, where $I_{A_i}$ is 1 if $A_i$ occurs. Each indicator has expectation $P(A_i)$, and linearity of expectation needs no independence. This one idea solves the card game, the distinct-coupons question and the empty-boxes question.",
+   "distractors": [
+    "$1-\\prod_{i=1}^n\\big(1-P(A_i)\\big)$",
+    "$\\prod_{i=1}^n P(A_i)$",
+    "$\\max_i P(A_i)$"
+   ]
+  },
+  {
+   "id": "4-sum-of-uniforms",
+   "section": "4.5",
+   "name": "Sum of random variables",
+   "kind": "problem",
+   "page": 95,
+   "prompt": "$X_1, \\dots, X_n$ are i.i.d. Uniform(0,1). What is $P(X_1 + X_2 + \\cdots + X_n \\le 1)$?",
+   "answer": "$1/n!$",
+   "explanation": "Small cases suggest the pattern: 1 for $n = 1$, the triangle area $1/2$ for $n = 2$, the corner tetrahedron volume $1/6$ for $n = 3$.\n- For the induction step, condition on $X_{n+1} = x$: you need $S_n \\le 1 - x$, a simplex shrunk by factor $1 - x$ in every dimension, with volume $(1-x)^n/n!$.\n- Integrating over $x$ from 0 to 1 gives $\\frac{1}{n!}\\cdot\\frac{1}{n+1} = \\frac{1}{(n+1)!}$.",
+   "distractors": [
+    "$1/2^{n-1}$",
+    "$1/n$",
+    "$1/(n+1)!$"
+   ],
+   "hint": "Work out $n = 1, 2, 3$ geometrically, then use induction."
+  },
+  {
+   "id": "4-uniforms-to-exceed-one",
+   "section": "4.5",
+   "name": "Uniforms needed to exceed 1",
+   "kind": "concept",
+   "page": 96,
+   "prompt": "Keep drawing i.i.d. Uniform(0,1) numbers until the running sum exceeds 1. Using $P(X_1+\\cdots+X_n\\le 1)=1/n!$, what is the expected number of draws $N$?",
+   "answer": "$e\\approx 2.718$",
+   "explanation": "You need more than $n$ draws exactly when the first $n$ sum to at most 1, so $P(N > n) = 1/n!$ (including $n = 0$). For a non-negative integer variable, $E[N] = \\sum_{n \\ge 0} P(N > n) = \\sum_{n\\ge 0} 1/n! = e$. This classic follow-up to the sum-of-uniforms result often comes up in interviews.",
+   "distractors": [
+    "$2$",
+    "$e-1\\approx 1.718$",
+    "$3$"
+   ]
+  },
+  {
+   "id": "4-coupon-collection-a",
+   "section": "4.5",
+   "name": "Coupon collection (A)",
+   "kind": "problem",
+   "page": 97,
+   "prompt": "Each cereal box holds one of $N$ coupon types, each type equally likely and independent across boxes. On average, how many boxes must you open to collect at least one of every type?",
+   "answer": "$N\\left(1+\\frac12+\\cdots+\\frac1N\\right)$",
+   "explanation": "Split the process into stages. After $i - 1$ distinct types are in hand, a new box brings a new type with probability $(N - i + 1)/N$, so that stage's wait is geometric with mean $N/(N - i + 1)$. Summing over $i = 1, \\dots, N$ gives $N(1/N + 1/(N-1) + \\cdots + 1) = N H_N \\approx N\\ln N + 0.577N$. Early stages are quick; the last few types dominate the cost.",
+   "distractors": [
+    "$1+\\frac12+\\cdots+\\frac1N$",
+    "$\\frac{N(N+1)}{2}$",
+    "$N\\left(\\frac12+\\frac13+\\cdots+\\frac1N\\right)$"
+   ],
+   "hint": "Each stage (waiting for the next new type) is a geometric wait."
+  },
+  {
+   "id": "4-coupon-collection-b",
+   "section": "4.5",
+   "name": "Coupon collection (B)",
+   "kind": "problem",
+   "page": 97,
+   "prompt": "With $N$ equally likely coupon types (independent across boxes), you have collected $n$ coupons. What is the expected number of distinct types among them?",
+   "answer": "$N\\left[1-\\left(\\frac{N-1}{N}\\right)^n\\right]$",
+   "explanation": "Let $I_i = 1$ if type $i$ appears at least once. Each coupon misses type $i$ with probability $(N-1)/N$, independently, so $P(I_i = 0) = ((N-1)/N)^n$. By linearity the expected number of distinct types is $\\sum_i E[I_i] = N[1 - ((N-1)/N)^n]$. The expression $N((N-1)/N)^n$ alone is the expected number of missing types.",
+   "distractors": [
+    "$N\\left(\\frac{N-1}{N}\\right)^n$",
+    "$\\min(n, N)$",
+    "$N\\left[1-\\left(\\frac{1}{N}\\right)^n\\right]$"
+   ],
+   "hint": "Use one indicator per coupon type."
+  },
+  {
+   "id": "4-coupon-collection-die",
+   "section": "4.5",
+   "name": "Coupon collection (six faces)",
+   "kind": "problem",
+   "page": 97,
+   "prompt": "Applying the coupon-collector result: how many rolls of a fair die do you expect to need until every face 1–6 has appeared at least once?",
+   "answer": "$6\\left(1+\\frac12+\\cdots+\\frac16\\right)=14.7$",
+   "explanation": "With $N = 6$ types the expected count is $6 H_6 = 6 \\times 2.45 = 14.7$. Stage by stage: $1 + 6/5 + 6/4 + 6/3 + 6/2 + 6/1$. The final stage alone (waiting for the last face) takes 6 rolls on average.",
+   "distractors": [
+    "$6\\left(\\frac12+\\cdots+\\frac16\\right)=8.7$",
+    "$1+2+\\cdots+6=21$",
+    "$6^2=36$"
+   ]
+  },
+  {
+   "id": "4-empty-boxes",
+   "section": "4.5",
+   "name": "Balls into boxes",
+   "kind": "problem",
+   "page": 98,
+   "prompt": "18 balls are each placed independently into one of 10 boxes chosen uniformly at random. What is the expected number of empty boxes?",
+   "answer": "$10(0.9)^{18}\\approx 1.50$",
+   "explanation": "A given box stays empty only if all 18 balls miss it, which happens with probability $0.9^{18} \\approx 0.150$. Summing this over the 10 boxes (indicators plus linearity) gives about 1.50. It is the coupon problem in disguise: empty boxes = $N$ minus the number of distinct types, with $N = 10$ and $n = 18$.",
+   "distractors": [
+    "$10(1-0.9^{18})\\approx 8.50$",
+    "$10(0.9)^{10}\\approx 3.49$",
+    "$18(0.9)^{10}\\approx 6.28$"
+   ]
+  },
+  {
+   "id": "4-indicator-variance",
+   "section": "4.5",
+   "name": "Indicator variable moments",
+   "kind": "concept",
+   "page": 98,
+   "prompt": "An indicator $I$ equals 1 with probability $p$ and 0 otherwise. What are $E[I]$ and $\\mathrm{var}(I)$?",
+   "answer": "$E[I]=p$, $\\mathrm{var}(I)=p(1-p)$",
+   "explanation": "Since $I^2 = I$, $E[I^2] = p$, so the variance is $p - p^2$. It peaks at $1/4$ when $p = 1/2$. Indicators turn probabilities into expectations: $P(A) = E[I_A]$ and $P(A \\cap B) = E[I_A I_B]$, which is how correlation between events is defined.",
+   "distractors": [
+    "$E[I]=p$, $\\mathrm{var}(I)=p^2$",
+    "$E[I]=p$, $\\mathrm{var}(I)=\\sqrt{p(1-p)}$",
+    "$E[I]=1-p$, $\\mathrm{var}(I)=p(1-p)$"
+   ]
+  },
+  {
+   "id": "4-joint-default-range",
+   "section": "4.5",
+   "name": "Joint default probability (range)",
+   "kind": "problem",
+   "page": 98,
+   "prompt": "Bond A defaults next year with probability 50% and bond B with probability 30%; their dependence is unknown. What is the range of possible values for the probability that at least one of them defaults?",
+   "answer": "From 50% to 80%",
+   "explanation": "$P(A \\cup B) = 0.5 + 0.3 - P(A \\cap B)$, so everything hinges on the overlap.\n- Largest: make defaults mutually exclusive, $P(A\\cap B) = 0$, giving 80% (possible because $0.5 + 0.3 \\le 1$).\n- Smallest: B defaults only when A does, $P(A\\cap B) = 0.3$, giving 50%.\nIndependence would sit in between at $1 - 0.5 \\times 0.7 = 65\\%$.",
+   "distractors": [
+    "From 30% to 80%",
+    "From 65% to 80%",
+    "From 50% to 100%"
+   ],
+   "hint": "Maximize and minimize the overlap $P(A\\cap B)$."
+  },
+  {
+   "id": "4-joint-default-correlation",
+   "section": "4.5",
+   "name": "Joint default probability (correlation)",
+   "kind": "problem",
+   "page": 98,
+   "prompt": "Same bonds: default probabilities 0.5 for A and 0.3 for B. Modeling defaults as indicators $I_A$, $I_B$, what range of values can their correlation take?",
+   "answer": "$[-\\sqrt{3/7},\\ \\sqrt{3/7}]\\approx[-0.65,\\ 0.65]$",
+   "explanation": "$\\sigma_A = \\sqrt{0.25} = 0.5$ and $\\sigma_B = \\sqrt{0.21}$. The covariance is $P(A\\cap B) - 0.15$, and the overlap ranges over $[0, 0.3]$, so the covariance ranges over $[-0.15, 0.15]$. Dividing by $0.5\\sqrt{0.21}$ gives $\\rho \\in [-0.3/\\sqrt{0.21},\\ 0.3/\\sqrt{0.21}] = [-\\sqrt{3/7}, \\sqrt{3/7}]$. Equivalently $P(A\\cup B) = 0.65 - \\frac{\\sqrt{0.21}}{2}\\rho$. Plugging $\\rho = \\pm 1$ into that formula is a trap: those correlations are unattainable here.",
+   "distractors": [
+    "$[-1,\\ 1]$",
+    "$[-0.15,\\ 0.15]$",
+    "$[-\\sqrt{3}/7,\\ \\sqrt{3}/7]\\approx[-0.25,\\ 0.25]$"
+   ],
+   "hint": "Correlation = covariance divided by $\\sigma_A\\sigma_B$; find the covariance range first."
+  },
+  {
+   "id": "4-bernoulli-correlation-bounds",
+   "section": "4.5",
+   "name": "Correlation bounds for indicators",
+   "kind": "concept",
+   "page": 98,
+   "prompt": "Two indicator variables have success probabilities $p_A$ and $p_B$ (both strictly between 0 and 1). When can their correlation equal $+1$, and when $-1$?",
+   "answer": "$+1$ only if $p_A=p_B$; $-1$ only if $p_A+p_B=1$",
+   "explanation": "$|\\rho| = 1$ requires an exact linear relation $I_B = a + bI_A$. Because both take only the values 0 and 1, $\\rho = +1$ forces $I_B = I_A$ (so equal probabilities) and $\\rho = -1$ forces $I_B = 1 - I_A$ (so $p_B = 1 - p_A$). Otherwise the attainable range is strictly inside $[-1, 1]$, like $\\pm\\sqrt{3/7}$ for probabilities 0.5 and 0.3.",
+   "distractors": [
+    "Always: any value in $[-1,1]$ is attainable",
+    "$+1$ only if $p_A+p_B=1$; $-1$ only if $p_A=p_B$",
+    "Never: indicators always have $|\\rho|\\le 1/2$"
+   ]
+  },
+  {
+   "id": "4-order-stat-cdfs",
+   "section": "4.6",
+   "name": "cdf of the max and min",
+   "kind": "concept",
+   "page": 99,
+   "prompt": "$X_1, \\dots, X_n$ are i.i.d. with cdf $F$. Give the cdfs of $Z_n = \\max_i X_i$ and $Y_n = \\min_i X_i$.",
+   "answer": "$F_{Z}(x)=F(x)^n$; $F_{Y}(x)=1-(1-F(x))^n$",
+   "explanation": "The maximum is at most $x$ exactly when every $X_i$ is at most $x$, and independence multiplies the $n$ probabilities. The minimum is at least $x$ exactly when every $X_i$ is at least $x$, so $1 - F_Y(x) = (1 - F(x))^n$. Always reason about the event 'all of them' and then take a complement if needed.",
+   "distractors": [
+    "$F_{Z}(x)=1-(1-F(x))^n$; $F_{Y}(x)=F(x)^n$",
+    "$F_{Z}(x)=F(x)^n$; $F_{Y}(x)=(1-F(x))^n$",
+    "$F_{Z}(x)=nF(x)$; $F_{Y}(x)=1-n(1-F(x))$"
+   ]
+  },
+  {
+   "id": "4-order-stat-pdfs",
+   "section": "4.6",
+   "name": "pdf of the max and min",
+   "kind": "concept",
+   "page": 99,
+   "prompt": "$X_1, \\dots, X_n$ are i.i.d. with cdf $F$ and pdf $f$. Give the densities of $Z_n = \\max_i X_i$ and $Y_n = \\min_i X_i$.",
+   "answer": "$f_Z=nf(x)F(x)^{n-1}$; $f_Y=nf(x)(1-F(x))^{n-1}$",
+   "explanation": "Differentiate $F(x)^n$ and $1 - (1-F(x))^n$ with the chain rule. Intuition for the max: any of the $n$ variables can be the largest ($n$ ways), it sits near $x$ (density $f(x)$), and the other $n - 1$ are below $x$ ($F(x)^{n-1}$). The min is the mirror image, with the other $n - 1$ above $x$.",
+   "distractors": [
+    "$f_Z=f(x)F(x)^{n-1}$; $f_Y=f(x)(1-F(x))^{n-1}$",
+    "$f_Z=nf(x)(1-F(x))^{n-1}$; $f_Y=nf(x)F(x)^{n-1}$",
+    "$f_Z=F(x)^n$; $f_Y=(1-F(x))^n$"
+   ]
+  },
+  {
+   "id": "4-expected-max-uniform",
+   "section": "4.6",
+   "name": "Expected value of max and min (max)",
+   "kind": "problem",
+   "page": 99,
+   "prompt": "$X_1, \\dots, X_n$ are i.i.d. Uniform(0,1) and $Z_n = \\max_i X_i$. Find the cdf, the pdf and the expected value of $Z_n$.",
+   "answer": "$F(x)=x^n$, $f(x)=nx^{n-1}$ on $[0,1]$, $E[Z_n]=\\frac{n}{n+1}$",
+   "explanation": "With $F(x) = x$, the max has cdf $x^n$ and density $nx^{n-1}$. Then $E[Z_n] = \\int_0^1 n x^n\\,dx = n/(n+1)$. Intuition: $n$ random points cut $[0,1]$ into $n + 1$ pieces with equal expected length $1/(n+1)$, and the max sits one piece below 1.",
+   "distractors": [
+    "$F(x)=x^n$, $f(x)=nx^{n-1}$ on $[0,1]$, $E[Z_n]=\\frac{n-1}{n}$",
+    "$F(x)=x^n$, $f(x)=nx^{n-1}$ on $[0,1]$, $E[Z_n]=\\frac{n+1}{n+2}$",
+    "$F(x)=1-(1-x)^n$, $f(x)=n(1-x)^{n-1}$, $E[Z_n]=\\frac{1}{n+1}$"
+   ],
+   "hint": "The max is below $x$ only if all $n$ values are."
+  },
+  {
+   "id": "4-expected-min-uniform",
+   "section": "4.6",
+   "name": "Expected value of max and min (min)",
+   "kind": "problem",
+   "page": 100,
+   "prompt": "$X_1, \\dots, X_n$ are i.i.d. Uniform(0,1) and $Y_n = \\min_i X_i$. Find the cdf, the pdf and the expected value of $Y_n$.",
+   "answer": "$F(x)=1-(1-x)^n$, $f(x)=n(1-x)^{n-1}$, $E[Y_n]=\\frac{1}{n+1}$",
+   "explanation": "The min is at least $x$ only if all $n$ values are, which has probability $(1-x)^n$; this gives the cdf and, by differentiating, the pdf. For the mean, use symmetry: each $1 - X_i$ is also uniform and $\\min_i X_i = 1 - \\max_i(1 - X_i)$, so $E[Y_n] = 1 - \\frac{n}{n+1} = \\frac{1}{n+1}$. Direct integration of $\\int_0^1 x\\,n(1-x)^{n-1}dx$ agrees.",
+   "distractors": [
+    "$F(x)=1-(1-x)^n$, $f(x)=n(1-x)^{n-1}$, $E[Y_n]=\\frac{1}{n}$",
+    "$F(x)=(1-x)^n$, $f(x)=n(1-x)^{n-1}$, $E[Y_n]=\\frac{1}{n+1}$",
+    "$F(x)=x^n$, $f(x)=nx^{n-1}$, $E[Y_n]=\\frac{n}{n+1}$"
+   ]
+  },
+  {
+   "id": "4-min-given-max",
+   "section": "4.6",
+   "name": "Correlation of max and min (conditional)",
+   "kind": "problem",
+   "page": 100,
+   "prompt": "$X_1, X_2$ are i.i.d. Uniform(0,1), $Y = \\min(X_1, X_2)$ and $Z = \\max(X_1, X_2)$. For $0 \\le y \\le z \\le 1$, what is $P(Y \\ge y \\mid Z \\le z)$?",
+   "answer": "$\\frac{(z-y)^2}{z^2}$ (and $0$ when $y > z$)",
+   "explanation": "Picture $(X_1, X_2)$ in the unit square. $Z \\le z$ is the square $[0, z]^2$ with area $z^2$. $Y \\ge y$ and $Z \\le z$ together mean both coordinates lie in $[y, z]$, a square of area $(z - y)^2$. Divide the two areas. If $y > z$ the event is impossible because the min cannot exceed the max.",
+   "distractors": [
+    "$\\frac{z-y}{z}$ (and $0$ when $y > z$)",
+    "$(z-y)^2$ (and $0$ when $y > z$)",
+    "$\\frac{(1-y)^2}{z^2}$ (and $0$ when $y > z$)"
+   ],
+   "hint": "Both conditions together confine both points to one smaller square."
+  },
+  {
+   "id": "4-correlation-max-min",
+   "section": "4.6",
+   "name": "Correlation of max and min",
+   "kind": "problem",
+   "page": 100,
+   "prompt": "$X_1, X_2$ are i.i.d. Uniform(0,1). What is the correlation between $Y = \\min(X_1, X_2)$ and $Z = \\max(X_1, X_2)$?",
+   "answer": "$1/2$",
+   "explanation": "From the order-statistic results, $E[Y] = 1/3$ and $E[Z] = 2/3$. Also $E[Y^2] = 1/6$ and $E[Z^2] = 1/2$, so both variances equal $1/18$.\n- Symmetry trick: $YZ = X_1X_2$ always, so $E[YZ] = E[X_1]E[X_2] = 1/4$.\n- Covariance: $1/4 - 2/9 = 1/36$; correlation: $(1/36)/(1/18) = 1/2$.\nFor $n$ i.i.d. uniforms the correlation of min and max is $1/n$.",
+   "distractors": [
+    "$0$",
+    "$1/3$",
+    "$1/4$"
+   ],
+   "hint": "The product of the min and max equals $X_1X_2$."
+  },
+  {
+   "id": "4-var-min-equals-var-max",
+   "section": "4.6",
+   "name": "Variance of min vs max",
+   "kind": "concept",
+   "page": 101,
+   "prompt": "For $n$ i.i.d. Uniform(0,1) variables, how does $\\mathrm{var}(\\min_i X_i)$ compare with $\\mathrm{var}(\\max_i X_i)$, and why?",
+   "answer": "Equal, since $\\min_i X_i=1-\\max_i(1-X_i)$ and each $1-X_i$ is also uniform",
+   "explanation": "Reflecting every point via $x \\mapsto 1 - x$ leaves the joint distribution unchanged and turns the minimum into one minus the maximum. Since $\\mathrm{var}(1 - W) = \\mathrm{var}(W)$, the two variances match for every $n$. The common value is $\\frac{n}{(n+1)^2(n+2)}$, which is $1/18$ for $n = 2$.",
+   "distractors": [
+    "$\\mathrm{var}(\\max)>\\mathrm{var}(\\min)$, because the max has the larger mean",
+    "$\\mathrm{var}(\\min)>\\mathrm{var}(\\max)$, because the min is pinned near 0",
+    "Equal only for $n=2$; for larger $n$ the max varies less"
+   ]
+  },
+  {
+   "id": "4-random-ants",
+   "section": "4.6",
+   "name": "Random ants",
+   "kind": "problem",
+   "page": 102,
+   "prompt": "500 ants are placed independently and uniformly at random on a 1-foot string. Each ant independently picks left or right with equal probability and walks at 1 foot per minute until it falls off an end. Ants are points; when two collide head-on, both instantly reverse and continue at the same speed. What is the expected time until all ants have fallen off?",
+   "answer": "$500/501$ minutes",
+   "explanation": "- Collisions do not matter: two ants bouncing off each other look exactly like two ants passing through each other with their labels swapped. So the set of fall-off times is the same as for 500 non-interacting ants.\n- A free ant at position $x$ falls off after $x$ or $1 - x$ minutes depending on direction; either way its time is Uniform(0,1), independent of the other ants.\n- The last fall is the max of 500 i.i.d. uniforms, whose mean is $n/(n+1) = 500/501$.\nNote: the book prints 499/500, but the max-of-uniforms formula it relies on gives 500/501.",
+   "distractors": [
+    "$499/500$ minutes",
+    "$1/2$ minute",
+    "$1$ minute"
+   ],
+   "hint": "Relabel the ants at each collision so that they pass through each other."
+  }
+ ]
+}

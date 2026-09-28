@@ -1,0 +1,884 @@
+{
+ "chapter": 7,
+ "title": "Algorithms and Numerical Methods",
+ "sections": [
+  {
+   "id": "7.1",
+   "title": "Algorithms"
+  },
+  {
+   "id": "7.2",
+   "title": "The Power of Two"
+  },
+  {
+   "id": "7.3",
+   "title": "Numerical Methods"
+  }
+ ],
+ "cards": [
+  {
+   "id": "7-big-o-notation",
+   "section": "7.1",
+   "name": "Big-O, Big-Omega, Big-Theta",
+   "kind": "concept",
+   "page": 171,
+   "prompt": "In asymptotic analysis, what does each of $f(n)=O(g(n))$, $f(n)=\\Omega(g(n))$ and $f(n)=\\Theta(g(n))$ claim?",
+   "answer": "$O$: upper bound; $\\Omega$: lower bound; $\\Theta$: tight (both), up to constants",
+   "explanation": "- $f=O(g)$: there are constants $c>0$, $n_0$ with $0\\le f(n)\\le c\\,g(n)$ for every $n\\ge n_0$.\n- $f=\\Omega(g)$: eventually $f(n)\\ge c\\,g(n)\\ge 0$.\n- $f=\\Theta(g)$: eventually $c_1g(n)\\le f(n)\\le c_2g(n)$, i.e. $f$ is both $O(g)$ and $\\Omega(g)$.\nConstant factors and machine details are dropped; only the growth rate as $n\\to\\infty$ counts.\nTwo related ideas: the **worst-case** time $W(n)$ bounds the cost of every input of size $n$, while the **average-case** time $A(n)$ is the expected cost over random inputs. They often coincide but not always (quicksort is the classic example).",
+   "distractors": [
+    "$O$: tight bound; $\\Omega$: upper bound; $\\Theta$: lower bound, up to constants",
+    "$O$: average case; $\\Omega$: best case; $\\Theta$: worst case running time",
+    "$O$: lower bound; $\\Omega$: upper bound; $\\Theta$: exact count, no constants"
+   ],
+   "hint": "These describe bounds, not which input you feed in."
+  },
+  {
+   "id": "7-master-theorem",
+   "section": "7.1",
+   "name": "Master theorem",
+   "kind": "concept",
+   "page": 172,
+   "prompt": "For the divide-and-conquer recurrence $T(n)=aT(n/b)+f(n)$ with $a\\ge1$, $b>1$, suppose $f(n)=\\Theta(n^{\\log_b a}\\log^k n)$ for some $k\\ge0$. What is $T(n)$?",
+   "answer": "$T(n)=\\Theta(n^{\\log_b a}\\log^{k+1} n)$",
+   "explanation": "Compare $f(n)$ with $n^{\\log_b a}$, the total work done at the leaves of the recursion tree:\n- $f(n)=O(n^{\\log_b a-\\varepsilon})$ for some $\\varepsilon>0$: leaves dominate, $T=\\Theta(n^{\\log_b a})$.\n- $f(n)=\\Theta(n^{\\log_b a}\\log^k n)$: every level of the tree costs about the same and there are $\\Theta(\\log n)$ levels, so one extra log factor appears.\n- $f(n)=\\Omega(n^{\\log_b a+\\varepsilon})$ and $af(n/b)\\le cf(n)$ for some $c<1$: the root dominates, $T=\\Theta(f(n))$.\nExamples: binary search ($a=1,b=2,f=\\Theta(1)$) gives $\\Theta(\\log n)$; merge sort ($a=b=2$, $f=\\Theta(n)$) gives $\\Theta(n\\log n)$.",
+   "distractors": [
+    "$T(n)=\\Theta(n^{\\log_b a}\\log^{k} n)$",
+    "$T(n)=\\Theta(n^{\\log_b a})$",
+    "$T(n)=\\Theta(n^{\\log_a b}\\log^{k+1} n)$"
+   ],
+   "hint": "How many levels does the recursion tree have?"
+  },
+  {
+   "id": "7-binary-search",
+   "section": "7.1",
+   "name": "Binary search",
+   "kind": "concept",
+   "page": 172,
+   "prompt": "What is the running time of binary search for a value $x$ in a sorted array of $n$ elements, and which recurrence produces it?",
+   "answer": "$\\Theta(\\log n)$, from $T(n)=T(n/2)+\\Theta(1)$",
+   "explanation": "Compare $x$ with the middle element; if they differ, only the half that could still contain $x$ survives. One comparison halves the problem, so $T(n)=T(n/2)+\\Theta(1)$, and the master theorem ($a=1$, $b=2$, $f=\\Theta(n^0)$) gives $\\Theta(\\log n)$: at most $\\lfloor\\log_2 n\\rfloor+1$ probes.\n```\nlo, hi = 0, n - 1\nwhile lo <= hi:\n    mid = lo + (hi - lo) // 2     # avoids overflow of lo + hi\n    if a[mid] == x: return mid\n    if a[mid] < x: lo = mid + 1\n    else:          hi = mid - 1\nreturn NOT_FOUND\n```",
+   "distractors": [
+    "$\\Theta(n)$, from $T(n)=T(n-1)+\\Theta(1)$",
+    "$\\Theta(n)$, from $T(n)=2T(n/2)+\\Theta(1)$",
+    "$\\Theta(n\\log n)$, from $T(n)=2T(n/2)+\\Theta(n)$"
+   ],
+   "hint": "Each comparison discards half of what is left."
+  },
+  {
+   "id": "7-number-swap",
+   "section": "7.1",
+   "name": "Number swap",
+   "kind": "problem",
+   "page": 172,
+   "prompt": "How can you swap the values of two integer variables $i$ and $j$ without any extra storage (no temporary variable)?",
+   "answer": "`i = i + j; j = i - j; i = i - j;`",
+   "explanation": "Trace it: after the first line $i$ holds the sum $i+j$. The second line sets $j=(i+j)-j$, the original $i$. The third sets $i=(i+j)-i$, the original $j$.\nCaveats worth mentioning in an interview:\n- Signed overflow of $i+j$ is undefined behaviour in C/C++. Unsigned (wrap-around) arithmetic still gives the right answer.\n- If $i$ and $j$ are the same variable (aliased references), the value becomes 0.\n- A plain temporary (`std::swap`) is clearer and just as fast in practice.\nA bitwise XOR version works the same way.",
+   "distractors": [
+    "`i = i - j; j = i + j; i = i + j;`",
+    "`i = i + j; i = i - j; j = i - j;`",
+    "`i = i + j; j = i - j; i = j - i;`"
+   ],
+   "hint": "Store the sum in one variable, then peel each original value back out."
+  },
+  {
+   "id": "7-number-swap-xor",
+   "section": "7.1",
+   "name": "Number swap (XOR)",
+   "kind": "problem",
+   "page": 173,
+   "prompt": "Swap two integers $i$ and $j$ in place using only bitwise XOR (`^`). Which three statements do it, and which identities make it work?",
+   "answer": "`i ^= j; j ^= i; i ^= j;` using $x\\oplus x=0$ and $x\\oplus 0=x$",
+   "explanation": "XOR is associative, commutative, and every value is its own inverse.\n- `i ^= j` makes $i=i\\oplus j$.\n- `j ^= i` makes $j=j\\oplus(i\\oplus j)=i$.\n- `i ^= j` makes $i=(i\\oplus j)\\oplus i=j$.\nNo overflow can occur, unlike the add/subtract version. However, if both names refer to the same memory location, the first line sets it to 0 and the value is lost.",
+   "distractors": [
+    "`i ^= j; i ^= j; j ^= i;` using $x\\oplus x=0$ and $x\\oplus 0=x$",
+    "`i ^= j; j ^= i; j ^= i;` using $x\\oplus x=0$ and $x\\oplus 0=x$",
+    "`i &= j; j &= i; i &= j;` using $x\\wedge x=x$ and $x\\wedge 1=x$"
+   ],
+   "hint": "XOR-ing a value in twice cancels it."
+  },
+  {
+   "id": "7-unique-elements",
+   "section": "7.1",
+   "name": "Unique elements",
+   "kind": "problem",
+   "page": 173,
+   "prompt": "Given a sorted array such as [1, 1, 3, 3, 3, 5, 5, 5, 9, 9, 9, 9], give an algorithm that extracts its distinct values ([1, 3, 5, 9]). What is its cost?",
+   "answer": "Keep a[0], then keep a[i] only when a[i] ≠ a[i−1]; one pass, $O(n)$",
+   "explanation": "Sorting puts equal values next to each other, so a new value begins exactly where an element differs from its predecessor. One linear scan is enough:\n```\nout = [a[0]]                 # assumes n >= 1\nfor i in 1 .. n-1:\n    if a[i] != a[i-1]:\n        out.append(a[i])\nreturn out\n```\nHandle the empty array separately. The same idea works in place with a write index; C++'s `std::unique` does exactly this.",
+   "distractors": [
+    "Compare every pair of elements; $O(n^2)$ is unavoidable",
+    "Keep a[i] only when a[i] ≠ a[0]; one pass, $O(n)$",
+    "Binary-search the end of each run; $O(\\log n)$ in all cases"
+   ],
+   "hint": "In a sorted array, where do duplicates sit?"
+  },
+  {
+   "id": "7-horner",
+   "section": "7.1",
+   "name": "Horner's algorithm",
+   "kind": "problem",
+   "page": 174,
+   "prompt": "Give an efficient algorithm to evaluate the polynomial $y=A_0+A_1x+A_2x^2+\\cdots+A_nx^n$. How many multiplications does it need?",
+   "answer": "Horner: $y=(\\cdots((A_nx+A_{n-1})x+A_{n-2})x+\\cdots)x+A_0$; $n$ multiplications",
+   "explanation": "Computing each power $x^k$ from scratch costs about $n^2/2$ multiplications. Keeping a running power brings that down to about $2n$. Horner's nesting needs only $n$ multiplications and $n$ additions:\n```\nB = A[n]\nfor k = n-1 down to 0:\n    B = B * x + A[k]\nreturn B            # equals y\n```\nThe intermediate values are $B_n=A_n$ and $B_k=B_{k+1}x+A_k$, and $y=B_0$.",
+   "distractors": [
+    "Sum each $A_kx^k$ with $x^k$ computed from scratch; $n$ multiplications",
+    "Horner: $y=(\\cdots((A_0x+A_1)x+A_2)x+\\cdots)x+A_n$; $n$ multiplications",
+    "Precompute powers by repeated squaring; $O(\\log n)$ multiplications"
+   ],
+   "hint": "Factor $x$ out of everything except the constant term, again and again."
+  },
+  {
+   "id": "7-moving-average",
+   "section": "7.1",
+   "name": "Moving average",
+   "kind": "problem",
+   "page": 174,
+   "prompt": "Given a long array $A_1,\\dots,A_m$, build the $n$-point moving average $B_i=(A_{i-n+1}+\\cdots+A_i)/n$ for $i=n,\\dots,m$ ($B_1,\\dots,B_{n-1}$ are undefined). What is an efficient algorithm and its cost?",
+   "answer": "Rolling sum: S += A[i] − A[i−n], B[i] = S/n; $O(m)$ total instead of $O(mn)$",
+   "explanation": "Neighbouring windows share $n-1$ terms, so update the sum instead of recomputing it: drop the element that leaves and add the one that enters.\n```\nS = A[1] + ... + A[n];  B[n] = S / n\nfor i = n+1 .. m:\n    S = S - A[i-n] + A[i]\n    B[i] = S / n\n```\nEach output costs $O(1)$ after the first window, so the total is $O(m)$. With floating point, a very long running sum slowly picks up rounding error. Recompute it occasionally or use compensated (Kahan) summation.",
+   "distractors": [
+    "Rolling sum: S += A[i] − A[i−n+1], B[i] = S/n; $O(m)$ total",
+    "Rolling average: B[i] = B[i−1] + A[i]/n; $O(m)$ total",
+    "Re-sum each window from scratch; $O(m)$ total since $n$ is fixed"
+   ],
+   "hint": "Consecutive windows overlap in all but one element."
+  },
+  {
+   "id": "7-insertion-sort",
+   "section": "7.1",
+   "name": "Sorting algorithm: insertion sort",
+   "kind": "problem",
+   "page": 175,
+   "prompt": "Sorting algorithm: describe insertion sort on $n$ distinct values $A_1,\\dots,A_n$ and give its average-case and worst-case running times.",
+   "answer": "$\\Theta(n^2)$ average and worst; $\\Theta(n)$ best (already sorted input)",
+   "explanation": "Keep a sorted prefix $A[1..i-1]$. Insert $A_i$ into it by shifting larger entries one slot to the right.\n```\nfor i = 2 .. n:\n    key = A[i];  j = i - 1\n    while j >= 1 and A[j] > key:\n        A[j+1] = A[j];  j = j - 1\n    A[j+1] = key\n```\nStep $i$ costs about $i/2$ comparisons on average and $i$ in the worst case (reverse-sorted input). Summing gives about $n^2/4$ and $n^2/2$, both $\\Theta(n^2)$. In general the cost is $\\Theta(n+\\text{inversions})$, which is why the sort is fast on nearly sorted data. It is stable and in place.",
+   "distractors": [
+    "$\\Theta(n\\log n)$ average, $\\Theta(n^2)$ worst",
+    "$\\Theta(n\\log n)$ average and worst; $\\Theta(n)$ best",
+    "$\\Theta(n)$ average, $\\Theta(n^2)$ worst"
+   ],
+   "hint": "Step $i$ may have to shift up to $i-1$ elements."
+  },
+  {
+   "id": "7-merge-sort",
+   "section": "7.1",
+   "name": "Sorting algorithm: merge sort",
+   "kind": "problem",
+   "page": 175,
+   "prompt": "Sorting algorithm: describe merge sort, and give its running-time recurrence and complexity.",
+   "answer": "$T(n)=2T(n/2)+\\Theta(n)$, so $\\Theta(n\\log n)$ in both average and worst case",
+   "explanation": "Split the array into two halves, sort each half recursively, then merge the two sorted halves by repeatedly taking the smaller front element. Merging costs $\\Theta(n)$.\n```\nmergesort(A, lo, hi):\n    if lo >= hi: return\n    mid = (lo + hi) // 2\n    mergesort(A, lo, mid)\n    mergesort(A, mid+1, hi)\n    merge(A, lo, mid, hi)        # linear time\n```\nMaster theorem with $a=b=2$, $f=\\Theta(n)$ (the middle case, $k=0$) gives $\\Theta(n\\log n)$. The work does not depend on the input order, so $A(n)=W(n)$. The array version needs $\\Theta(n)$ extra memory, and the sort is stable.",
+   "distractors": [
+    "$T(n)=2T(n/2)+\\Theta(1)$, so $\\Theta(n)$ in both average and worst case",
+    "$T(n)=T(n/2)+\\Theta(n)$, so $\\Theta(n)$ in both average and worst case",
+    "$T(n)=2T(n/2)+\\Theta(n)$, so $\\Theta(n\\log n)$ average but $\\Theta(n^2)$ worst"
+   ],
+   "hint": "Two half-size subproblems plus a linear-time merge."
+  },
+  {
+   "id": "7-quicksort",
+   "section": "7.1",
+   "name": "Sorting algorithm: quicksort",
+   "kind": "problem",
+   "page": 175,
+   "prompt": "Sorting algorithm: describe quicksort on $n$ distinct values and give its average-case and worst-case running times.",
+   "answer": "$\\Theta(n\\log n)$ average, $\\Theta(n^2)$ worst",
+   "explanation": "Pick a pivot, partition the other elements into those smaller and those larger than it, then recurse on both parts.\n- Worst case: every pivot is an extreme value, so the part sizes shrink by only one each time. That costs $(n-1)+(n-2)+\\cdots+1=\\Theta(n^2)$ comparisons.\n- Average case: two elements $p$ and $q$ ranks apart are compared with probability $2/(q-p+1)$, so the expected comparison count is about $2n\\ln n\\approx1.39\\,n\\log_2 n=\\Theta(n\\log n)$.\nIn practice it often beats merge sort because it works in place with good cache behaviour. A random pivot (or shuffling the input first) makes the bad case unlikely for any input.",
+   "distractors": [
+    "$\\Theta(n\\log n)$ average and worst",
+    "$\\Theta(n^2)$ average and worst",
+    "$\\Theta(n)$ average, $\\Theta(n\\log n)$ worst"
+   ],
+   "hint": "The average and worst cases differ; think about bad pivots."
+  },
+  {
+   "id": "7-quicksort-worst-case",
+   "section": "7.1",
+   "name": "Quicksort worst-case input",
+   "kind": "concept",
+   "page": 176,
+   "prompt": "Quicksort always uses the first element of the current (sub)array as its pivot. Which input triggers its worst case, and how many comparisons does it make?",
+   "answer": "An already sorted (or reverse-sorted) array; about $n^2/2$ comparisons, $\\Theta(n^2)$",
+   "explanation": "On sorted input the first element is the minimum, so one part is empty and the other holds the remaining $n-1$ elements. The comparison count is $(n-1)+(n-2)+\\cdots+1=n(n-1)/2$.\nStandard fixes:\n- choose the pivot at random or by median-of-three;\n- or randomly permute the input first in $\\Theta(n)$ with a Knuth shuffle.",
+   "distractors": [
+    "A randomly shuffled array; about $n^2/2$ comparisons, $\\Theta(n^2)$",
+    "An already sorted array; about $n\\log_2 n$ comparisons, $\\Theta(n\\log n)$",
+    "An array with its median first; about $n^2/2$ comparisons, $\\Theta(n^2)$"
+   ],
+   "hint": "When is the first element the smallest one every time?"
+  },
+  {
+   "id": "7-quicksort-compare-probability",
+   "section": "7.1",
+   "name": "Quicksort: chance two elements meet",
+   "kind": "concept",
+   "page": 176,
+   "prompt": "In quicksort on $n$ distinct values in random order, let $\\tilde A_p$ and $\\tilde A_q$ ($p<q$) be the $p$-th and $q$-th smallest values. What is the probability that these two are ever compared?",
+   "answer": "$\\dfrac{2}{q-p+1}$",
+   "explanation": "Look at the $q-p+1$ values $\\tilde A_p,\\dots,\\tilde A_q$. They all stay in the same subarray until one of them becomes a pivot. By symmetry, each is equally likely to be the first chosen.\n- If the first is $\\tilde A_p$ or $\\tilde A_q$, that pivot gets compared with the other: probability $2/(q-p+1)$.\n- If the first lies strictly between them, they are split into different subarrays and never meet.\nSumming gives the expected comparison count $\\sum_{p<q}\\frac{2}{q-p+1}\\approx 2n\\ln n=\\Theta(n\\log n)$.",
+   "distractors": [
+    "$\\dfrac{1}{q-p+1}$",
+    "$\\dfrac{2}{n}$",
+    "$\\dfrac{2}{q-p}$"
+   ],
+   "hint": "Only the first pivot chosen from the range $\\tilde A_p..\\tilde A_q$ matters."
+  },
+  {
+   "id": "7-random-permutation-a",
+   "section": "7.1",
+   "name": "Random permutation (A): shuffle",
+   "kind": "problem",
+   "page": 176,
+   "prompt": "Random permutation: you have a random number generator for discrete or continuous uniform draws. How do you shuffle a deck of 52 cards so that every one of the $52!$ orderings is equally likely? Aim for linear time.",
+   "answer": "Knuth (Fisher–Yates) shuffle: for i = 1..n, swap A[i] with A[Random(i, n)]; $\\Theta(n)$",
+   "explanation": "```\nfor i = 1 .. n:\n    k = uniform integer in [i, n]\n    swap(A[i], A[k])\n```\nPosition 1 gets each of the $n$ cards with probability $1/n$. Position 2 gets each of the remaining $n-1$ with probability $1/(n-1)$, and so on. Any given ordering therefore has probability $\\frac1n\\cdot\\frac1{n-1}\\cdots\\frac11=\\frac1{n!}$.\nAlternative: give every card an i.i.d. Uniform(0,1) key and sort by key. Ties have probability 0, so this is uniform too, but it costs $\\Theta(n\\log n)$.",
+   "distractors": [
+    "For i = 1..n, swap A[i] with A[Random(1, n)]; $\\Theta(n)$",
+    "For i = 1..n, swap A[i] with A[Random(i+1, n)]; $\\Theta(n)$",
+    "Swap two randomly chosen cards $n$ times; $\\Theta(n)$"
+   ],
+   "hint": "Fill the positions one by one, choosing only from cards not yet placed."
+  },
+  {
+   "id": "7-naive-shuffle-bias",
+   "section": "7.1",
+   "name": "Naive shuffle bias",
+   "kind": "concept",
+   "page": 177,
+   "prompt": "A common buggy shuffle is `for i in 1..n: swap(A[i], A[Random(1, n)])`, which draws from the whole array every time. Why does it not produce uniformly random permutations?",
+   "answer": "It has $n^n$ equally likely paths, not divisible by $n!$, so some orderings are favoured",
+   "explanation": "Each of the $n$ swaps has $n$ equally likely choices, giving $n^n$ equally likely executions. A uniform shuffle would need every permutation to be reached by exactly $n^n/n!$ of them. For $n\\ge3$ that is not an integer: $n-1$ divides $n!$ but shares no factor with $n^n$. For example, $n=3$ gives 27 paths spread over 6 permutations.\nFix: draw only from positions $i..n$ (the Knuth shuffle). Drawing from $i+1..n$ is also wrong, because that version (Sattolo's algorithm) produces only single-cycle permutations.",
+   "distractors": [
+    "It is uniform, but it runs in $\\Theta(n^2)$ time",
+    "It never moves the last card, so the last position is fixed",
+    "It only produces cyclic permutations, $(n-1)!$ of them"
+   ],
+   "hint": "Count equally likely execution paths and compare with $n!$."
+  },
+  {
+   "id": "7-random-permutation-b",
+   "section": "7.1",
+   "name": "Random permutation (B): unknown length",
+   "kind": "problem",
+   "page": 177,
+   "prompt": "A file of characters can only be read sequentially, and its length is unknown in advance. In a single pass, how do you pick one character so that every character is equally likely to be chosen?",
+   "answer": "Reservoir sampling: replace the current pick with the $k$-th character with probability $1/k$",
+   "explanation": "Induction: suppose that after $k$ characters each has probability $1/k$ of being the current pick. Character $k+1$ replaces it with probability $\\frac1{k+1}$. Each earlier character survives with probability $\\frac1k\\cdot\\frac{k}{k+1}=\\frac1{k+1}$. After all $m$ characters, every one has probability $1/m$.\n```\npick = None; k = 0\nfor c in stream:\n    k += 1\n    if uniform(0,1) < 1/k: pick = c\nreturn pick\n```\nThis takes one pass and $O(1)$ memory. For a sample of size $s$, keep item $k$ with probability $s/k$, replacing a random slot.",
+   "distractors": [
+    "Replace the current pick with each new character with probability $1/2$",
+    "Replace the current pick with the $k$-th character with probability $1/(k+1)$",
+    "Stop at the $k$-th character with probability $1/k$ and pick that one"
+   ],
+   "hint": "The newest of $k$ characters should win with probability $1/k$."
+  },
+  {
+   "id": "7-search-min-max",
+   "section": "7.1",
+   "name": "Search algorithm (A): min and max",
+   "kind": "problem",
+   "page": 177,
+   "prompt": "Search algorithm: find both the minimum and the maximum of $n$ unsorted numbers using no more than $3n/2$ comparisons.",
+   "answer": "Compare in pairs; min of the smaller ones, max of the larger: about $3n/2-2$ comparisons",
+   "explanation": "Finding the min and max separately costs $2(n-1)$ comparisons. Instead:\n- Pair up the elements and compare within each pair ($n/2$ comparisons). Put the smaller into group A and the larger into group B.\n- The overall min must be in A and the max in B. Scanning each group costs $n/2-1$ comparisons.\nThe total is $3n/2-2$ for even $n$. For odd $n$, start with one element as both current min and max and pair up the rest. In general it is $\\lceil 3n/2\\rceil-2$, which is optimal.",
+   "distractors": [
+    "Scan once, updating min and max at each element: about $3n/2$ comparisons",
+    "Sort first, then read both ends: about $3n/2$ comparisons",
+    "Find the min, then the max of the rest: about $n+\\log_2 n$ comparisons"
+   ],
+   "hint": "One comparison between two elements tells you which is a min candidate and which a max candidate."
+  },
+  {
+   "id": "7-search-first-nonzero",
+   "section": "7.1",
+   "name": "Search algorithm (B): first nonzero",
+   "kind": "problem",
+   "page": 178,
+   "prompt": "Search algorithm: an array of unknown size holds zeros from the start up to some position, and only nonzero entries after it. How do you find the position of the first nonzero element efficiently, and what does it cost if that position is $n$?",
+   "answer": "Probe 1, 2, 4, 8, … until nonzero, then binary search the last gap; $\\Theta(\\log n)$",
+   "explanation": "This is exponential (galloping) search.\n- Doubling phase: if $2^i$ is the first probe that is nonzero, the answer lies in $(2^{i-1},2^i]$. This takes about $\\log_2 n$ probes and never reads past the array's useful part by more than a factor of 2.\n- Binary search phase: search that interval of length $2^{i-1}$ for the zero/nonzero boundary, another $\\approx\\log_2 n$ probes.\nThe total is $\\Theta(\\log n)$, versus $\\Theta(n)$ for a linear scan. Plain binary search is impossible because the array's end is unknown.",
+   "distractors": [
+    "Scan from the start until the first nonzero; $\\Theta(\\log n)$",
+    "Binary search the whole array starting from its midpoint; $\\Theta(\\log n)$",
+    "Probe 1, 2, 4, 8, … and return the first nonzero probe; $\\Theta(\\log n)$"
+   ],
+   "hint": "First find an upper bound fast, then narrow it down."
+  },
+  {
+   "id": "7-search-sorted-grid",
+   "section": "7.1",
+   "name": "Search algorithm (C): sorted grid",
+   "kind": "problem",
+   "page": 178,
+   "prompt": "Search algorithm: in an $n\\times n$ grid, numbers increase from left to right along each row and from top to bottom down each column. Design an algorithm to find a given number $x$, and state its complexity.",
+   "answer": "From the top-right corner: go left if entry $>x$, down if $<x$; $O(n)$, $\\le 2n-1$ steps",
+   "explanation": "At the top-right entry $e$:\n- if $e>x$, everything below $e$ in its column is even larger, so the whole column is ruled out: move left;\n- if $e<x$, everything to its left in the row is smaller, so the whole row is ruled out: move down.\nEach step discards a row or a column, so there are at most $2n-1$ steps. Starting from the bottom-left corner works symmetrically. The book walks down the last column and then along a row, which has the same $O(n)$ bound.\n```\nr, c = 0, n - 1\nwhile r < n and c >= 0:\n    if A[r][c] == x: return (r, c)\n    if A[r][c] > x: c -= 1\n    else:           r += 1\nreturn NOT_FOUND\n```",
+   "distractors": [
+    "Binary search each row; $O(\\log n)$ total",
+    "Binary search along the diagonal, then within one row; $O(\\log n)$ total",
+    "From the top-left corner: go right if entry $<x$, down if $>x$; $O(n)$"
+   ],
+   "hint": "Pick a corner where the two directions mean 'smaller' and 'larger'."
+  },
+  {
+   "id": "7-fibonacci-timing",
+   "section": "7.1",
+   "name": "Fibonacci numbers: timing",
+   "kind": "problem",
+   "page": 179,
+   "prompt": "A naive recursive function computes Fibonacci numbers: `fib(n)` returns 0 for $n\\le0$, 1 for $n=1$, and otherwise `fib(n-1) + fib(n-2)`. For some large $n$, `fib(n)` takes 100 seconds. About how long does `fib(n+1)` take, to the nearest second?",
+   "answer": "About 162 seconds (the runtime grows by the factor $\\varphi=(1+\\sqrt5)/2\\approx1.618$)",
+   "explanation": "The call count satisfies $T(0)=T(1)=1$ and $T(n)=T(n-1)+T(n-2)+1$. Adding 1 to both sides shows that $T(n)+1$ follows the Fibonacci recurrence, so $T(n)=2F_{n+1}-1$.\nFor large $n$, $F_{n+1}/F_n\\to\\varphi\\approx1.618$, the golden ratio, so $T(n+1)\\approx1.618\\times100\\approx162$ seconds.",
+   "distractors": [
+    "About 200 seconds (the runtime doubles with each increase of $n$)",
+    "About 101 seconds (just one more level of recursion)",
+    "About 141 seconds (the runtime grows by the factor $\\sqrt2$)"
+   ],
+   "hint": "The number of calls satisfies the same recurrence as the Fibonacci numbers."
+  },
+  {
+   "id": "7-fibonacci-complexity",
+   "section": "7.1",
+   "name": "Fibonacci numbers: naive complexity",
+   "kind": "problem",
+   "page": 180,
+   "prompt": "What is the time complexity of the naive recursive Fibonacci function, `fib(n) = fib(n-1) + fib(n-2)`, and why is it inefficient?",
+   "answer": "Exponential, $\\Theta(\\varphi^n)$, $\\varphi\\approx1.618$: it recomputes the same subproblems",
+   "explanation": "Binet's formula: $F_n=\\frac{\\varphi^n-\\psi^n}{\\sqrt5}$, where $\\varphi=\\frac{1+\\sqrt5}2$ and $\\psi=\\frac{1-\\sqrt5}2$. Since $|\\psi|<1$, $F_n\\approx\\varphi^n/\\sqrt5$. The call count is $2F_{n+1}-1$, so the runtime is $\\Theta(\\varphi^n)$.\n$2^n$ is only a loose upper bound, because the `fib(n-2)` branch of the tree is shallower. The waste comes from solving overlapping subproblems again and again: `fib(n-2)` is computed twice, `fib(n-3)` three times, and so on. Memoization or a bottom-up loop removes it.",
+   "distractors": [
+    "$\\Theta(2^n)$ exactly, since each call spawns two calls down to depth $n$",
+    "$\\Theta(n^2)$, since each of $n$ levels does up to $n$ additions",
+    "$\\Theta(n)$, since each value $F_k$ is computed only once"
+   ],
+   "hint": "How does the number of calls relate to $F_n$ itself?"
+  },
+  {
+   "id": "7-fibonacci-fast",
+   "section": "7.1",
+   "name": "Fibonacci numbers: fast methods",
+   "kind": "problem",
+   "page": 180,
+   "prompt": "How would you compute the Fibonacci number $F_n$ efficiently? Give an $O(n)$ method and a faster one.",
+   "answer": "Loop bottom-up, $\\Theta(n)$; or compute $[[1,1],[1,0]]^n$ by repeated squaring, $\\Theta(\\log n)$",
+   "explanation": "Bottom-up loop:\n```\na, b = 0, 1           # F0, F1\nrepeat n times:\n    a, b = b, a + b\nreturn a              # Fn\n```\nMatrix method: $\\begin{pmatrix}F_{n+1}&F_n\\\\F_n&F_{n-1}\\end{pmatrix}=\\begin{pmatrix}1&1\\\\1&0\\end{pmatrix}^n$. Compute the power by squaring: $A^n=(A^{n/2})^2$ for even $n$ and $A\\cdot A^{n-1}$ for odd $n$. Each $2\\times2$ product costs $O(1)$, so $T(n)=T(n/2)+\\Theta(1)=\\Theta(\\log n)$ arithmetic operations.\nBinet's formula evaluated in double precision stops being exact at roughly $n\\approx70$. With big integers, $F_n$ has about $0.21n$ digits, so the arithmetic itself is no longer $O(1)$.",
+   "distractors": [
+    "Memoized recursion, $\\Theta(\\log n)$; or Binet's formula in doubles, exact for every $n$",
+    "Loop bottom-up, $\\Theta(n\\log n)$; or compute $[[1,1],[1,0]]^n$ by squaring, $\\Theta(\\sqrt n)$",
+    "Loop bottom-up, $\\Theta(n)$; or compute $[[1,1],[1,0]]^n$ with $n$ multiplications, $\\Theta(\\log n)$"
+   ],
+   "hint": "Fibonacci steps can be written as a $2\\times2$ matrix multiplication."
+  },
+  {
+   "id": "7-max-subarray",
+   "section": "7.1",
+   "name": "Maximum contiguous subarray",
+   "kind": "problem",
+   "page": 180,
+   "prompt": "An array $A$ of length $n$ contains both positive and negative numbers. Design an efficient algorithm for the maximum sum of any contiguous subarray, $\\max_{1\\le i\\le j\\le n}\\sum_{x=i}^{j}A[x]$.",
+   "answer": "One pass, $O(n)$: best $=\\max_j(T_j-\\min_{k<j}T_k)$ with prefix sums $T_j$, $T_0=0$",
+   "explanation": "With prefix sums $T_j=A[1]+\\cdots+A[j]$, a subarray sum is $V(i,j)=T_j-T_{i-1}$. For a fixed end $j$, the best start minimizes the earlier prefix $T_{i-1}$. So track the running sum and the smallest prefix seen so far:\n```\nT = 0; Tmin = 0; best = -infinity\nfor j = 1 .. n:\n    T = T + A[j]\n    best = max(best, T - Tmin)   # subarray ends at j\n    Tmin = min(Tmin, T)          # update after, keeps it nonempty\nreturn best\n```\nBrute force over all $(i,j)$ with running sums is $O(n^2)$. Trading desks use this routine for maximum run-up and maximum drawdown of a P&L series.",
+   "distractors": [
+    "Try every $(i,j)$ with running sums; $O(n^2)$ is optimal",
+    "Sort the array and add all its positive entries; $O(n\\log n)$",
+    "One pass, $O(n)$: best $=\\max_j T_j-\\min_j T_j$ over all prefix sums"
+   ],
+   "hint": "A subarray sum is a difference of two prefix sums."
+  },
+  {
+   "id": "7-max-subarray-example",
+   "section": "7.1",
+   "name": "Maximum contiguous subarray: example",
+   "kind": "problem",
+   "page": 181,
+   "prompt": "What is the maximum contiguous-subarray sum of $A=[1,\\ 2,\\ -5,\\ 4,\\ -3,\\ 2,\\ 6,\\ -5,\\ -1]$, and which subarray achieves it?",
+   "answer": "9, from $[4,-3,2,6]$",
+   "explanation": "Prefix sums, starting at $T_0=0$: 0, 1, 3, −2, 2, −1, 1, 7, 2, 1.\nThe largest value of $T_j$ minus an earlier minimum is $T_7-T_3=7-(-2)=9$. That is elements 4 through 7 (1-indexed): $4-3+2+6=9$.\nTempting wrong answers: $[2,6]=8$ misses the extra $4-3=+1$, and the long prefix run $1+2-5+4-3+2+6$ gives only 7.",
+   "distractors": [
+    "8, from $[2,6]$",
+    "7, from $[1,2,-5,4,-3,2,6]$",
+    "12, from $[4,2,6]$ (skipping the $-3$)"
+   ],
+   "hint": "Compute the prefix sums and find the largest rise from a low point."
+  },
+  {
+   "id": "7-kadane",
+   "section": "7.1",
+   "name": "Kadane's algorithm",
+   "kind": "concept",
+   "page": 181,
+   "prompt": "Kadane's algorithm finds the maximum subarray sum by keeping one running quantity $E_j$: the best sum of a subarray that ends exactly at index $j$. What is its update rule?",
+   "answer": "$E_j=\\max(A[j],\\,E_{j-1}+A[j])$ and best $=\\max_j E_j$",
+   "explanation": "A best subarray ending at $j$ either extends the best one ending at $j-1$ or starts fresh at $j$. Starting fresh is better whenever the old $E_{j-1}$ is negative.\n```\ncur = best = A[1]\nfor j = 2 .. n:\n    cur  = max(A[j], cur + A[j])\n    best = max(best, cur)\nreturn best\n```\nIt uses $O(n)$ time and $O(1)$ memory. It is equivalent to the prefix-sum form, $E_j=T_j-\\min_{k<j}T_k$. If every entry is negative it correctly returns the largest single element. The same one-pass idea gives maximum drawdown: track the running peak and the largest drop below it.",
+   "distractors": [
+    "$E_j=\\max(E_{j-1},\\,A[j])$ and best $=E_n$",
+    "$E_j=E_{j-1}+\\max(A[j],0)$ and best $=E_n$",
+    "$E_j=\\max(0,\\,E_{j-1})+|A[j]|$ and best $=\\max_j E_j$"
+   ],
+   "hint": "Either extend the previous run or start over at $j$."
+  },
+  {
+   "id": "7-power-of-2",
+   "section": "7.2",
+   "name": "Power of 2?",
+   "kind": "problem",
+   "page": 182,
+   "prompt": "How do you check, with one bitwise operation, whether an integer $x$ is a power of 2?",
+   "answer": "`x > 0 && (x & (x - 1)) == 0`",
+   "explanation": "$2^k$ in binary is a single 1 bit (8 = 1000). $2^k-1$ is exactly the $k$ ones below it (7 = 0111), so the two share no bits and their AND is 0. Any other positive $x$ has at least two 1 bits. Subtracting 1 changes only the lowest one and the zeros below it, so the higher 1 survives and the AND is nonzero.\nThe `x > 0` test is needed because 0 & (−1) = 0 would also pass; the book's version leaves this out. In C, `&` binds more loosely than `==`, so keep the parentheses.",
+   "distractors": [
+    "`(x & (x + 1)) == 0`",
+    "`x > 0 && x % 2 == 0`",
+    "`x > 0 && (x | (x - 1)) == 0`"
+   ],
+   "hint": "What do $2^k$ and $2^k-1$ look like in binary?"
+  },
+  {
+   "id": "7-bit-clear-lowest",
+   "section": "7.2",
+   "name": "Bit trick: x & (x − 1)",
+   "kind": "concept",
+   "page": 182,
+   "prompt": "What does `x & (x - 1)` do to the binary form of a positive integer `x`, and how does it give a quick way to count 1 bits?",
+   "answer": "Clears the lowest set bit; repeat until 0, and the loop count equals the number of 1 bits",
+   "explanation": "Subtracting 1 turns the lowest 1 into 0 and the zeros below it into 1s. The AND then keeps every higher bit and zeroes that low block. Example: 12 = 1100, 11 = 1011, 12 & 11 = 1000.\n```\ncount = 0\nwhile x != 0:\n    x = x & (x - 1)\n    count += 1          # one iteration per set bit\n```\nRelated tricks:\n- `x & -x` isolates the lowest set bit (two's complement).\n- `x << k` equals $x\\cdot2^k$.\n- `x >> k` equals $\\lfloor x/2^k\\rfloor$ for nonnegative $x$.",
+   "distractors": [
+    "Clears the highest set bit; repeat until 0, and the loop count equals the bit length",
+    "Isolates the lowest set bit; repeat until 0, and the loop count equals the trailing zeros",
+    "Flips all bits below the lowest set bit; the loop count equals the number of 0 bits"
+   ],
+   "hint": "Write out 12 and 11 in binary."
+  },
+  {
+   "id": "7-multiply-by-7",
+   "section": "7.2",
+   "name": "Multiplication by 7",
+   "kind": "problem",
+   "page": 182,
+   "prompt": "Give a fast way to multiply an integer $x$ by 7 without using the multiplication operator.",
+   "answer": "`(x << 3) - x`, i.e. $8x-x$",
+   "explanation": "A left shift by $k$ bits multiplies by $2^k$, so `x << 3` is $8x$, and subtracting $x$ leaves $7x$. The alternative `(x << 2) + (x << 1) + x` also works but needs more operations.\nCaveats: $8x$ can overflow even when $7x$ would fit, although with wrap-around arithmetic the final result is still right. Left-shifting a negative signed value was undefined before C++20. Modern compilers apply this strength reduction automatically.",
+   "distractors": [
+    "`(x << 7) - x`, i.e. $128x-x$",
+    "`(x << 3) + x`, i.e. $8x+x$",
+    "`(x << 2) + (x << 1)`, i.e. $4x+2x$"
+   ],
+   "hint": "7 = 8 − 1, and multiplying by 8 is a shift."
+  },
+  {
+   "id": "7-probability-simulation",
+   "section": "7.2",
+   "name": "Probability simulation",
+   "kind": "problem",
+   "page": 182,
+   "prompt": "You are given a fair coin. Design a simple game using only this coin that you win with probability exactly $p$, for any given $0<p<1$.",
+   "answer": "Tosses = binary digits of a uniform $U$; stop at first mismatch with $p$'s digits; win if $U<p$",
+   "explanation": "Write $p=0.p_1p_2p_3\\ldots$ in binary. Toss $i$ gives a bit $s_i$ (heads = 1, tails = 0), so the tosses are the digits of a Uniform(0,1) number $U=0.s_1s_2\\ldots$.\n- At the first $i$ with $s_i\\ne p_i$: if $s_i=0$ and $p_i=1$, then $U<p$ and you win. Otherwise $U>p$ and you lose.\n- While $s_i=p_i$, keep tossing.\nSo $P(\\text{win})=P(U<p)=p$. For a terminating expansion such as $1/4=0.01_2$, treat the remaining digits as 0. Once the digits run out you cannot win any more, so equality at the end is a loss. For $p=1/4$, only TT wins.",
+   "distractors": [
+    "Toss $n$ times and win if the fraction of heads is below $p$",
+    "Toss until the first head; win if it took more than $1/p$ tosses",
+    "Tosses = binary digits of a uniform $U$; stop at first mismatch with $p$'s digits; win if $U>p$"
+   ],
+   "hint": "Any $p$ in (0, 1) has a binary expansion, and each binary digit is a coin toss."
+  },
+  {
+   "id": "7-probability-simulation-tosses",
+   "section": "7.2",
+   "name": "Probability simulation: expected tosses",
+   "kind": "concept",
+   "page": 183,
+   "prompt": "In the fair-coin game that compares toss bits with the binary digits of $p$ and stops at the first mismatch, what is the expected number of tosses?",
+   "answer": "At most 2: each toss ends the game with probability 1/2 (exactly 2 for non-dyadic $p$)",
+   "explanation": "Each toss matches the corresponding digit of $p$ with probability 1/2, whatever that digit is. The number of tosses is therefore Geometric(1/2), with mean 2.\nIf $p=k/2^n$ has a terminating expansion, you can stop after $n$ tosses, since no win is possible after that. That gives $E=\\sum_{k=0}^{n-1}2^{-k}=2-2^{1-n}<2$.\nSo even an irrational $p$ needs only a couple of tosses on average, with digits of $p$ computed on demand.",
+   "distractors": [
+    "About $\\log_2(1/p)$ tosses, which grows as $p\\to0$",
+    "Infinite for irrational $p$ such as $1/\\pi$",
+    "$1/p$ tosses, like waiting for a first success"
+   ],
+   "hint": "What is the chance that any single toss ends the game?"
+  },
+  {
+   "id": "7-poisonous-wine",
+   "section": "7.2",
+   "name": "Poisonous wine",
+   "kind": "problem",
+   "page": 183,
+   "prompt": "You have 1000 bottles of wine, exactly one of them poisoned, and 10 lab mice. Any amount of the poison kills a mouse in exactly 18 hours, with no symptoms before that, and the party is in 20 hours. How can you be sure of identifying the poisoned bottle before the party?",
+   "answer": "Binary labels: mouse $k$ sips each bottle whose bit $k$ is 1; dead mice spell the bottle's number",
+   "explanation": "With 18 of the 20 hours needed for symptoms, only one round of testing is possible, so all the tests must run at once. Binary search still works if every mouse runs in parallel.\n- Number the bottles 1–1000 in binary. $1000<2^{10}=1024$, so 10 bits suffice. For example, bottle 1000 = 1111101000.\n- Mouse $k$ drinks a drop from every bottle whose $k$-th bit (counting from the right) is 1.\n- After 18 hours, read dead = 1 and alive = 0 from mouse 10 down to mouse 1. That binary number is the poisoned bottle's label.\nEach mouse gives one bit of information and 1000 outcomes need at least 10 bits, so 10 mice is also the minimum. Nine mice cover only 512 bottles.",
+   "distractors": [
+    "Split the bottles into 10 groups of 100, one per mouse, then retest the fatal group",
+    "Binary search: test half the bottles, wait for the result, then test half of the remainder",
+    "Give mouse $k$ bottles $100(k-1)+1$ to $100k$; the dead mouse's group holds the poison"
+   ],
+   "hint": "There is time for only one round, so the ten tests must run in parallel."
+  },
+  {
+   "id": "7-poisonous-wine-decode",
+   "section": "7.2",
+   "name": "Poisonous wine: decoding",
+   "kind": "problem",
+   "page": 183,
+   "prompt": "In the binary poisoned-wine scheme, mouse $k$ drinks from every bottle whose $k$-th bit from the right is 1. After 18 hours mice 6, 7 and 9 are dead and the rest are alive. Which bottle is poisoned?",
+   "answer": "Bottle 352 ($2^5+2^6+2^8$)",
+   "explanation": "Mouse $k$ stands for the bit worth $2^{k-1}$. Dead mice 6, 7 and 9 give $2^5+2^6+2^8=32+64+256=352$, which is 0101100000 in binary.\nA common slip is to use $2^k$ in place of $2^{k-1}$, which gives 704.",
+   "distractors": [
+    "Bottle 704 ($2^6+2^7+2^9$)",
+    "Bottle 22 ($6+7+9$)",
+    "Bottle 671 (every other bit set)"
+   ],
+   "hint": "Mouse 1 is the lowest bit, worth $2^0$."
+  },
+  {
+   "id": "7-mc-european-call",
+   "section": "7.3",
+   "name": "Monte Carlo (A): European call",
+   "kind": "problem",
+   "page": 184,
+   "prompt": "Explain how to price a European call (strike $K$, maturity $T$) by Monte Carlo simulation when the stock follows geometric Brownian motion.",
+   "answer": "Simulate risk-neutral $S_T$ paths, average $\\max(S_T-K,0)$, discount by $e^{-rT}$",
+   "explanation": "Under the risk-neutral measure, $S_T=S_0\\exp\\big((r-\\tfrac12\\sigma^2)T+\\sigma\\sqrt T\\,Z\\big)$ with $Z\\sim N(0,1)$. Draw $M$ independent values, compute each payoff, then average and discount:\n```\ntotal = 0\nfor k = 1 .. M:\n    Z  = standard_normal()\n    ST = S0 * exp((r - 0.5*sigma^2)*T + sigma*sqrt(T)*Z)\n    total += max(ST - K, 0)\nprice = exp(-r*T) * total / M\n```\nA European payoff depends only on $S_T$, so one exact time step is enough. Path-dependent payoffs need many small steps. The law of large numbers justifies the method, and the standard error shrinks like $1/\\sqrt M$.",
+   "distractors": [
+    "Simulate real-world ($\\mu$-drift) $S_T$ paths, average $\\max(S_T-K,0)$, discount by $e^{-\\mu T}$",
+    "Simulate risk-neutral $S_T$ paths, take $\\max(\\bar S_T-K,0)$ of the average price, discount",
+    "Simulate risk-neutral $S_T$ paths, average $\\max(S_T-K,0)$; no discounting needed"
+   ],
+   "hint": "Price = discounted risk-neutral expectation of the payoff."
+  },
+  {
+   "id": "7-gbm-step",
+   "section": "7.3",
+   "name": "GBM simulation step",
+   "kind": "concept",
+   "page": 184,
+   "prompt": "To simulate a risk-neutral GBM stock path on a time grid with step $\\Delta t$, what update takes $S_{i-1}$ to $S_i$ (with $\\varepsilon_i$ i.i.d. $N(0,1)$)?",
+   "answer": "$S_i=S_{i-1}\\exp\\big((r-\\tfrac12\\sigma^2)\\Delta t+\\sigma\\sqrt{\\Delta t}\\,\\varepsilon_i\\big)$",
+   "explanation": "By Itô's lemma, $\\ln S$ is a Brownian motion with drift $r-\\tfrac12\\sigma^2$ and volatility $\\sigma$ under the risk-neutral measure. The log-normal step is therefore exact for any $\\Delta t$ and has no discretization error.\n- The $-\\tfrac12\\sigma^2$ term makes $E[S_i\\mid S_{i-1}]=S_{i-1}e^{r\\Delta t}$.\n- The noise scales with $\\sqrt{\\Delta t}$ because $\\mathrm{Var}(W_{\\Delta t})=\\Delta t$.\nFor $N$ steps over $[t,T]$, use $\\Delta t=(T-t)/N$.",
+   "distractors": [
+    "$S_i=S_{i-1}\\exp\\big(r\\Delta t+\\sigma\\sqrt{\\Delta t}\\,\\varepsilon_i\\big)$",
+    "$S_i=S_{i-1}\\exp\\big((r-\\tfrac12\\sigma^2)\\Delta t+\\sigma\\Delta t\\,\\varepsilon_i\\big)$",
+    "$S_i=S_{i-1}\\exp\\big((r+\\tfrac12\\sigma^2)\\Delta t+\\sigma\\sqrt{\\Delta t}\\,\\varepsilon_i\\big)$"
+   ],
+   "hint": "Itô correction in the drift; the noise scales like the square root of time."
+  },
+  {
+   "id": "7-mc-american",
+   "section": "7.3",
+   "name": "Monte Carlo and early exercise",
+   "kind": "concept",
+   "page": 184,
+   "prompt": "Why can't plain forward Monte Carlo simulation directly price an American option, and what is the usual fix?",
+   "answer": "Exercise needs conditional continuation values; use Longstaff–Schwartz regression or a tree/PDE",
+   "explanation": "At each possible exercise date the holder compares the immediate payoff with the value of continuing. That value is a conditional expectation given the current state, which one forward path cannot supply.\nMonte Carlo handles European and path-dependent payoffs (Asian, barrier, lookback) well. For early exercise:\n- Least-squares Monte Carlo (Longstaff–Schwartz): work backward and regress realized continuation values on functions of the state to estimate the exercise rule.\n- Otherwise use a binomial/trinomial tree or finite differences, which step backward naturally.",
+   "distractors": [
+    "American payoffs are path-dependent, so use more time steps with $\\Delta t\\to0$",
+    "The risk-neutral drift is undefined for American options; simulate under real-world drift",
+    "Early exercise adds only a small premium, so the European price from Monte Carlo is exact"
+   ],
+   "hint": "The exercise decision needs an expectation of the future, conditional on today's state."
+  },
+  {
+   "id": "7-generate-normal",
+   "section": "7.3",
+   "name": "Monte Carlo (B): normal from uniforms",
+   "kind": "problem",
+   "page": 185,
+   "prompt": "Your computer can only generate Uniform(0,1) random variables. How do you generate random draws from $N(\\mu,\\sigma^2)$?",
+   "answer": "Get $Z\\sim N(0,1)$ via inverse CDF, rejection or Box–Muller; then set $X=\\mu+\\sigma Z$",
+   "explanation": "Two steps:\n- **Standard normal.** Inverse transform $Z=\\Phi^{-1}(U)$ has no closed form, but accurate rational approximations exist, or you can tabulate $\\Phi$ numerically. Acceptance–rejection with an exponential proposal works. So does Box–Muller: $Z=\\sqrt{-2\\ln U_1}\\cos(2\\pi U_2)$.\n- **Scale and shift.** $X=\\mu+\\sigma Z$. Note that $\\sigma$ is the standard deviation, not the variance.\nSumming 12 uniforms and subtracting 6 gives only an approximate normal, with bounded tails.",
+   "distractors": [
+    "Get $Z\\sim N(0,1)$ via inverse CDF or Box–Muller; then set $X=\\mu+\\sigma^2 Z$",
+    "Use one uniform: $X=\\mu+\\sigma(U-\\tfrac12)$",
+    "Use 12 uniforms: $X=\\mu+\\sigma\\sum_{i=1}^{12}U_i$"
+   ],
+   "hint": "Solve the standard normal case first, then transform it."
+  },
+  {
+   "id": "7-inverse-transform",
+   "section": "7.3",
+   "name": "Inverse transform method",
+   "kind": "concept",
+   "page": 185,
+   "prompt": "State the inverse transform method for sampling a continuous random variable with CDF $F$, and apply it to an Exponential($\\lambda$) variable.",
+   "answer": "$X=F^{-1}(U)$ with $U\\sim U(0,1)$; for Exp($\\lambda$), $X=-\\ln(1-U)/\\lambda$",
+   "explanation": "$P(F^{-1}(U)\\le x)=P(U\\le F(x))=F(x)$, so $X$ has CDF $F$.\nFor the exponential, $F(x)=1-e^{-\\lambda x}$. Setting $u=F(x)$ gives $x=-\\ln(1-u)/\\lambda$. Since $1-U$ is also uniform, $-\\ln(U)/\\lambda$ works too.\nThe method needs a computable $F^{-1}$. The normal CDF has no closed-form inverse, which motivates rejection sampling and Box–Muller.",
+   "distractors": [
+    "$X=F(U)$ with $U\\sim U(0,1)$; for Exp($\\lambda$), $X=1-e^{-\\lambda U}$",
+    "$X=F^{-1}(U)$ with $U\\sim U(0,1)$; for Exp($\\lambda$), $X=-\\lambda\\ln(1-U)$",
+    "$X=f(U)/F(U)$ with $U\\sim U(0,1)$; for Exp($\\lambda$), $X=\\lambda e^{-\\lambda U}$"
+   ],
+   "hint": "Set $U=F(X)$ and solve for $X$."
+  },
+  {
+   "id": "7-box-muller",
+   "section": "7.3",
+   "name": "Box–Muller transform",
+   "kind": "concept",
+   "page": 185,
+   "prompt": "Given independent $U_1,U_2\\sim U(0,1)$, how does the Box–Muller transform produce two independent standard normals?",
+   "answer": "$Z_1=\\sqrt{-2\\ln U_1}\\cos(2\\pi U_2)$, $Z_2=\\sqrt{-2\\ln U_1}\\sin(2\\pi U_2)$",
+   "explanation": "In polar coordinates, two i.i.d. standard normals have squared radius $R^2=Z_1^2+Z_2^2\\sim\\chi^2_2$, which is exponential with mean 2. The angle is uniform on $[0,2\\pi)$ and independent of $R$.\nInverse-transform both: $R^2=-2\\ln U_1$ and $\\theta=2\\pi U_2$. The Marsaglia polar method avoids the trig calls by rejection-sampling a point in the unit disc.",
+   "distractors": [
+    "$Z_1=\\sqrt{-\\ln U_1}\\cos(2\\pi U_2)$, $Z_2=\\sqrt{-\\ln U_1}\\sin(2\\pi U_2)$",
+    "$Z_1=-2\\ln U_1\\cos(2\\pi U_2)$, $Z_2=-2\\ln U_1\\sin(2\\pi U_2)$",
+    "$Z_1=\\sqrt{-2\\ln U_1}\\cos(\\pi U_2)$, $Z_2=\\sqrt{-2\\ln U_1}\\sin(\\pi U_2)$"
+   ],
+   "hint": "The squared radius of two standard normals is exponential with mean 2."
+  },
+  {
+   "id": "7-acceptance-rejection",
+   "section": "7.3",
+   "name": "Acceptance–rejection method",
+   "kind": "concept",
+   "page": 186,
+   "prompt": "To sample from a density $f$ using an easy proposal density $g$ with $f(y)\\le M\\,g(y)$ for all $y$, what is the acceptance–rejection rule, and what fraction of proposals is accepted?",
+   "answer": "Draw $Y\\sim g$, $V\\sim U(0,1)$; accept $Y$ if $V\\le f(Y)/(Mg(Y))$; acceptance rate $1/M$",
+   "explanation": "The pairs $(Y,\\,V\\cdot Mg(Y))$ are uniform under the curve $Mg$. Keeping only those below $f$ leaves points uniform under $f$, so accepted $Y$ values have density $f$.\n$P(\\text{accept})=\\int g(y)\\frac{f(y)}{Mg(y)}\\,dy=\\frac1M$. The number of proposals per accepted sample is geometric with mean $M$, so choose $g$ close in shape to $f$ to keep $M$ near 1.",
+   "distractors": [
+    "Draw $Y\\sim g$, $V\\sim U(0,1)$; accept $Y$ if $V\\le Mg(Y)/f(Y)$; acceptance rate $M$",
+    "Draw $Y\\sim f$, $V\\sim U(0,1)$; accept $Y$ if $V\\le g(Y)/(Mf(Y))$; acceptance rate $1/M$",
+    "Draw $Y\\sim g$, $V\\sim U(0,1)$; accept $Y$ if $V\\le f(Y)/(Mg(Y))$; acceptance rate $1-1/M$"
+   ],
+   "hint": "Picture throwing darts under the envelope $M g$."
+  },
+  {
+   "id": "7-rejection-normal-constant",
+   "section": "7.3",
+   "name": "Rejection sampling a normal via Exp(1)",
+   "kind": "problem",
+   "page": 186,
+   "prompt": "To sample $|Z|$ for $Z\\sim N(0,1)$ (half-normal density $f(x)=\\sqrt{2/\\pi}\\,e^{-x^2/2}$, $x>0$) by rejection from an Exp(1) proposal $g(x)=e^{-x}$, what is the smallest valid bound $M$ on $f/g$?",
+   "answer": "$M=\\sqrt{2e/\\pi}\\approx1.32$, attained at $x=1$",
+   "explanation": "$\\frac{f(x)}{g(x)}=\\sqrt{2/\\pi}\\,e^{x-x^2/2}=\\sqrt{2/\\pi}\\,e^{1/2-(x-1)^2/2}\\le\\sqrt{2/\\pi}\\,e^{1/2}=\\sqrt{2e/\\pi}\\approx1.3155$.\nAbout $1/M\\approx76\\%$ of proposals are accepted. The Exp(1) proposal itself comes from $-\\ln(1-U)$.\nThis yields only $|Z|$. Attach a random sign (one more coin flip) to get $N(0,1)$, then scale to $\\mu+\\sigma Z$. The book applies the bound to the standard normal directly, but the ratio it computes is the half-normal one, so the sign step is needed.",
+   "distractors": [
+    "$M=\\sqrt{2/\\pi}\\approx0.80$, attained at $x=0$",
+    "$M=\\sqrt{2\\pi}\\approx2.51$, attained at $x=0$",
+    "$M=e^{1/2}\\approx1.65$, attained at $x=1$"
+   ],
+   "hint": "Complete the square in the exponent $x-x^2/2$."
+  },
+  {
+   "id": "7-mc-convergence",
+   "section": "7.3",
+   "name": "Monte Carlo convergence rate",
+   "kind": "concept",
+   "page": 186,
+   "prompt": "A plain Monte Carlo estimate averages $M$ i.i.d. samples, each with standard deviation $\\sigma$. What is its standard error, and how many more samples does it take to halve the error?",
+   "answer": "$\\sigma/\\sqrt M$, so error $\\propto M^{-1/2}$: 4× the samples halves it",
+   "explanation": "$\\mathrm{Var}(\\bar Y)=\\sigma^2/M$, so the standard error is $\\sigma/\\sqrt M$. The book writes $\\mathrm{Var}(\\bar Y)=\\sigma/\\sqrt M$, mixing up variance and standard deviation.\n- The rate does not depend on dimension, which is why Monte Carlo suits high-dimensional problems.\n- It is slow: each extra decimal digit of accuracy costs 100× more paths.\n- Estimate $\\sigma$ with the sample standard deviation $s$ and report $\\bar Y\\pm1.96\\,s/\\sqrt M$ as a 95% interval.\nVariance reduction attacks $\\sigma$; quasi-random sequences attack the rate.",
+   "distractors": [
+    "$\\sigma/M$, so error $\\propto M^{-1}$: 2× the samples halves it",
+    "$\\sigma^2/\\sqrt M$, so error $\\propto M^{-1/2}$: 2× the samples halves it",
+    "$\\sigma/\\sqrt M$, so error $\\propto M^{-1/2}$: $\\sqrt2$× the samples halves it"
+   ],
+   "hint": "The variance of a mean of $M$ i.i.d. terms is $\\sigma^2/M$."
+  },
+  {
+   "id": "7-antithetic-variates",
+   "section": "7.3",
+   "name": "Antithetic variates",
+   "kind": "concept",
+   "page": 187,
+   "prompt": "What is the antithetic variable technique in Monte Carlo, and when does it reduce variance?",
+   "answer": "Average the payoffs from $\\varepsilon$ and $-\\varepsilon$; works when the pair is negatively correlated",
+   "explanation": "For the pair average $\\tfrac12\\big(Y(\\varepsilon)+Y(-\\varepsilon)\\big)$, the variance is $\\tfrac{\\sigma^2}{2}(1+\\rho)$, where $\\rho$ is the correlation of the two payoffs. Two independent draws give $\\tfrac{\\sigma^2}{2}$, so the pairing wins exactly when $\\rho<0$.\n- Payoffs that are monotone in $\\varepsilon$ (a vanilla call, for example) give $\\rho<0$.\n- Symmetric payoffs such as a near-the-money straddle give $\\rho>0$, and the trick can hurt.\nIt also forces the normal draws to have sample mean exactly 0.",
+   "distractors": [
+    "Average the payoffs from $\\varepsilon$ and $-\\varepsilon$; works when the pair is positively correlated",
+    "Replace each draw $\\varepsilon$ by $1/\\varepsilon$ and average; helps for heavy-tailed payoffs",
+    "Discard draws with $|\\varepsilon|>2$ and resample; helps by removing outliers"
+   ],
+   "hint": "Write out the variance of the average of two correlated payoffs."
+  },
+  {
+   "id": "7-moment-matching",
+   "section": "7.3",
+   "name": "Moment matching",
+   "kind": "concept",
+   "page": 187,
+   "prompt": "What is moment matching as a Monte Carlo variance-reduction technique?",
+   "answer": "Rescale the draws so their sample mean and variance exactly equal the targets (e.g. 0, 1)",
+   "explanation": "A finite sample of $\\varepsilon_i$ never has exactly the population moments. Standardize it: $\\tilde\\varepsilon_i=(\\varepsilon_i-\\bar\\varepsilon)/s_\\varepsilon$ gives sample mean 0 and variance 1 exactly. You can also rescale simulated $S_T$ so its sample mean equals the forward $S_0e^{rT}$.\nThis removes sampling noise in those moments. The adjusted draws are no longer independent, so there is a small bias that vanishes as $M\\to\\infty$, and standard error bars become harder to compute.",
+   "distractors": [
+    "Choose the number of paths so that the payoff's sample mean equals its analytic value",
+    "Fit a lognormal to the payoff's moments and price it with Black–Scholes",
+    "Rescale the discounted payoffs so their sample variance equals $\\sigma^2/M$"
+   ],
+   "hint": "The adjustment is made to the inputs before any payoffs are computed."
+  },
+  {
+   "id": "7-control-variates",
+   "section": "7.3",
+   "name": "Control variates",
+   "kind": "concept",
+   "page": 187,
+   "prompt": "You price derivative $X$ by Monte Carlo, and a closely related derivative has a known analytic price $Y$. Using the same random paths you get estimates $\\hat X$ and $\\hat Y$. What is the control-variate estimator for $X$?",
+   "answer": "$\\hat X+\\beta(Y-\\hat Y)$, with $\\beta=1$ or $\\beta=\\mathrm{Cov}(\\hat X,\\hat Y)/\\mathrm{Var}(\\hat Y)$",
+   "explanation": "$Y-\\hat Y$ is the simulation error on this particular set of paths. When $\\hat X$ errs in the same direction, adding it back corrects $\\hat X$. The estimator stays unbiased because $E[\\hat Y]=Y$.\nWith the optimal $\\beta$, the variance becomes $\\mathrm{Var}(\\hat X)(1-\\rho^2)$, where $\\rho$ is the correlation of $\\hat X$ and $\\hat Y$. Setting $\\beta=1$ gives the simple version.\nClassic uses: a geometric-average Asian option, which has a closed form, as the control for an arithmetic Asian; or $S_T$ itself, whose mean $S_0e^{rT}$ is known.",
+   "distractors": [
+    "$\\hat X-\\beta(Y-\\hat Y)$, with $\\beta=1$ or $\\beta=\\mathrm{Cov}(\\hat X,\\hat Y)/\\mathrm{Var}(\\hat Y)$",
+    "$\\hat X(Y/\\hat Y)^{\\beta}$, with $\\beta=1$ or $\\beta=\\rho(\\hat X,\\hat Y)$",
+    "$\\beta\\hat X+(1-\\beta)Y$, with $\\beta=\\tfrac12$ or $\\beta=\\rho(\\hat X,\\hat Y)$"
+   ],
+   "hint": "Use the known error on $Y$ to correct the correlated error on $X$."
+  },
+  {
+   "id": "7-importance-sampling",
+   "section": "7.3",
+   "name": "Importance sampling",
+   "kind": "concept",
+   "page": 187,
+   "prompt": "How does importance sampling estimate $E_f[h(X)]$, and why does it help when pricing a deep out-of-the-money option?",
+   "answer": "Sample from $g$ and average $h(x)f(x)/g(x)$; $g$ sends more paths where the payoff is nonzero",
+   "explanation": "$E_f[h(X)]=\\int h f\\,dx=\\int\\frac{hf}{g}\\,g\\,dx=E_g\\!\\left[\\frac{h(X)f(X)}{g(X)}\\right]$. This needs $g>0$ wherever $hf\\ne0$, and it is a change of measure.\nUnder the true $f$, almost every path of a deep OTM option pays 0, so the estimate is very noisy. Shifting or widening $g$ toward the strike produces many in-the-money paths, and the likelihood ratio $f/g$ keeps the estimate unbiased.\nFor $h\\ge0$ the ideal $g\\propto hf$ gives zero variance. A poorly chosen $g$ with thin tails can make the variance explode.",
+   "distractors": [
+    "Sample from $g$ and average $h(x)g(x)/f(x)$; $g$ sends more paths where the payoff is nonzero",
+    "Sample from $f$ and average only the paths with $h(x)>0$; the zero paths are dropped",
+    "Sample from a wider $g$ and average $h(x)$ unweighted; the extra spread lowers the variance"
+   ],
+   "hint": "Multiply and divide the integrand by the new density."
+  },
+  {
+   "id": "7-low-discrepancy",
+   "section": "7.3",
+   "name": "Low-discrepancy sequences",
+   "kind": "concept",
+   "page": 188,
+   "prompt": "What are low-discrepancy (quasi-random) sequences in Monte Carlo, and what convergence rate can they achieve?",
+   "answer": "Deterministic evenly spread points (Sobol, Halton); error near $O(1/M)$ vs $O(1/\\sqrt M)$",
+   "explanation": "Quasi-Monte Carlo replaces random draws with deterministic sequences that fill the space evenly and avoid clusters and gaps.\nThe Koksma–Hlawka bound gives error $\\lesssim V(f)\\,D_M$ with discrepancy $D_M\\sim(\\log M)^d/M$. That is close to $1/M$ in low or moderate dimension $d$.\nThe advantage fades in high dimension unless the problem's effective dimension is low; Brownian-bridge or PCA path construction helps. There is no built-in statistical error estimate, so randomized (scrambled) sequences are used to get confidence intervals.",
+   "distractors": [
+    "Pseudo-random points from a better seed; error near $O(1/M^2)$ vs $O(1/M)$",
+    "Deterministic evenly spread points (Sobol, Halton); error $O(1/\\sqrt M)$, same as MC",
+    "Random points thinned to remove clusters; error near $O(1/\\sqrt M)$ vs $O(1/M)$"
+   ],
+   "hint": "They are not random at all."
+  },
+  {
+   "id": "7-mc-greeks",
+   "section": "7.3",
+   "name": "Monte Carlo (D): delta and gamma",
+   "kind": "problem",
+   "page": 188,
+   "prompt": "An option has no closed-form price, but you can price it by simulation as a function $f(S)$ of the current underlying price. How do you estimate its delta and gamma? Write $f_\\pm=f(S\\pm h)$ and $f_0=f(S)$.",
+   "answer": "Same paths at $S\\pm h$: $\\Delta\\approx\\frac{f_+-f_-}{2h}$, $\\Gamma\\approx\\frac{f_+-2f_0+f_-}{h^2}$",
+   "explanation": "Run the simulation three times, from $S-h$, $S$ and $S+h$, where $h=\\delta S$ is small. Then take central differences; both estimates have $O(h^2)$ bias.\n**Use common random numbers**, meaning the same paths for all three runs, so most of the noise cancels in the differences. With independent paths, the variance of $\\hat\\Delta$ grows like $1/h^2$ and that of $\\hat\\Gamma$ like $1/h^4$.\nDiscontinuous payoffs (digitals, barriers) make bump-and-reprice noisy even with common numbers. Pathwise or likelihood-ratio estimators are the usual alternatives.",
+   "distractors": [
+    "Same paths at $S\\pm h$: $\\Delta\\approx\\frac{f_+-f_-}{h}$, $\\Gamma\\approx\\frac{f_+-2f_0+f_-}{2h^2}$",
+    "Fresh paths at $S\\pm h$: $\\Delta\\approx\\frac{f_+-f_-}{2h}$, $\\Gamma\\approx\\frac{f_+-f_-}{h^2}$",
+    "Same paths at $S\\pm h$: $\\Delta\\approx\\frac{f_+-f_0}{2h}$, $\\Gamma\\approx\\frac{f_++f_-}{h^2}$"
+   ],
+   "hint": "Finite differences, and keep the randomness identical across the bumped runs."
+  },
+  {
+   "id": "7-mc-pi",
+   "section": "7.3",
+   "name": "Monte Carlo (E): estimating π",
+   "kind": "problem",
+   "page": 188,
+   "prompt": "How do you use Monte Carlo simulation to estimate $\\pi$?",
+   "answer": "Draw $(x,y)$ uniform on $[0,1]^2$; $\\pi\\approx4\\times$ the fraction with $x^2+y^2\\le1$",
+   "explanation": "The quarter disc $x^2+y^2\\le1$ in the first quadrant has area $\\pi/4$, and the unit square has area 1. By the law of large numbers, the fraction $\\hat p$ of random points inside the quarter disc converges to $\\pi/4$, so $\\hat\\pi=4\\hat p$.\nWith $10^6$ points the standard error is about 0.0016, so expect roughly 2–3 correct decimals. An alternative with lower variance is $\\pi\\approx\\frac4M\\sum\\sqrt{1-U_i^2}$.",
+   "distractors": [
+    "Draw $(x,y)$ uniform on $[0,1]^2$; $\\pi\\approx2\\times$ the fraction with $x^2+y^2\\le1$",
+    "Draw $(x,y)$ uniform on $[0,1]^2$; $\\pi\\approx$ the fraction with $x^2+y^2\\le1$",
+    "Draw $(x,y)$ uniform on $[0,1]^2$; $\\pi\\approx4\\times$ the fraction with $x+y\\le1$"
+   ],
+   "hint": "Compare the area of a quarter circle with the unit square."
+  },
+  {
+   "id": "7-mc-pi-error",
+   "section": "7.3",
+   "name": "Monte Carlo π: standard error",
+   "kind": "concept",
+   "page": 189,
+   "prompt": "You estimate $\\pi$ as $4\\hat p$ from $n$ uniform points in the unit square, where $\\hat p$ is the fraction inside the quarter circle. What is the standard error, and roughly what is it for $n=10^6$?",
+   "answer": "$4\\sqrt{p(1-p)/n}\\approx1.64/\\sqrt n$ with $p=\\pi/4$; about $0.0016$ for $n=10^6$",
+   "explanation": "Each point lands inside with probability $p=\\pi/4\\approx0.785$, so $\\hat p$ is a Bernoulli mean with variance $p(1-p)/n$. Multiplying by 4 multiplies the standard error by 4.\n$\\sqrt{0.785\\times0.215}\\approx0.411$, so $\\mathrm{SE}\\approx1.64/\\sqrt n$. For $n=10^6$ that is about 0.0016, which matches the book's reported spread of about 0.0015 over repeated runs.\nEach extra correct digit costs 100 times as many points.",
+   "distractors": [
+    "$\\sqrt{p(1-p)/n}\\approx0.41/\\sqrt n$ with $p=\\pi/4$; about $0.0004$ for $n=10^6$",
+    "$4p(1-p)/n\\approx0.67/n$ with $p=\\pi/4$; about $7\\times10^{-7}$ for $n=10^6$",
+    "$4\\sqrt{p(1-p)}/n\\approx1.64/n$ with $p=\\pi/4$; about $1.6\\times10^{-6}$ for $n=10^6$"
+   ],
+   "hint": "Each point is a Bernoulli trial, and the estimator is scaled by 4."
+  },
+  {
+   "id": "7-fd-methods",
+   "section": "7.3",
+   "name": "Finite difference (A): overview",
+   "kind": "problem",
+   "page": 189,
+   "prompt": "Briefly explain finite difference methods for derivative pricing, for example after transforming the Black–Scholes–Merton PDE into the heat equation $u_\\tau=u_{xx}$.",
+   "answer": "Grid $\\tau$ and $x$, swap derivatives for differences, step from the payoff using boundary values",
+   "explanation": "Set up a grid $\\tau_n=n\\Delta\\tau$ ($\\Delta\\tau=T/N$) and $x_j=x_0+j\\Delta x$ ($\\Delta x=(x_J-x_0)/J$), and write $u_j^n\\approx u(x_j,\\tau_n)$.\n- The initial condition at $\\tau=0$ is the transformed payoff.\n- Boundary values at $x_0$ and $x_J$ come from limiting behaviour. For example, a call is worth about 0 deep out of the money and about $S-Ke^{-r\\tau}$ deep in the money.\n- Derivatives share the same PDE and differ only in these conditions. Early exercise adds a max with intrinsic value at each step.\nThe three standard schemes are **explicit** (forward difference in time), **implicit** (backward difference) and **Crank–Nicolson** (the average of the two). The book calls the BSM equation nonlinear, but it is linear, which is why it can be mapped to the heat equation.",
+   "distractors": [
+    "Simulate random paths on a grid and average discounted payoffs at the boundary",
+    "Expand the solution in a Taylor series in $\\tau$ and sum the series analytically",
+    "Build a recombining up/down tree for the stock and backward-induct the payoff"
+   ],
+   "hint": "Think of a grid in time and space."
+  },
+  {
+   "id": "7-fd-explicit",
+   "section": "7.3",
+   "name": "Explicit finite difference scheme",
+   "kind": "concept",
+   "page": 190,
+   "prompt": "For $u_\\tau=u_{xx}$ on a grid with steps $\\Delta\\tau$ and $\\Delta x$, what is the explicit scheme's update for $u_j^{n+1}$?",
+   "answer": "$u_j^{n+1}=\\alpha u_{j-1}^n+(1-2\\alpha)u_j^n+\\alpha u_{j+1}^n$, $\\alpha=\\Delta\\tau/(\\Delta x)^2$",
+   "explanation": "Use a forward difference in time and a central second difference in space, both at the known time level $n$:\n$$\\frac{u_j^{n+1}-u_j^n}{\\Delta\\tau}=\\frac{u_{j+1}^n-2u_j^n+u_{j-1}^n}{(\\Delta x)^2}.$$\nSolving for $u_j^{n+1}$ gives each new value as a weighted combination of three old ones, with no linear system to solve. The truncation error is $O(\\Delta\\tau+\\Delta x^2)$. The scheme is stable only when $\\alpha\\le\\tfrac12$, so that all the weights are nonnegative.",
+   "distractors": [
+    "$u_j^{n+1}=\\alpha u_{j-1}^n+(1+2\\alpha)u_j^n+\\alpha u_{j+1}^n$, $\\alpha=\\Delta\\tau/(\\Delta x)^2$",
+    "$u_j^{n+1}=\\alpha u_{j-1}^n+(1-2\\alpha)u_j^n+\\alpha u_{j+1}^n$, $\\alpha=\\Delta\\tau/\\Delta x$",
+    "$u_j^{n+1}=\\alpha u_{j-1}^n+(1-\\alpha)u_j^n+\\alpha u_{j+1}^n$, $\\alpha=(\\Delta x)^2/\\Delta\\tau$"
+   ],
+   "hint": "Forward difference in time, central second difference in space."
+  },
+  {
+   "id": "7-fd-implicit",
+   "section": "7.3",
+   "name": "Implicit finite difference scheme",
+   "kind": "concept",
+   "page": 191,
+   "prompt": "How does the fully implicit finite difference scheme for $u_\\tau=u_{xx}$ differ from the explicit one, and how stable is it?",
+   "answer": "Space difference at new time $n+1$; tridiagonal solve per step; unconditionally stable",
+   "explanation": "$\\frac{u_j^{n+1}-u_j^n}{\\Delta\\tau}=\\frac{u_{j+1}^{n+1}-2u_j^{n+1}+u_{j-1}^{n+1}}{(\\Delta x)^2}$. Rearranged:\n$$-\\alpha u_{j-1}^{n+1}+(1+2\\alpha)u_j^{n+1}-\\alpha u_{j+1}^{n+1}=u_j^n.$$\nThe unknowns are coupled, so each step solves a tridiagonal system, which takes $O(J)$ with the Thomas algorithm. The scheme is stable for any $\\alpha=\\Delta\\tau/(\\Delta x)^2$, but it is only first-order accurate in time: $O(\\Delta\\tau+\\Delta x^2)$.",
+   "distractors": [
+    "Space difference at old time $n$; direct update; stable only if $\\Delta\\tau/(\\Delta x)^2\\le\\tfrac12$",
+    "Space difference averaged over $n$ and $n+1$; tridiagonal solve; second order in time",
+    "Space difference at time $n+1$; dense matrix inverse per step; stable only for small $\\Delta x$"
+   ],
+   "hint": "The unknowns at the new time level appear on both sides."
+  },
+  {
+   "id": "7-crank-nicolson",
+   "section": "7.3",
+   "name": "Crank–Nicolson scheme",
+   "kind": "concept",
+   "page": 191,
+   "prompt": "What is the Crank–Nicolson finite difference scheme, and what are its accuracy and stability?",
+   "answer": "Average of explicit and implicit; $O(\\Delta\\tau^2+\\Delta x^2)$, unconditionally stable",
+   "explanation": "$$\\frac{u_j^{n+1}-u_j^n}{\\Delta\\tau}=\\frac12\\left(\\frac{\\delta^2u_j^n}{(\\Delta x)^2}+\\frac{\\delta^2u_j^{n+1}}{(\\Delta x)^2}\\right),\\quad \\delta^2u_j=u_{j+1}-2u_j+u_{j-1}.$$\nCentring the time derivative at $n+\\tfrac12$ makes the scheme second order in time. Each step is still one tridiagonal solve.\nCaveat: with non-smooth payoffs (kinks, digitals) and large $\\alpha$ it can produce spurious oscillations near the strike. It is A-stable but not L-stable. A common fix is to take a few fully implicit steps first (Rannacher smoothing).",
+   "distractors": [
+    "Average of explicit and implicit; $O(\\Delta\\tau+\\Delta x^2)$, stable only if $\\alpha\\le\\tfrac12$",
+    "Explicit update twice with half steps; $O(\\Delta\\tau^2+\\Delta x^2)$, stable only if $\\alpha\\le\\tfrac12$",
+    "Average of forward and backward differences in $x$; $O(\\Delta\\tau+\\Delta x)$, unconditionally stable"
+   ],
+   "hint": "A 50/50 blend of the explicit and implicit schemes."
+  },
+  {
+   "id": "7-fd-stability",
+   "section": "7.3",
+   "name": "Finite difference (B): too many steps",
+   "kind": "problem",
+   "page": 191,
+   "prompt": "You are solving a parabolic PDE with the explicit finite difference method. Is it worse to have too many steps in the time dimension or too many in the space dimension?",
+   "answer": "Too many space steps: stability needs $\\Delta\\tau/(\\Delta x)^2\\le\\tfrac12$, broken by tiny $\\Delta x$",
+   "explanation": "The explicit update $u_j^{n+1}=\\alpha u_{j-1}^n+(1-2\\alpha)u_j^n+\\alpha u_{j+1}^n$ needs nonnegative weights, so $\\alpha=\\Delta\\tau/(\\Delta x)^2\\le\\tfrac12$. Von Neumann analysis gives the same limit.\n- More time steps means a smaller $\\Delta\\tau$ and a smaller $\\alpha$: safer, just slower.\n- More space steps means a smaller $\\Delta x$, so $\\alpha$ grows like $1/\\Delta x^2$. Once it passes $\\tfrac12$, errors grow exponentially.\nHalving $\\Delta x$ forces you to quarter $\\Delta\\tau$. The book states the condition as the strict $1-2\\alpha>0$, but $\\alpha=\\tfrac12$ is still stable. Implicit and Crank–Nicolson schemes have no such restriction.",
+   "distractors": [
+    "Too many time steps: a tiny $\\Delta\\tau$ pushes $\\Delta\\tau/(\\Delta x)^2$ above $\\tfrac12$",
+    "Neither: the explicit scheme is unconditionally stable, only the runtime differs",
+    "Too many time steps: rounding error grows like $\\sqrt N$ with the number of steps $N$"
+   ],
+   "hint": "Look at the ratio $\\alpha$ and at which way each step size pushes it."
+  }
+ ]
+}

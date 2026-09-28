@@ -1,0 +1,1176 @@
+{
+ "chapter": 6,
+ "title": "Finance",
+ "sections": [
+  {
+   "id": "6.1",
+   "title": "Option Pricing"
+  },
+  {
+   "id": "6.2",
+   "title": "The Greeks"
+  },
+  {
+   "id": "6.3",
+   "title": "Option Portfolios and Exotic Options"
+  },
+  {
+   "id": "6.4",
+   "title": "Other Finance Questions"
+  }
+ ],
+ "cards": [
+  {
+   "id": "6-direction-volatility",
+   "section": "6.1",
+   "name": "Price direction: volatility",
+   "kind": "problem",
+   "page": 138,
+   "prompt": "Holding everything else fixed, what happens to the prices of European and American calls and puts when the underlying's volatility $\\sigma$ increases?",
+   "answer": "Calls and puts both rise (European and American)",
+   "explanation": "An option holder's loss is capped at the premium, while the gain grows with the size of the move.\nA higher $\\sigma$ widens the distribution of $S_T$ in both directions: the extra upside adds value, and the extra downside is cut off by the $\\max(\\cdot,0)$.\nPut another way, vanilla payoffs are convex in $S$, so more dispersion raises their expected value. That is why vega is positive for both calls and puts.",
+   "distractors": [
+    "Calls rise, puts fall (European and American)",
+    "Calls fall, puts rise (European and American)",
+    "European calls and puts rise; American ones are unchanged"
+   ],
+   "hint": "What does the $\\max(\\cdot,0)$ do to the extra downside?"
+  },
+  {
+   "id": "6-direction-rate",
+   "section": "6.1",
+   "name": "Price direction: interest rate",
+   "kind": "problem",
+   "page": 138,
+   "prompt": "All else equal, how does an increase in the risk-free rate $r$ affect the value of a call and of a put (European or American)?",
+   "answer": "Call value rises; put value falls",
+   "explanation": "The call holder pays $K$ at expiry. A higher $r$ lowers the present value of that payment, so the call is worth more.\nThe put holder receives $K$ at expiry, and its present value falls, so the put is worth less. In risk-neutral terms the stock drifts at $r$, so a higher $r$ also shifts $S_T$ up.\nCaveat: in real markets rates and stock prices move together (a rate cut often lifts stocks), so the change-one-factor answer can be swamped.",
+   "distractors": [
+    "Call value falls; put value rises",
+    "Both call and put values rise",
+    "Both call and put values fall"
+   ],
+   "hint": "Who pays the strike, and who receives it?"
+  },
+  {
+   "id": "6-direction-dividends",
+   "section": "6.1",
+   "name": "Price direction: dividends",
+   "kind": "problem",
+   "page": 138,
+   "prompt": "All else equal, how do larger expected dividends (paid before expiry) affect call and put values?",
+   "answer": "Call value falls; put value rises",
+   "explanation": "The option holder does not receive dividends, but the share price drops by roughly the dividend on the ex-dividend date.\nA lower expected $S_T$ hurts calls and helps puts. In put-call parity the stock appears as $S-D$, so a larger $D$ lowers $c-p$.",
+   "distractors": [
+    "Call value rises; put value falls",
+    "Both call and put values rise",
+    "No effect; dividends only matter to shareholders"
+   ]
+  },
+  {
+   "id": "6-direction-maturity",
+   "section": "6.1",
+   "name": "Price direction: time to maturity",
+   "kind": "problem",
+   "page": 138,
+   "prompt": "How does a longer time to maturity affect (a) American calls and puts and (b) European calls and puts?",
+   "answer": "American: both worth more; European: can go either way",
+   "explanation": "A longer-dated American option has every exercise opportunity of the shorter one, plus more, so it cannot be worth less.\nA European option can only be exercised at its own expiry, so extra time can hurt:\n- A large dividend paid between the two expiries can make the shorter-dated call worth more.\n- A deep in-the-money put collects $K$ sooner if it expires earlier, which is worth more when rates are positive.",
+   "distractors": [
+    "Both types are always worth more with longer maturity",
+    "American: can go either way; European: both worth more",
+    "Both types are always worth less with longer maturity"
+   ],
+   "hint": "Consider a big dividend between the two expiry dates."
+  },
+  {
+   "id": "6-direction-stock-strike",
+   "section": "6.1",
+   "name": "Price direction: stock and strike",
+   "kind": "problem",
+   "page": 137,
+   "prompt": "How does a call's value react to (a) a higher stock price $S$ and (b) a higher strike $K$? What about a put?",
+   "answer": "Call: up with $S$, down with $K$; put: down with $S$, up with $K$",
+   "explanation": "The call payoff $\\max(S_T-K,0)$ is nondecreasing in $S_T$ and nonincreasing in $K$: a higher strike never pays more and sometimes pays less.\nThe put payoff $\\max(K-S_T,0)$ moves the opposite way in both. This holds for European and American options alike.",
+   "distractors": [
+    "Call: up with $S$, up with $K$; put: the reverse",
+    "Call: down with $S$, up with $K$; put: the reverse",
+    "Call: up with $S$, down with $K$; put: the same as the call"
+   ]
+  },
+  {
+   "id": "6-put-call-parity",
+   "section": "6.1",
+   "name": "Put-call parity",
+   "kind": "concept",
+   "page": 138,
+   "prompt": "State put-call parity for European options (same underlying, strike $K$, maturity $T$) on a stock whose dividends before $T$ have present value $D$.",
+   "answer": "$c+Ke^{-r\\tau}=p+S-D$",
+   "explanation": "Left side: a call plus a zero-coupon bond paying $K$ at $T$. Right side: a put plus the stock, minus the dividends that the stockholder collects but the option holder does not.\nBoth portfolios are worth $\\max(S_T,K)$ at expiry, so no-arbitrage forces them to cost the same today. Here $\\tau=T-t$.",
+   "distractors": [
+    "$c+S=p+Ke^{-r\\tau}-D$",
+    "$c+Ke^{-r\\tau}=p+S+D$",
+    "$c+K=p+Se^{-r\\tau}-D$"
+   ],
+   "hint": "Which side holds the stock, and who gets the dividends?"
+  },
+  {
+   "id": "6-put-call-parity-proof",
+   "section": "6.1",
+   "name": "Put-call parity proof",
+   "kind": "problem",
+   "page": 138,
+   "prompt": "Write down put-call parity for European options on a non-dividend-paying stock and prove it.",
+   "answer": "$c+Ke^{-r\\tau}=p+S$; both sides pay $\\max(S_T,K)$ at $T$",
+   "explanation": "Portfolio A: one call plus a zero-coupon bond with face $K$. At $T$ it is worth $(S_T-K)^++K=\\max(S_T,K)$.\nPortfolio B: one put plus one share (a protective put). At $T$ it is worth $(K-S_T)^++S_T=\\max(S_T,K)$.\nNeither portfolio has cash flows before $T$. If their prices differed, you could buy the cheaper one and sell the dearer one for a riskless profit. Hence $c+Ke^{-r\\tau}=p+S$.",
+   "distractors": [
+    "$c+S=p+Ke^{-r\\tau}$; both sides pay $\\max(S_T,K)$ at $T$",
+    "$c-p=S-K$; both sides pay $S_T-K$ at $T$",
+    "$c+K=p+S$; both sides pay $\\max(S_T,K)$ at $T$"
+   ]
+  },
+  {
+   "id": "6-call-price-bounds",
+   "section": "6.1",
+   "name": "Call price bounds",
+   "kind": "concept",
+   "page": 138,
+   "prompt": "Using put-call parity (dividends with present value $D$), what simple lower and upper bounds hold for a European call price $c$?",
+   "answer": "$S-D-Ke^{-r\\tau}\\le c\\le S$",
+   "explanation": "From parity, $c=p+S-D-Ke^{-r\\tau}$, and $p\\ge0$ gives the lower bound (together with $c\\ge0$).\nA call can never be worth more than the share, because its payoff $\\max(S_T-K,0)$ never exceeds $S_T$. With dividends, $S-D$ is an even tighter cap.",
+   "distractors": [
+    "$S-K\\le c\\le Ke^{-r\\tau}$",
+    "$S-D-Ke^{-r\\tau}\\le c\\le Ke^{-r\\tau}$",
+    "$Ke^{-r\\tau}-S\\le c\\le S-D$"
+   ]
+  },
+  {
+   "id": "6-american-parity-bounds",
+   "section": "6.1",
+   "name": "American put-call inequality",
+   "kind": "concept",
+   "page": 138,
+   "prompt": "For American options put-call parity is no longer an equality. What inequality bounds $C-P$ (American call minus American put, dividends with present value $D$)?",
+   "answer": "$S-D-K\\le C-P\\le S-Ke^{-r\\tau}$",
+   "explanation": "Early exercise rights break the exact equality, but no-arbitrage still keeps $C-P$ inside a band.\n- Upper bound: an American put is worth at least the European put, and dividends can only lower the call, so $C-P$ cannot exceed the no-dividend European value $S-Ke^{-r\\tau}$.\n- Lower bound: a call plus cash $D+K$ is always worth at least a put plus one share, whenever the put is exercised.\nWith no dividends the band is $S-K\\le C-P\\le S-Ke^{-r\\tau}$.",
+   "distractors": [
+    "$S-Ke^{-r\\tau}\\le C-P\\le S-D-K$",
+    "$S-K\\le C-P\\le S-D-Ke^{-r\\tau}$",
+    "$C-P=S-D-Ke^{-r\\tau}$ exactly"
+   ]
+  },
+  {
+   "id": "6-call-equals-put",
+   "section": "6.1",
+   "name": "Call equals put",
+   "kind": "concept",
+   "page": 139,
+   "prompt": "For a non-dividend stock, when is a European call worth exactly the same as a European put with the same strike and maturity?",
+   "answer": "When $K=Se^{r\\tau}$, the forward price",
+   "explanation": "Rewrite parity as $c-p=S-Ke^{-r\\tau}$. A long call plus a short put pays $S_T-K$ at expiry, which is a forward contract with delivery price $K$, worth $S-Ke^{-r\\tau}$ today.\nThat value is zero exactly when $K$ equals the forward price $Se^{r\\tau}$. For $K<Se^{r\\tau}$ the call is worth more; for $K>Se^{r\\tau}$ the put is.",
+   "distractors": [
+    "When $K=S$ (at the money spot)",
+    "When $K=Se^{-r\\tau}$",
+    "Never; the call is always worth more"
+   ],
+   "hint": "Long call plus short put replicates what contract?"
+  },
+  {
+   "id": "6-american-call-early-exercise",
+   "section": "6.1",
+   "name": "American vs. European options (A)",
+   "kind": "problem",
+   "page": 139,
+   "prompt": "Why should you never exercise an American call on a non-dividend-paying stock before maturity?",
+   "answer": "Its value always exceeds $S-K$ (it is at least $S-Ke^{-r\\tau}$), so selling beats exercising",
+   "explanation": "Exercising now gives only the intrinsic value $S-K$.\nFrom parity, $c=(S-K)+(K-Ke^{-r\\tau})+p$. On top of intrinsic value, the call carries the interest saved by paying $K$ later and the value of an embedded put, and both are nonnegative. So $c>S-K$.\nAn American call is worth at least the European one, so it also exceeds intrinsic value: selling it, or holding it, beats exercising it. As a result, American and European calls on non-dividend stocks have the same price.",
+   "distractors": [
+    "Early exercise becomes optimal once $S$ exceeds $Ke^{r\\tau}$",
+    "Its value equals $S-K$, so early exercise gains nothing and loses nothing",
+    "Its theta is positive, so waiting always adds value"
+   ]
+  },
+  {
+   "id": "6-call-value-decomposition",
+   "section": "6.1",
+   "name": "Call value decomposition",
+   "kind": "concept",
+   "page": 139,
+   "prompt": "Use put-call parity to split a European call on a non-dividend stock into three pieces, and name each piece.",
+   "answer": "$c=(S-K)+(K-Ke^{-r\\tau})+p$: intrinsic, interest on strike, put insurance",
+   "explanation": "Start from $c-p=S-Ke^{-r\\tau}$, then add and subtract $K$.\n- $S-K$: what you would get by exercising now.\n- $K-Ke^{-r\\tau}\\ge0$: the benefit of paying the strike later rather than now.\n- $p\\ge0$: protection against the stock ending below $K$, which exercising would give up.\nThe last two terms are nonnegative, so the call is worth at least its intrinsic value.",
+   "distractors": [
+    "$c=(S-K)-(K-Ke^{-r\\tau})+p$: intrinsic, minus interest, put insurance",
+    "$c=(S-K)+(K-Ke^{-r\\tau})-p$: intrinsic, interest on strike, minus put",
+    "$c=(S-Ke^{-r\\tau})+(K-S)+p$: forward, moneyness, put insurance"
+   ]
+  },
+  {
+   "id": "6-early-exercise-replication",
+   "section": "6.1",
+   "name": "Early exercise: replication argument",
+   "kind": "problem",
+   "page": 140,
+   "prompt": "Instead of exercising an in-the-money American call on a non-dividend stock at time $t$ to receive $S-K$, what strategy gives the same cash today plus a positive payoff at $T$?",
+   "answer": "Keep the call, short one share, lend $K$ at $r$ until $T$",
+   "explanation": "Shorting the share brings in $S$, and lending $K$ uses $K$ of it, leaving $S-K$ today, the same as exercising.\nAt $T$ you hold the call, owe one share and receive $Ke^{r\\tau}$:\n- If $S_T\\le K$: the call expires worthless and you net $Ke^{r\\tau}-S_T>0$.\n- If $S_T>K$: exercise and deliver the share, netting $Ke^{r\\tau}-K>0$.\nYou get the same money today and a strictly positive payoff later, so exercising early is dominated.",
+   "distractors": [
+    "Keep the call, buy one share, borrow $K$ at $r$ until $T$",
+    "Sell the call and buy a put with strike $K$",
+    "Keep the call and sell a put with strike $K$"
+   ]
+  },
+  {
+   "id": "6-early-exercise-jensen",
+   "section": "6.1",
+   "name": "Early exercise: Jensen argument",
+   "kind": "concept",
+   "page": 140,
+   "prompt": "Give the convexity (Jensen) argument that an American call on a non-dividend stock should not be exercised early. Which inequality results? Here $C(S)=(S-K)^+$.",
+   "answer": "$C(S_t)\\le e^{-r\\tau}C(e^{r\\tau}S_t)\\le e^{-r\\tau}\\tilde E[C(S_T)]$",
+   "explanation": "$C$ is convex with $C(0)=0$, so for $0<\\lambda<1$: $C(\\lambda S)\\le\\lambda C(S)+(1-\\lambda)C(0)=\\lambda C(S)$.\nTake $\\lambda=e^{-r\\tau}$ and $S=e^{r\\tau}S_t$ to get $C(S_t)\\le e^{-r\\tau}C(e^{r\\tau}S_t)$.\nUnder the risk-neutral measure $\\tilde E[S_T]=e^{r\\tau}S_t$, so Jensen's inequality gives $C(e^{r\\tau}S_t)\\le\\tilde E[C(S_T)]$.\nSo the payoff from exercising now, $C(S_t)$, is never more than the discounted value of holding to expiry.",
+   "distractors": [
+    "$C(S_t)\\ge e^{-r\\tau}C(e^{r\\tau}S_t)\\ge e^{-r\\tau}\\tilde E[C(S_T)]$",
+    "$C(S_t)\\le e^{r\\tau}C(e^{-r\\tau}S_t)\\le e^{r\\tau}\\tilde E[C(S_T)]$",
+    "$C(S_t)=e^{-r\\tau}\\tilde E[C(S_T)]$ because $C$ is linear"
+   ]
+  },
+  {
+   "id": "6-american-put-early-exercise",
+   "section": "6.1",
+   "name": "American put early exercise",
+   "kind": "concept",
+   "page": 141,
+   "prompt": "A put's payoff is also convex in $S$, yet early exercise of an American put on a non-dividend stock can be optimal. Where does the call argument break down?",
+   "answer": "A put pays $K$ at $S=0$, so $P(\\lambda S)\\le\\lambda P(S)$ fails; in fact $P(\\lambda S)\\ge\\lambda P(S)$",
+   "explanation": "The call argument needs $C(0)=0$ to turn convexity into $C(\\lambda S)\\le\\lambda C(S)$. For a put, $P(0)=K>0$, and the inequality flips.\nIntuitively, a deep in-the-money put is already close to its maximum payoff $K$. Exercising now lets you start earning interest on $K$, which can outweigh the little optionality left. So American puts can be worth more than European puts even with no dividends.",
+   "distractors": [
+    "The put payoff is concave in $S$, so Jensen's inequality reverses",
+    "Puts have negative gamma, so waiting always loses value",
+    "Under the risk-neutral measure the stock drifts down, so waiting is costly"
+   ]
+  },
+  {
+   "id": "6-dividend-early-exercise",
+   "section": "6.1",
+   "name": "Dividends and early exercise",
+   "kind": "concept",
+   "page": 141,
+   "prompt": "For an American call on a dividend-paying stock, when can early exercise be optimal?",
+   "answer": "Only just before an ex-dividend date",
+   "explanation": "Between dividend dates the stock behaves like a non-dividend stock, and the same argument shows waiting is better.\nThe only thing exercising can gain is the upcoming dividend, which the option holder otherwise misses when the price drops on the ex-date. So the only candidate exercise times are the moments just before ex-dividend dates.",
+   "distractors": [
+    "At any time once the call is deep in the money",
+    "Only right after an ex-dividend date",
+    "Never; dividends do not change the argument"
+   ]
+  },
+  {
+   "id": "6-put-arbitrage",
+   "section": "6.1",
+   "name": "Put price arbitrage (B)",
+   "kind": "problem",
+   "page": 141,
+   "prompt": "A non-dividend stock has two European puts with the same expiry: strike 80 priced at USD 8, and strike 90 priced at USD 9. Is there an arbitrage? If so, how do you trade it?",
+   "answer": "Yes: sell 9 puts at $K=80$ and buy 8 puts at $K=90$ (zero cost, payoff $\\ge0$)",
+   "explanation": "A put's price is convex in the strike, and a zero-strike put is worthless, so $P(\\lambda K)\\le\\lambda P(K)$ for $0<\\lambda<1$.\nWith $\\lambda=8/9$, $P(80)$ should be at most $\\tfrac89\\cdot9=8$, and strictly less, since the 90-strike put is worth extra when $S_T$ lands between 80 and 90. At 8, the 80-strike put is too expensive.\nSelling 9 of them and buying 8 of the 90-strike puts costs $72-72=0$. Payoff at expiry:\n- $S_T\\ge90$: 0.\n- $80\\le S_T<90$: $8(90-S_T)\\ge0$.\n- $S_T<80$: $8(90-S_T)-9(80-S_T)=S_T>0$.\nThe payoff is never negative and sometimes positive, so this is an arbitrage.",
+   "distractors": [
+    "No: the prices are consistent, since both cost 10% of the strike",
+    "Yes: buy 9 puts at $K=80$ and sell 8 puts at $K=90$ (zero cost, payoff $\\ge0$)",
+    "Yes: buy 1 put at $K=80$, sell 1 put at $K=90$ and pocket the USD 1 credit"
+   ],
+   "hint": "Put prices are convex in the strike and a zero-strike put is worthless."
+  },
+  {
+   "id": "6-bsm-pde",
+   "section": "6.1",
+   "name": "Black-Scholes-Merton PDE",
+   "kind": "concept",
+   "page": 142,
+   "prompt": "Write the Black-Scholes-Merton PDE satisfied by the price $V(S,t)$ of a derivative on a non-dividend stock (subscripts denote partial derivatives).",
+   "answer": "$V_t+rSV_S+\\tfrac12\\sigma^2S^2V_{SS}=rV$",
+   "explanation": "The stock's real-world drift $\\mu$ does not appear: hedging removes it, and the risk-free rate $r$ takes its place.\nIn Greek notation the PDE reads $\\Theta+rS\\Delta+\\tfrac12\\sigma^2S^2\\Gamma=rV$. It holds for any derivative whose value depends only on $S$ and $t$; the specific payoff enters only through the terminal condition.",
+   "distractors": [
+    "$V_t+\\mu SV_S+\\tfrac12\\sigma^2S^2V_{SS}=rV$",
+    "$V_t+rSV_S+\\tfrac12\\sigma^2SV_{SS}=rV$",
+    "$V_t+rSV_S-\\tfrac12\\sigma^2S^2V_{SS}=rV$"
+   ]
+  },
+  {
+   "id": "6-bsm-pde-derivation",
+   "section": "6.1",
+   "name": "Deriving the BSM PDE",
+   "kind": "problem",
+   "page": 142,
+   "prompt": "Briefly explain how to derive the Black-Scholes-Merton PDE, assuming $dS=\\mu S\\,dt+\\sigma S\\,dW$.",
+   "answer": "Hold one derivative, short $\\partial V/\\partial S$ shares: $dW$ cancels, so the portfolio earns $r$",
+   "explanation": "By Ito's lemma, $dV=(V_t+\\mu SV_S+\\tfrac12\\sigma^2S^2V_{SS})\\,dt+\\sigma SV_S\\,dW$.\nForm $\\Pi=V-V_SS$. Then $d\\Pi=dV-V_S\\,dS=(V_t+\\tfrac12\\sigma^2S^2V_{SS})\\,dt$: both the random term and the $\\mu$ term cancel.\nA riskless portfolio must earn the risk-free rate, so $d\\Pi=r(V-V_SS)\\,dt$.\nSetting the two equal gives $V_t+rSV_S+\\tfrac12\\sigma^2S^2V_{SS}=rV$.",
+   "distractors": [
+    "Hold one derivative, long $\\partial V/\\partial S$ shares: $dW$ cancels, so the portfolio earns $\\mu$",
+    "Take real-world expectations in Ito's formula and set the drift of $V$ to $\\mu V$",
+    "Hold one derivative, short $\\partial^2V/\\partial S^2$ shares: $dt$ cancels, so it earns $r$"
+   ]
+  },
+  {
+   "id": "6-feynman-kac",
+   "section": "6.1",
+   "name": "Feynman-Kac theorem",
+   "kind": "concept",
+   "page": 143,
+   "prompt": "Let $dX=\\beta(t,X)\\,dt+\\gamma(t,X)\\,dW$ and $V(t,x)=E[e^{-r(T-t)}f(X_T)\\mid X_t=x]$. By the discounted Feynman-Kac theorem, what PDE does $V$ satisfy?",
+   "answer": "$V_t+\\beta V_x+\\tfrac12\\gamma^2V_{xx}=rV$ with $V(T,x)=f(x)$",
+   "explanation": "Feynman-Kac connects conditional expectations of diffusions to PDEs.\nUnder the risk-neutral measure the stock follows $dS=rS\\,dt+\\sigma S\\,dW$. Plugging in $\\beta=rS$ and $\\gamma=\\sigma S$ gives exactly the Black-Scholes-Merton PDE. So pricing by risk-neutral expectation and pricing by solving the PDE give the same answer.",
+   "distractors": [
+    "$V_t+\\beta V_x+\\tfrac12\\gamma V_{xx}=rV$ with $V(T,x)=f(x)$",
+    "$V_t+\\beta V_x+\\tfrac12\\gamma^2V_{xx}=0$ with $V(0,x)=f(x)$",
+    "$V_t-\\beta V_x+\\tfrac12\\gamma^2V_{xx}=rV$ with $V(T,x)=f(x)$"
+   ]
+  },
+  {
+   "id": "6-bs-formula",
+   "section": "6.1",
+   "name": "Black-Scholes formula",
+   "kind": "concept",
+   "page": 143,
+   "prompt": "Give the Black-Scholes prices of a European call and a European put on a stock with continuous dividend yield $y$.",
+   "answer": "$c=Se^{-y\\tau}N(d_1)-Ke^{-r\\tau}N(d_2)$, $p=Ke^{-r\\tau}N(-d_2)-Se^{-y\\tau}N(-d_1)$",
+   "explanation": "Here $\\tau=T-t$ and $N$ is the standard normal CDF.\nThe call is long $N(d_1)$ units of the dividend-discounted stock and short $N(d_2)$ units of the discounted strike.\nThe put follows from put-call parity $c-p=Se^{-y\\tau}-Ke^{-r\\tau}$ and the identity $1-N(x)=N(-x)$. Setting $y=0$ gives the original formulas.",
+   "distractors": [
+    "$c=Se^{-y\\tau}N(d_2)-Ke^{-r\\tau}N(d_1)$, $p=Ke^{-r\\tau}N(-d_1)-Se^{-y\\tau}N(-d_2)$",
+    "$c=Se^{-r\\tau}N(d_1)-Ke^{-y\\tau}N(d_2)$, $p=Ke^{-y\\tau}N(-d_2)-Se^{-r\\tau}N(-d_1)$",
+    "$c=Se^{-y\\tau}N(d_1)-Ke^{-r\\tau}N(d_2)$, $p=Se^{-y\\tau}N(-d_1)-Ke^{-r\\tau}N(-d_2)$"
+   ]
+  },
+  {
+   "id": "6-bs-d1-d2",
+   "section": "6.1",
+   "name": "Black-Scholes d1 and d2",
+   "kind": "concept",
+   "page": 144,
+   "prompt": "In the Black-Scholes formula with dividend yield $y$, what are $d_1$ and $d_2$?",
+   "answer": "$d_{1,2}=\\frac{\\ln(S/K)+(r-y\\pm\\sigma^2/2)\\tau}{\\sigma\\sqrt\\tau}$, so $d_2=d_1-\\sigma\\sqrt\\tau$",
+   "explanation": "Equivalently, $d_1=\\frac{\\ln(Se^{-y\\tau}/K)+(r+\\sigma^2/2)\\tau}{\\sigma\\sqrt\\tau}$. The plus sign goes with $d_1$ and the minus sign with $d_2$.\n$N(d_2)$ is the risk-neutral probability that $S_T>K$, and $e^{-y\\tau}N(d_1)$ is the call's delta.",
+   "distractors": [
+    "$d_{1,2}=\\frac{\\ln(K/S)+(r-y\\pm\\sigma^2/2)\\tau}{\\sigma\\sqrt\\tau}$, so $d_2=d_1-\\sigma\\sqrt\\tau$",
+    "$d_{1,2}=\\frac{\\ln(S/K)+(r+y\\pm\\sigma^2/2)\\tau}{\\sigma\\sqrt\\tau}$, so $d_2=d_1-\\sigma\\sqrt\\tau$",
+    "$d_{1,2}=\\frac{\\ln(S/K)+(r-y\\pm\\sigma^2/2)\\tau}{\\sigma^2\\tau}$, so $d_2=d_1-\\sigma^2\\tau$"
+   ]
+  },
+  {
+   "id": "6-bs-futures-fx",
+   "section": "6.1",
+   "name": "BS yield for futures and FX",
+   "kind": "concept",
+   "page": 144,
+   "prompt": "When you apply the dividend-yield Black-Scholes formula to options on a futures contract and to options on a foreign currency, what yield $y$ do you use?",
+   "answer": "Futures: $y=r$; foreign currency: $y=r_f$ (foreign risk-free rate)",
+   "explanation": "A futures contract costs nothing to enter, so under the risk-neutral measure its price has zero drift. That is the same as an asset whose yield equals $r$ (Black's model).\nHolding foreign currency earns the foreign interest rate $r_f$, which acts like a continuous dividend yield (Garman-Kohlhagen).",
+   "distractors": [
+    "Futures: $y=0$; foreign currency: $y=r_f$ (foreign risk-free rate)",
+    "Futures: $y=r$; foreign currency: $y=r-r_f$",
+    "Futures: $y=r_f$; foreign currency: $y=r$"
+   ]
+  },
+  {
+   "id": "6-bs-assumptions",
+   "section": "6.1",
+   "name": "Black-Scholes assumptions (A)",
+   "kind": "problem",
+   "page": 144,
+   "prompt": "What assumptions underlie the original Black-Scholes formula for European options?",
+   "answer": "GBM stock with constant $\\mu,\\sigma$; constant known $r$; no dividends, costs, taxes or arbitrage",
+   "explanation": "The standard list:\n- The stock follows geometric Brownian motion $dS=\\mu S\\,dt+\\sigma S\\,dW$ with constant $\\mu$ and $\\sigma$, so $S_T$ is lognormal.\n- The risk-free rate is constant and known.\n- The stock pays no dividends during the option's life.\n- There are no transaction costs or taxes, and short-sale proceeds can be fully invested.\n- Securities are perfectly divisible and can be traded continuously.\n- There are no riskless arbitrage opportunities.",
+   "distractors": [
+    "Normally distributed stock price; constant $r$; no dividends; American exercise allowed",
+    "GBM stock with stochastic $\\sigma$; constant $r$; dividends paid continuously",
+    "GBM stock with constant $\\mu,\\sigma$; stochastic $r$; proportional transaction costs"
+   ]
+  },
+  {
+   "id": "6-bs-risk-neutral-derivation",
+   "section": "6.1",
+   "name": "BS via risk-neutral pricing (B)",
+   "kind": "problem",
+   "page": 144,
+   "prompt": "How do you derive the Black-Scholes price of a European call on a non-dividend stock using the risk-neutral measure?",
+   "answer": "Write $S_T=Se^{(r-\\sigma^2/2)\\tau+\\sigma\\sqrt\\tau\\,\\varepsilon}$ and compute $e^{-r\\tau}\\tilde E[(S_T-K)^+]$",
+   "explanation": "Under the risk-neutral measure $dS=rS\\,dt+\\sigma S\\,dW$, so $\\ln S_T\\sim N(\\ln S+(r-\\sigma^2/2)\\tau,\\ \\sigma^2\\tau)$ and $\\varepsilon\\sim N(0,1)$.\nThe call finishes in the money exactly when $\\varepsilon>-d_2$, so\n$$\\tilde E[(S_T-K)^+]=\\int_{-d_2}^{\\infty}\\big(Se^{(r-\\sigma^2/2)\\tau+\\sigma\\sqrt\\tau\\varepsilon}-K\\big)\\phi(\\varepsilon)\\,d\\varepsilon.$$\nThe $K$ term gives $KN(d_2)$. In the $S$ term, complete the square (shift $\\varepsilon$ by $\\sigma\\sqrt\\tau$) to get $Se^{r\\tau}N(d_1)$.\nDiscounting gives $c=SN(d_1)-Ke^{-r\\tau}N(d_2)$.",
+   "distractors": [
+    "Write $S_T=Se^{(\\mu-\\sigma^2/2)\\tau+\\sigma\\sqrt\\tau\\,\\varepsilon}$ and compute $e^{-\\mu\\tau}E[(S_T-K)^+]$",
+    "Write $S_T=Se^{r\\tau+\\sigma\\sqrt\\tau\\,\\varepsilon}$ and compute $e^{-r\\tau}\\tilde E[(S_T-K)^+]$",
+    "Write $S_T=S+r\\tau+\\sigma\\sqrt\\tau\\,\\varepsilon$ and compute $e^{-r\\tau}\\tilde E[(S_T-K)^+]$"
+   ]
+  },
+  {
+   "id": "6-n-d2-meaning",
+   "section": "6.1",
+   "name": "Meaning of N(d2)",
+   "kind": "concept",
+   "page": 145,
+   "prompt": "In the Black-Scholes call formula $c=SN(d_1)-Ke^{-r\\tau}N(d_2)$, what is the probabilistic meaning of $N(d_2)$?",
+   "answer": "The risk-neutral probability that the call finishes in the money ($S_T>K$)",
+   "explanation": "In the risk-neutral derivation the strike term is $K\\,\\tilde P(\\varepsilon>-d_2)=K(1-N(-d_2))=KN(d_2)$, and $\\{\\varepsilon>-d_2\\}$ is exactly the event $S_T>K$.\nBy contrast, $N(d_1)$ is the delta (and the in-the-money probability under the measure that uses the stock as numeraire).\nBecause it uses the risk-neutral drift $r$ rather than $\\mu$, $N(d_2)$ is not the real-world probability.",
+   "distractors": [
+    "The real-world probability that the call finishes in the money ($S_T>K$)",
+    "The risk-neutral probability that the put finishes in the money ($S_T<K$)",
+    "The call's delta, i.e. the shares held in the replicating portfolio"
+   ]
+  },
+  {
+   "id": "6-bs-heat-equation",
+   "section": "6.1",
+   "name": "BS via the heat equation (C)",
+   "kind": "problem",
+   "page": 145,
+   "prompt": "Which change of variables turns the Black-Scholes-Merton PDE (non-dividend stock) into the heat equation, and what is the resulting equation?",
+   "answer": "$\\tau=T-t$, $u=e^{r\\tau}V$, $x=\\ln S+(r-\\tfrac12\\sigma^2)\\tau$ give $u_\\tau=\\tfrac12\\sigma^2u_{xx}$",
+   "explanation": "Each substitution removes one feature:\n- $y=\\ln S$ turns the coefficients $S$ and $S^2$ into constants (geometric becomes arithmetic Brownian motion).\n- $\\tau=T-t$ turns the terminal payoff into an initial condition.\n- $u=e^{r\\tau}V$ removes the $-rV$ term.\n- $x=y+(r-\\tfrac12\\sigma^2)\\tau$ removes the first-derivative (drift) term.\nThe heat equation is solved by convolving the initial condition $\\max(e^{x}-K,0)$ with a Gaussian kernel of variance $\\sigma^2\\tau$. The integral is the same one as in the risk-neutral derivation, giving $c=SN(d_1)-Ke^{-r\\tau}N(d_2)$.",
+   "distractors": [
+    "$\\tau=T-t$, $u=e^{-r\\tau}V$, $x=\\ln S-(r-\\tfrac12\\sigma^2)\\tau$ give $u_\\tau=\\tfrac12\\sigma^2u_{xx}$",
+    "$\\tau=T-t$, $u=e^{r\\tau}V$, $x=S+(r-\\tfrac12\\sigma^2)\\tau$ give $u_\\tau=\\tfrac12\\sigma^2S^2u_{xx}$",
+    "$\\tau=T-t$, $u=e^{r\\tau}V$, $x=\\ln S+(r-\\tfrac12\\sigma^2)\\tau$ give $u_\\tau=-\\tfrac12\\sigma^2u_{xx}$"
+   ]
+  },
+  {
+   "id": "6-hitting-option",
+   "section": "6.1",
+   "name": "Pay 1 at first hit of H (D)",
+   "kind": "problem",
+   "page": 147,
+   "prompt": "Interest rates are zero, and a non-dividend stock trades at USD 1. An option lets you receive USD 1 the first time the stock price reaches a level $H>1$. What is the option worth today?",
+   "answer": "USD $1/H$",
+   "explanation": "With $r=0$, the stock is a martingale under the risk-neutral measure. Stop it when it hits $H$ (or falls toward 0). Optional stopping gives $P\\cdot H+(1-P)\\cdot0=S_0=1$, so the probability of ever hitting $H$ is $P=1/H$. With zero rates, the option is worth $1/H$.\nNo-arbitrage check: $1/H$ shares cost $1/H$ and are worth exactly 1 when $S=H$, so the option can't cost more than that. If it cost $C<1/H$, you could buy it by shorting $C$ shares: zero cost now, and $1-CH>0$ when the level is hit.\nSide note: $E[S_T]=1$ for every $T$, yet $\\ln S$ drifts down at rate $\\sigma^2/2$, so $P(S_T\\ge1)\\to0$ as $T\\to\\infty$.",
+   "distractors": [
+    "USD $1/H^2$",
+    "USD $1-1/H$",
+    "USD 1"
+   ],
+   "hint": "The stock is a martingale when $r=0$: use optional stopping."
+  },
+  {
+   "id": "6-inverse-stock-payoff",
+   "section": "6.1",
+   "name": "Contract paying 1/S_T (E)",
+   "kind": "problem",
+   "page": 148,
+   "prompt": "A non-dividend stock follows GBM with volatility $\\sigma$, and the risk-free rate is $r$. What is the value at time $t$ of a contract that pays $1/S_T$ at maturity $T$ ($\\tau=T-t$)?",
+   "answer": "$\\frac{1}{S_t}e^{(\\sigma^2-2r)\\tau}$",
+   "explanation": "Under the risk-neutral measure $\\ln S_T=\\ln S_t+(r-\\tfrac12\\sigma^2)\\tau+\\sigma\\sqrt\\tau Z$. So $\\ln(1/S_T)$ is normal with mean $-\\ln S_t-(r-\\tfrac12\\sigma^2)\\tau$ and variance $\\sigma^2\\tau$, which gives\n$$\\tilde E[1/S_T]=\\frac{1}{S_t}e^{-(r-\\sigma^2/2)\\tau+\\sigma^2\\tau/2}=\\frac{1}{S_t}e^{(\\sigma^2-r)\\tau}.$$\nDiscounting by $e^{-r\\tau}$ gives $\\frac{1}{S_t}e^{(\\sigma^2-2r)\\tau}$. Ito's lemma on $V=1/S$ confirms it: $dV=(\\sigma^2-r)V\\,dt-\\sigma V\\,dW$.\nThe answer exceeds the naive guess $e^{-r\\tau}/F=\\frac{1}{S_t}e^{-2r\\tau}$ (with $F=S_te^{r\\tau}$) because $1/x$ is convex.",
+   "distractors": [
+    "$\\frac{1}{S_t}e^{-r\\tau}$",
+    "$\\frac{1}{S_t}e^{(\\sigma^2-r)\\tau}$",
+    "$\\frac{1}{S_t}e^{(\\sigma^2/2-2r)\\tau}$"
+   ]
+  },
+  {
+   "id": "6-greeks-definitions",
+   "section": "6.2",
+   "name": "The Greeks",
+   "kind": "concept",
+   "page": 149,
+   "prompt": "Define delta, gamma, theta, vega and rho of a derivative with value $f$ (subscripts denote partial derivatives).",
+   "answer": "$\\Delta=f_S,\\ \\Gamma=f_{SS},\\ \\Theta=f_t,\\ \\nu=f_\\sigma,\\ \\rho=f_r$",
+   "explanation": "Delta and gamma measure first- and second-order exposure to the underlying. Theta measures the change with calendar time $t$ (time decay), vega the sensitivity to volatility, and rho the sensitivity to the interest rate.\nTheta is taken with respect to $t$, not time to maturity $\\tau=T-t$, so $\\Theta=-\\partial f/\\partial\\tau$.",
+   "distractors": [
+    "$\\Delta=f_S,\\ \\Gamma=f_{SS},\\ \\Theta=f_t,\\ \\nu=f_r,\\ \\rho=f_\\sigma$",
+    "$\\Delta=f_S,\\ \\Gamma=f_{St},\\ \\Theta=f_t,\\ \\nu=f_\\sigma,\\ \\rho=f_r$",
+    "$\\Delta=f_{SS},\\ \\Gamma=f_S,\\ \\Theta=f_t,\\ \\nu=f_\\sigma,\\ \\rho=f_r$"
+   ]
+  },
+  {
+   "id": "6-delta-formulas",
+   "section": "6.2",
+   "name": "Delta formulas",
+   "kind": "concept",
+   "page": 149,
+   "prompt": "What are the deltas of a European call and a European put on a stock with continuous dividend yield $y$?",
+   "answer": "Call: $e^{-y\\tau}N(d_1)$; put: $-e^{-y\\tau}N(-d_1)=-e^{-y\\tau}[1-N(d_1)]$",
+   "explanation": "Call delta lies between 0 and $e^{-y\\tau}$, and put delta between $-e^{-y\\tau}$ and 0.\nThe two always differ by $e^{-y\\tau}$, which is the delta of the forward position $c-p=Se^{-y\\tau}-Ke^{-r\\tau}$ in put-call parity.",
+   "distractors": [
+    "Call: $e^{-y\\tau}N(d_2)$; put: $-e^{-y\\tau}N(-d_2)$",
+    "Call: $e^{-r\\tau}N(d_1)$; put: $e^{-r\\tau}N(-d_1)$",
+    "Call: $e^{-y\\tau}N(d_1)$; put: $e^{-y\\tau}[1-N(d_1)]$"
+   ]
+  },
+  {
+   "id": "6-delta-call-derivation",
+   "section": "6.2",
+   "name": "Delta of a call (A)",
+   "kind": "problem",
+   "page": 149,
+   "prompt": "What is the delta of a European call on a non-dividend stock, and what is the subtle step in deriving it from $c=SN(d_1)-Ke^{-r\\tau}N(d_2)$?",
+   "answer": "$\\Delta=N(d_1)$; the terms from $\\partial d_{1,2}/\\partial S$ cancel since $SN'(d_1)=Ke^{-r\\tau}N'(d_2)$",
+   "explanation": "The common mistake is to treat $N(d_1)$ and $N(d_2)$ as constants. Done properly,\n$$\\frac{\\partial c}{\\partial S}=N(d_1)+SN'(d_1)\\frac{\\partial d_1}{\\partial S}-Ke^{-r\\tau}N'(d_2)\\frac{\\partial d_2}{\\partial S}.$$\nBoth $d_1$ and $d_2$ have derivative $\\frac{1}{S\\sigma\\sqrt\\tau}$ with respect to $S$. Using $d_2=d_1-\\sigma\\sqrt\\tau$ and expanding the exponent, $N'(d_2)=N'(d_1)\\frac{S}{K}e^{r\\tau}$. So $SN'(d_1)=Ke^{-r\\tau}N'(d_2)$, the last two terms cancel, and $\\Delta=N(d_1)$.",
+   "distractors": [
+    "$\\Delta=N(d_2)$; the terms from $\\partial d_{1,2}/\\partial S$ cancel since $SN'(d_2)=Ke^{-r\\tau}N'(d_1)$",
+    "$\\Delta=N(d_1)-N(d_2)$; the terms from $\\partial d_{1,2}/\\partial S$ do not cancel",
+    "$\\Delta=N(d_1)+SN'(d_1)$; only $d_1$ depends on $S$, so its extra term survives"
+   ]
+  },
+  {
+   "id": "6-delta-atm",
+   "section": "6.2",
+   "name": "Delta of an ATM call (B)",
+   "kind": "problem",
+   "page": 150,
+   "prompt": "Estimate the delta of an at-the-money ($S=K$) European call on a non-dividend stock. What happens to it as expiry approaches?",
+   "answer": "Slightly above 0.5; it tends to 0.5 as $\\tau\\to0$",
+   "explanation": "With $S=K$, $d_1=\\left(\\frac{r}{\\sigma}+\\frac{\\sigma}{2}\\right)\\sqrt\\tau>0$, so $\\Delta=N(d_1)>0.5$, and longer maturities push it higher. As $\\tau\\to0$, $d_1\\to0$ and $\\Delta\\to N(0)=0.5$. With a dividend yield $y<r$, $d_1$ is still positive.\nMore generally, $\\Delta\\to1$ for $S\\gg K$ and $\\Delta\\to0$ for $S\\ll K$. The shorter the maturity, the faster delta reaches these limits, so the delta curve steepens around $K$.",
+   "distractors": [
+    "Exactly 0.5; it stays at 0.5 as $\\tau\\to0$",
+    "Slightly below 0.5; it tends to 0 as $\\tau\\to0$",
+    "Slightly above 0.5; it tends to 1 as $\\tau\\to0$"
+   ],
+   "hint": "Compute $d_1$ when $S=K$."
+  },
+  {
+   "id": "6-delta-hedge-call",
+   "section": "6.2",
+   "name": "Dynamic delta hedging (C)",
+   "kind": "problem",
+   "page": 151,
+   "prompt": "You buy a European call on GM stock and want to delta-hedge it dynamically. How do you set up the hedge, and how do you rebalance after a sudden rise in GM's price?",
+   "answer": "Short $\\Delta=e^{-y\\tau}N(d_1)$ shares per call and lend the extra cash; after a rise, short more",
+   "explanation": "Delta increases with $S$ (because $d_1$ does). After GM jumps, the call's delta is larger, so you must short additional shares to stay delta-neutral.\nShorting $\\Delta$ shares brings in more cash than the call costs. Under Black-Scholes the surplus is $Se^{-y\\tau}N(d_1)-c=Ke^{-r\\tau}N(d_2)$, which you lend at $r$; this amount also grows after the rise.\nA delta hedge matches only the option's value and slope. To hedge its curvature you also need to hedge gamma.",
+   "distractors": [
+    "Buy $\\Delta=e^{-y\\tau}N(d_1)$ shares per call and borrow cash; after a rise, buy more",
+    "Short $\\Delta=e^{-y\\tau}N(d_1)$ shares per call; after a rise, buy back some shares",
+    "Short one share per call; no rebalancing is needed after a rise"
+   ]
+  },
+  {
+   "id": "6-atm-call-approx",
+   "section": "6.2",
+   "name": "Value of an ATM call (D)",
+   "kind": "problem",
+   "page": 152,
+   "prompt": "Estimate the value of an at-the-money European call on a non-dividend stock with short maturity when interest rates are low.",
+   "answer": "$c\\approx0.4\\,\\sigma S\\sqrt\\tau$",
+   "explanation": "With $S=K$ and $r\\approx0$, $c\\approx S[N(d_1)-N(d_2)]$ with $d_{1,2}=\\left(\\frac{r}{\\sigma}\\pm\\frac{\\sigma}{2}\\right)\\sqrt\\tau$, both near 0. The normal density there is about $1/\\sqrt{2\\pi}$, so\n$$N(d_1)-N(d_2)\\approx\\frac{d_1-d_2}{\\sqrt{2\\pi}}=\\frac{\\sigma\\sqrt\\tau}{\\sqrt{2\\pi}}\\approx0.4\\,\\sigma\\sqrt\\tau.$$\nExample: $\\sigma=30\\%$, $\\tau=1/6$ and $r=3\\%$ give about $0.049S$, against an exact $0.051S$. Traders use this rule of thumb in reverse to read implied volatility off at-the-money prices.",
+   "distractors": [
+    "$c\\approx0.4\\,\\sigma S\\tau$",
+    "$c\\approx0.4\\,\\sigma^2 S\\sqrt\\tau$",
+    "$c\\approx0.8\\,\\sigma S\\sqrt\\tau$"
+   ],
+   "hint": "$1/\\sqrt{2\\pi}\\approx0.4$"
+  },
+  {
+   "id": "6-gamma-formula",
+   "section": "6.2",
+   "name": "Gamma formula",
+   "kind": "concept",
+   "page": 152,
+   "prompt": "What is the gamma of a European call or put on a stock with dividend yield $y$, and what is its sign?",
+   "answer": "$\\Gamma=\\frac{e^{-y\\tau}N'(d_1)}{S\\sigma\\sqrt\\tau}$, the same for call and put, always positive",
+   "explanation": "Differentiate the call delta $e^{-y\\tau}N(d_1)$ with respect to $S$, using $\\partial d_1/\\partial S=1/(S\\sigma\\sqrt\\tau)$.\nA call and a put with the same strike and expiry differ by a forward ($c-p=Se^{-y\\tau}-Ke^{-r\\tau}$), which is linear in $S$ and has zero gamma, so their gammas are equal.\nSince $N'>0$, long vanilla options always have positive gamma (convexity).",
+   "distractors": [
+    "$\\Gamma=\\frac{e^{-y\\tau}N'(d_1)}{S\\sigma\\sqrt\\tau}$ for calls, and its negative for puts",
+    "$\\Gamma=\\frac{e^{-y\\tau}N(d_1)}{S\\sigma\\sqrt\\tau}$, the same for call and put, always positive",
+    "$\\Gamma=e^{-y\\tau}S\\sqrt\\tau\\,N'(d_1)$, the same for call and put, always positive"
+   ]
+  },
+  {
+   "id": "6-gamma-atm-expiry",
+   "section": "6.2",
+   "name": "Gamma of ATM option near expiry",
+   "kind": "problem",
+   "page": 153,
+   "prompt": "What happens to the gamma of an at-the-money European option as it approaches maturity?",
+   "answer": "$\\Gamma\\to\\infty$ as $\\tau\\to0$; delta becomes a step function",
+   "explanation": "For $S=K$ with no dividends, $d_1=(r/\\sigma+\\sigma/2)\\sqrt\\tau\\to0$, so the numerator $N'(d_1)\\to1/\\sqrt{2\\pi}$ while the denominator $S\\sigma\\sqrt\\tau\\to0$.\nAt expiry, delta jumps from 0 to 1 at the strike. That is why at-the-money options are very hard to hedge near expiry: tiny moves in $S$ swing the required hedge.",
+   "distractors": [
+    "$\\Gamma\\to0$ as $\\tau\\to0$; delta becomes flat",
+    "$\\Gamma\\to1/\\sqrt{2\\pi}$ as $\\tau\\to0$; delta stays smooth",
+    "$\\Gamma\\to0.5$ as $\\tau\\to0$, matching delta's limit"
+   ]
+  },
+  {
+   "id": "6-gamma-shape",
+   "section": "6.2",
+   "name": "Gamma vs. moneyness and maturity",
+   "kind": "concept",
+   "page": 153,
+   "prompt": "How does gamma depend on moneyness? How does maturity affect gamma for options near the strike versus far from it?",
+   "answer": "Peaks near the strike; near $K$ shorter maturity means higher gamma, far from $K$ longer maturity does",
+   "explanation": "Gamma is largest where delta changes fastest, around $S\\approx K$. Deep in or out of the money, delta is flat near 1 or 0 and gamma is close to 0.\nA short-dated option has a steep, narrow delta curve, which gives a tall, thin gamma spike at the strike that dies off quickly away from it. A long-dated option has a flatter, wider gamma profile, so it has more gamma far from the strike.",
+   "distractors": [
+    "Peaks near the strike; longer maturity always means higher gamma",
+    "Peaks deep in the money; shorter maturity always means higher gamma",
+    "Peaks near the strike; near $K$ longer maturity means higher gamma, far from $K$ shorter does"
+   ]
+  },
+  {
+   "id": "6-theta-formula",
+   "section": "6.2",
+   "name": "Theta formula",
+   "kind": "concept",
+   "page": 154,
+   "prompt": "Give the Black-Scholes theta of a European call on a stock with dividend yield $y$.",
+   "answer": "$-\\frac{\\sigma Se^{-y\\tau}N'(d_1)}{2\\sqrt\\tau}+ySe^{-y\\tau}N(d_1)-rKe^{-r\\tau}N(d_2)$",
+   "explanation": "The put analogue is $-\\frac{\\sigma Se^{-y\\tau}N'(d_1)}{2\\sqrt\\tau}-ySe^{-y\\tau}N(-d_1)+rKe^{-r\\tau}N(-d_2)$.\nThe first term is the decay of optionality and is always negative. The second reflects the dividend yield the call holder forgoes. The third reflects the strike payment drawing nearer, which raises its present value.\nWith $y=0$ the call theta is $-\\frac{\\sigma SN'(d_1)}{2\\sqrt\\tau}-rKe^{-r\\tau}N(d_2)<0$. The $\\sigma$ in the first term is sometimes dropped by mistake; it belongs there.",
+   "distractors": [
+    "$-\\frac{\\sigma Se^{-y\\tau}N'(d_1)}{2\\sqrt\\tau}-ySe^{-y\\tau}N(d_1)+rKe^{-r\\tau}N(d_2)$",
+    "$+\\frac{\\sigma Se^{-y\\tau}N'(d_1)}{2\\sqrt\\tau}+ySe^{-y\\tau}N(d_1)-rKe^{-r\\tau}N(d_2)$",
+    "$-\\frac{Se^{-y\\tau}N'(d_1)}{2\\sigma\\sqrt\\tau}+ySe^{-y\\tau}N(d_1)-rKe^{-r\\tau}N(d_2)$"
+   ]
+  },
+  {
+   "id": "6-theta-call-shape",
+   "section": "6.2",
+   "name": "Theta of a call",
+   "kind": "concept",
+   "page": 154,
+   "prompt": "For a European call on a non-dividend stock, what is the sign of theta, and how does theta behave deep out of the money, deep in the money and at the money?",
+   "answer": "Always negative: $\\to0$ for $S\\ll K$, $\\to-rKe^{-r\\tau}$ for $S\\gg K$, most negative near $S=K$",
+   "explanation": "With $y=0$, $\\Theta=-\\frac{\\sigma SN'(d_1)}{2\\sqrt\\tau}-rKe^{-r\\tau}N(d_2)$, and both terms are nonpositive.\n- $S\\ll K$: $N'(d_1)\\approx0$ and $N(d_2)\\approx0$, so $\\Theta\\to0$.\n- $S\\gg K$: $N'(d_1)\\approx0$ and $N(d_2)\\approx1$, so $\\Theta\\to-rKe^{-r\\tau}$ (the call behaves like a forward).\n- $S\\approx K$: the first term dominates and becomes more negative as $\\tau$ shrinks (it scales like $1/\\sqrt\\tau$).",
+   "distractors": [
+    "Always negative: $\\to-rKe^{-r\\tau}$ for $S\\ll K$, $\\to0$ for $S\\gg K$, most negative near $S=K$",
+    "Always positive: $\\to0$ for $S\\ll K$, $\\to rKe^{-r\\tau}$ for $S\\gg K$, largest near $S=K$",
+    "Always negative: $\\to0$ for both $S\\ll K$ and $S\\gg K$, least negative near $S=K$"
+   ]
+  },
+  {
+   "id": "6-positive-theta",
+   "section": "6.2",
+   "name": "Positive theta (A)",
+   "kind": "problem",
+   "page": 155,
+   "prompt": "When can a European option have positive theta?",
+   "answer": "Deep ITM puts, or deep ITM calls with a high dividend yield",
+   "explanation": "For a put on a non-dividend stock, $\\Theta=-\\frac{\\sigma SN'(d_1)}{2\\sqrt\\tau}+rKe^{-r\\tau}N(-d_2)$. Deep in the money, $N'(d_1)\\approx0$ and $N(-d_2)\\approx1$, so $\\Theta\\approx rKe^{-r\\tau}>0$. Such a put is essentially a claim on $K$ at $T$, which gains value as $T$ approaches. The same effect is why deep in-the-money American puts can be worth exercising early.\nFor a deep in-the-money call with a high dividend yield, the $+ySe^{-y\\tau}N(d_1)$ term can dominate.\nAmerican options, and European calls on non-dividend stocks, always have negative theta.",
+   "distractors": [
+    "Deep out-of-the-money calls on non-dividend stocks",
+    "At-the-money options very close to expiry",
+    "Never; time decay makes every option's theta negative"
+   ]
+  },
+  {
+   "id": "6-delta-neutral-long-gamma",
+   "section": "6.2",
+   "name": "Delta-neutral long call (B)",
+   "kind": "problem",
+   "page": 156,
+   "prompt": "You are long a call on GM (no dividends) and short enough GM shares to be delta-neutral. If GM's price immediately jumps up or down, what happens to your portfolio value? Is this an arbitrage?",
+   "answer": "Value rises either way (long gamma), but it's not arbitrage: negative theta pays for it",
+   "explanation": "Shares have zero gamma, so the hedged position keeps the option's positive gamma. Its value is convex in $S$, so any immediate move, up or down, produces a gain.\nBut the BSM PDE implies that a delta-neutral portfolio satisfies $\\Theta+\\tfrac12\\sigma^2S^2\\Gamma=r\\Pi$. Positive gamma comes with negative theta: if the stock doesn't move enough, time decay eats the value. You are betting that realized volatility beats implied volatility, not collecting free money.",
+   "distractors": [
+    "Value is unchanged either way (delta-neutral), so it's a riskless arbitrage",
+    "Value falls either way (short gamma); not an arbitrage",
+    "Value rises either way (long gamma), so it's a riskless arbitrage"
+   ]
+  },
+  {
+   "id": "6-theta-gamma-relation",
+   "section": "6.2",
+   "name": "Theta-gamma relation",
+   "kind": "concept",
+   "page": 156,
+   "prompt": "For a delta-neutral portfolio of value $\\Pi$, what relationship between theta and gamma does the Black-Scholes-Merton PDE imply?",
+   "answer": "$\\Theta+\\tfrac12\\sigma^2S^2\\Gamma=r\\Pi$",
+   "explanation": "In Greek form the PDE reads $\\Theta+rS\\Delta+\\tfrac12\\sigma^2S^2\\Gamma=r\\Pi$, and $\\Delta=0$ removes the middle term.\nWhen $r\\Pi$ is small, theta and gamma must have opposite signs: being long gamma means paying time decay, and being short gamma means collecting it. For example, an at-the-money option near expiry has a very large positive gamma and a very negative theta.",
+   "distractors": [
+    "$\\Theta-\\tfrac12\\sigma^2S^2\\Gamma=r\\Pi$",
+    "$\\Theta+\\tfrac12\\sigma^2S\\Gamma=r\\Pi$",
+    "$\\Theta+rS\\Gamma=\\tfrac12\\sigma^2\\Pi$"
+   ]
+  },
+  {
+   "id": "6-vega-formula",
+   "section": "6.2",
+   "name": "Vega formula",
+   "kind": "concept",
+   "page": 156,
+   "prompt": "What is the vega of a European call or put on a stock with dividend yield $y$? Which options have the most vega, and how does vega change as expiry nears?",
+   "answer": "$\\nu=Se^{-y\\tau}\\sqrt\\tau\\,N'(d_1)$; largest at the money; shrinks to 0 as $\\tau\\to0$",
+   "explanation": "A call and a put with the same strike and expiry have the same vega, because their difference (a forward) does not depend on $\\sigma$.\n$N'(d_1)$ peaks near $d_1=0$, roughly at the money, so at-the-money options are the most sensitive to volatility.\nThe $\\sqrt\\tau$ factor means long-dated options carry more vega, and vega vanishes as expiry approaches.",
+   "distractors": [
+    "$\\nu=Se^{-y\\tau}\\sqrt\\tau\\,N'(d_1)$; largest deep in the money; grows as $\\tau\\to0$",
+    "$\\nu=Se^{-y\\tau}\\sqrt\\tau\\,N(d_1)$; largest deep in the money; shrinks to 0 as $\\tau\\to0$",
+    "$\\nu=\\frac{Se^{-y\\tau}N'(d_1)}{\\sigma\\sqrt\\tau}$; largest at the money; grows as $\\tau\\to0$"
+   ]
+  },
+  {
+   "id": "6-implied-vol-smile",
+   "section": "6.2",
+   "name": "Implied volatility and smile (A)",
+   "kind": "problem",
+   "page": 156,
+   "prompt": "Explain implied volatility and the volatility smile. What does the smile imply for the Black-Scholes model?",
+   "answer": "IV is the $\\sigma$ that makes BS match the market price; it varies by strike, so BS's constant vol is wrong",
+   "explanation": "Implied volatility is found by inverting the Black-Scholes formula at the observed option price.\nPlotting implied volatility against strike for one expiry gives a smile or a skew. For currencies, in- and out-of-the-money options have higher implied volatility than at-the-money ones. For equities, implied volatility usually falls as the strike rises.\nIf Black-Scholes were right, the curve would be flat. Its shape shows that returns are not lognormal with constant volatility: in reality volatility is itself random and prices can jump, which fattens the tails.",
+   "distractors": [
+    "IV is the historical $\\sigma$ of returns; it varies by strike because BS misprices dividends",
+    "IV is the $\\sigma$ that makes BS match the market price; it is flat across strikes, confirming BS",
+    "IV is the $\\sigma$ that makes BS match the market price; it varies by strike only because rates move"
+   ]
+  },
+  {
+   "id": "6-stochastic-vol-price",
+   "section": "6.2",
+   "name": "Constant vs. random volatility (B)",
+   "kind": "problem",
+   "page": 157,
+   "prompt": "You can price a European call either with a constant volatility of 30% or with a volatility drawn at random from a distribution with mean 30%. Which call is more expensive?",
+   "answer": "Usually the random-vol one, since $c$ is convex in $\\sigma$ when $d_1d_2>0$, but not always",
+   "explanation": "By Jensen's inequality, $E[c(\\sigma)]\\ge c(E[\\sigma])$ whenever $c$ is convex in $\\sigma$. Vega $\\nu=S\\sqrt\\tau N'(d_1)$ is always positive, and volga is\n$$\\frac{\\partial^2c}{\\partial\\sigma^2}=\\nu\\,\\frac{d_1d_2}{\\sigma}.$$\nFor most in-the-money calls both $d$'s are positive, and for most out-of-the-money calls both are negative, so $d_1d_2>0$ and randomizing $\\sigma$ adds value.\nNear the money, however, we can have $d_1>0>d_2$. Then volga is negative and the constant-volatility call can be worth more.",
+   "distractors": [
+    "Always the random-vol one, because $c$ is convex in $\\sigma$ everywhere",
+    "Always the constant-vol one, because $c$ is concave in $\\sigma$",
+    "They are always equal, because the mean volatility is the same"
+   ]
+  },
+  {
+   "id": "6-risk-neutral-density",
+   "section": "6.2",
+   "name": "Risk-neutral density from calls (C)",
+   "kind": "problem",
+   "page": 158,
+   "prompt": "You don't know the process the stock follows, but you observe European call prices $c(K)$ for every strike $K$ with maturity $T$. How do you recover the risk-neutral density of $S_T$?",
+   "answer": "$f_{S_T}(K)=e^{r\\tau}\\,\\frac{\\partial^2c}{\\partial K^2}$",
+   "explanation": "Write $c=e^{-r\\tau}\\int_K^\\infty(s-K)f(s)\\,ds$ and differentiate under the integral (Leibniz rule). The boundary term vanishes because $s-K=0$ at $s=K$.\n- $\\frac{\\partial c}{\\partial K}=-e^{-r\\tau}\\int_K^\\infty f(s)\\,ds=-e^{-r\\tau}\\tilde P(S_T>K)$.\n- $\\frac{\\partial^2c}{\\partial K^2}=e^{-r\\tau}f(K)$.\nThis is the Breeden-Litzenberger result. It needs no model for the stock, only a continuum of strikes.",
+   "distractors": [
+    "$f_{S_T}(K)=e^{r\\tau}\\,\\frac{\\partial c}{\\partial K}$",
+    "$f_{S_T}(K)=-e^{-r\\tau}\\,\\frac{\\partial^2c}{\\partial K^2}$",
+    "$f_{S_T}(K)=e^{r\\tau}\\,\\frac{\\partial^2c}{\\partial S^2}$"
+   ]
+  },
+  {
+   "id": "6-bull-spread-payoff",
+   "section": "6.3",
+   "name": "Bull spread construction",
+   "kind": "concept",
+   "page": 159,
+   "prompt": "How is a bull call spread built, and what does it pay at expiry?",
+   "answer": "Long a call at $K_1$, short a call at $K_2>K_1$; payoff $\\min\\{(S_T-K_1)^+,\\,K_2-K_1\\}$",
+   "explanation": "The payoff is 0 for $S_T\\le K_1$. Between the strikes it rises one-for-one as $S_T-K_1$, and it is capped at $K_2-K_1$ for $S_T\\ge K_2$.\nThe lower-strike call costs more, so the spread costs $c_1-c_2>0$ up front. It profits from a moderate rise in the stock, giving up gains beyond $K_2$ in exchange for a lower premium.",
+   "distractors": [
+    "Long a call at $K_2$, short a call at $K_1<K_2$; payoff $\\min\\{(S_T-K_1)^+,\\,K_2-K_1\\}$",
+    "Long a call at $K_1$, short a put at $K_2>K_1$; payoff $(S_T-K_1)^+$",
+    "Long a call at $K_1$, short a call at $K_2>K_1$; payoff $\\max\\{S_T-K_2,\\,0\\}$"
+   ]
+  },
+  {
+   "id": "6-bull-spread-bounds",
+   "section": "6.3",
+   "name": "Bull spread price bounds",
+   "kind": "problem",
+   "page": 159,
+   "prompt": "What are the no-arbitrage price bounds for a bull call spread $c_1-c_2$ (long strike $K_1$, short strike $K_2>K_1$, non-dividend stock)?",
+   "answer": "$0\\le c_1-c_2\\le\\min\\{e^{-r\\tau}(K_2-K_1),\\ \\tfrac{K_2-K_1}{K_2}S\\}$",
+   "explanation": "The payoff lies between 0 and $K_2-K_1$, so the price lies between 0 and $e^{-r\\tau}(K_2-K_1)$.\nThe payoff also never exceeds $\\frac{K_2-K_1}{K_2}S_T$. Check the three regions: it is 0 below $K_1$; between the strikes $S_T-K_1\\le\\frac{K_2-K_1}{K_2}S_T$; above $K_2$, $K_2-K_1\\le\\frac{K_2-K_1}{K_2}S_T$.\nHolding $\\frac{K_2-K_1}{K_2}$ shares costs $\\frac{K_2-K_1}{K_2}S$ today, which gives the second upper bound.",
+   "distractors": [
+    "$e^{-r\\tau}(K_2-K_1)\\le c_1-c_2\\le K_2-K_1$",
+    "$\\tfrac{K_2-K_1}{K_2}S\\le c_1-c_2\\le e^{-r\\tau}(K_2-K_1)$",
+    "$-e^{-r\\tau}(K_2-K_1)\\le c_1-c_2\\le0$"
+   ]
+  },
+  {
+   "id": "6-straddle",
+   "section": "6.3",
+   "name": "Straddle",
+   "kind": "problem",
+   "page": 159,
+   "prompt": "What is a straddle, and when would you buy one?",
+   "answer": "Long call + long put, same $K$ and $T$; payoff $|S_T-K|$; buy if you expect realized vol > implied",
+   "explanation": "A straddle profits from a large move in either direction.\nAs a volatility trade: an at-the-money call and put are each worth about $0.4\\,\\sigma_iS\\sqrt\\tau$ at implied volatility $\\sigma_i$. If you expect realized volatility $\\sigma_r$ to exceed $\\sigma_i$, both options are cheap, and the straddle gains as prices adjust toward $\\sigma_r$ (or through delta-hedging profits).",
+   "distractors": [
+    "Long call + short put, same $K$ and $T$; payoff $S_T-K$; buy if you expect the stock to rise",
+    "Short call + short put, same $K$ and $T$; payoff $-|S_T-K|$; buy if you expect realized vol > implied",
+    "Long call at $K_2$ + long put at $K_1<K_2$; payoff $|S_T-K|$; buy if you expect low volatility"
+   ]
+  },
+  {
+   "id": "6-straddle-not-pure-vol",
+   "section": "6.3",
+   "name": "Straddle vs. variance swap",
+   "kind": "concept",
+   "page": 160,
+   "prompt": "Why is a long at-the-money straddle not a pure bet on volatility, and what instrument is a purer one?",
+   "answer": "Its delta drifts away from 0 as $S$ moves from $K$; a variance (or volatility) swap is purer",
+   "explanation": "At inception an at-the-money straddle has delta near 0. Once the stock moves, either the call or the put dominates and the position picks up directional exposure, unless you keep delta-hedging.\nA variance swap pays $N(\\sigma_r^2-K_{\\text{var}})$, where $N$ is the notional, $\\sigma_r^2$ the realized variance and $K_{\\text{var}}$ the variance strike. It gives direct exposure to realized variance with no bet on direction.",
+   "distractors": [
+    "Its gamma is zero, so it only bets on direction; a covered call is purer",
+    "Its vega is zero at the money; a bull spread is purer",
+    "Its delta stays exactly 0; it already is a pure volatility bet"
+   ]
+  },
+  {
+   "id": "6-binary-call-price",
+   "section": "6.3",
+   "name": "Binary call price",
+   "kind": "problem",
+   "page": 160,
+   "prompt": "A cash-or-nothing European call pays USD 1 if $S_T>K$ and nothing otherwise. If the stock follows GBM and pays no dividends, what is the option's price?",
+   "answer": "$e^{-r\\tau}N(d_2)$",
+   "explanation": "The price is the discounted risk-neutral probability of finishing in the money, and that probability is $N(d_2)$ (from the Black-Scholes derivation). Equivalently, it equals $-\\partial c/\\partial K$.\nThe matching cash-or-nothing put pays 1 if $S_T<K$ and is worth $e^{-r\\tau}N(-d_2)$. Together the two pay 1 for sure, so they are worth $e^{-r\\tau}$.",
+   "distractors": [
+    "$e^{-r\\tau}N(d_1)$",
+    "$N(d_2)$",
+    "$e^{-r\\tau}N(-d_2)$"
+   ],
+   "hint": "It's the discounted probability of finishing in the money."
+  },
+  {
+   "id": "6-binary-call-hedge",
+   "section": "6.3",
+   "name": "Hedging a binary call",
+   "kind": "problem",
+   "page": 160,
+   "prompt": "How would you delta-hedge a long cash-or-nothing call, and when does the hedge break down?",
+   "answer": "Short $\\frac{e^{-r\\tau}N'(d_2)}{S\\sigma\\sqrt\\tau}$ shares; fails near expiry with $S\\approx K$ (delta explodes)",
+   "explanation": "Differentiating $e^{-r\\tau}N(d_2)$ with respect to $S$ gives $\\Delta=\\frac{e^{-r\\tau}N'(d_2)}{S\\sigma\\sqrt\\tau}$. You short that many shares and hold a money-market position.\nThis works when $S$ is far from $K$ or plenty of time remains. But as $\\tau\\to0$ with $S\\to K$, $N'(d_2)\\to1/\\sqrt{2\\pi}$ while $S\\sigma\\sqrt\\tau\\to0$, so delta is unbounded and swings wildly. The payoff is a step, and delta-hedging it becomes practically impossible.",
+   "distractors": [
+    "Short $e^{-r\\tau}N(d_2)$ shares; fails deep in the money, far from expiry (delta explodes)",
+    "Short $\\frac{e^{-r\\tau}N'(d_2)}{S\\sigma\\sqrt\\tau}$ shares; fails at long maturities (delta explodes)",
+    "Buy $\\frac{e^{-r\\tau}N'(d_2)}{S\\sigma\\sqrt\\tau}$ shares; never fails since delta is at most 1"
+   ]
+  },
+  {
+   "id": "6-binary-call-spread",
+   "section": "6.3",
+   "name": "Binary call via call spread",
+   "kind": "concept",
+   "page": 161,
+   "prompt": "How can you approximately replicate a digital call paying USD 1 if $S_T>K$ with vanilla calls, and what is the drawback?",
+   "answer": "Buy $\\frac1{2\\epsilon}$ calls at $K-\\epsilon$, sell as many at $K+\\epsilon$; needs many options and fine strikes",
+   "explanation": "This tight call spread pays 0 below $K-\\epsilon$, rises linearly to 1 between the two strikes, and pays exactly 1 above $K+\\epsilon$. It matches the digital everywhere except in that narrow band, and it converges to the digital as $\\epsilon\\to0$ (the limit is $-\\partial c/\\partial K$).\nIn practice, strikes aren't available at arbitrarily fine spacing, and a small $\\epsilon$ requires a large number $\\frac1{2\\epsilon}$ of options.",
+   "distractors": [
+    "Buy $\\frac1{2\\epsilon}$ calls at $K+\\epsilon$, sell as many at $K-\\epsilon$; needs many options and fine strikes",
+    "Buy $2\\epsilon$ calls at $K-\\epsilon$, sell as many at $K+\\epsilon$; exact for any $\\epsilon$",
+    "Buy one call and sell one put, both at $K$; exact replication, with no drawback"
+   ]
+  },
+  {
+   "id": "6-exchange-option",
+   "section": "6.3",
+   "name": "Exchange options",
+   "kind": "problem",
+   "page": 161,
+   "prompt": "Price an exchange option paying $\\max(S_{1,T}-S_{2,T},0)$, where $S_1$ and $S_2$ are non-dividend stocks following GBMs with volatilities $\\sigma_1,\\sigma_2$ and correlation $\\rho$.",
+   "answer": "$S_1N(d_1)-S_2N(d_2)$ with vol $\\sqrt{\\sigma_1^2-2\\rho\\sigma_1\\sigma_2+\\sigma_2^2}$ and $r=0$",
+   "explanation": "Use $S_2$ as the numeraire: the payoff is $S_{2,T}\\max(S_{1,T}/S_{2,T}-1,0)$.\nThe ratio $f=S_1/S_2$ is a GBM. Under the measure that uses $S_2$ as numeraire it is a martingale with volatility $\\sigma=\\sqrt{\\sigma_1^2-2\\rho\\sigma_1\\sigma_2+\\sigma_2^2}$, the volatility of $\\ln S_1-\\ln S_2$.\nSo the option, measured in units of $S_2$, is a Black-Scholes call on $f$ with strike 1 and a zero interest rate:\n$$\\frac{V}{S_2}=fN(d_1)-N(d_2),\\quad d_{1,2}=\\frac{\\ln(S_1/S_2)\\pm\\tfrac12\\sigma^2\\tau}{\\sigma\\sqrt\\tau}.$$\nMultiplying by $S_2$ gives Margrabe's formula, in which the interest rate drops out. The book's worked solution prices the mirror payoff $\\max(S_2-S_1,0)$ with $S_1$ as numeraire; it's the same formula with the roles swapped.",
+   "distractors": [
+    "$S_1N(d_1)-S_2N(d_2)$ with vol $\\sqrt{\\sigma_1^2+2\\rho\\sigma_1\\sigma_2+\\sigma_2^2}$ and $r=0$",
+    "$S_1N(d_1)-S_2e^{-r\\tau}N(d_2)$ with vol $\\sqrt{\\sigma_1^2-2\\rho\\sigma_1\\sigma_2+\\sigma_2^2}$",
+    "$S_1N(d_1)-S_2N(d_2)$ with vol $\\sigma_1-\\sigma_2$ and $r=0$"
+   ],
+   "hint": "Change numeraire so that only the ratio of the two stocks matters."
+  },
+  {
+   "id": "6-min-variance-two-stocks",
+   "section": "6.4",
+   "name": "Minimum-variance portfolio",
+   "kind": "problem",
+   "page": 163,
+   "prompt": "Stocks A and B both have an expected return of 12%. A's return has a standard deviation of 20%, B's has 30%, and their correlation is 0.5. How should you split your investment between them to minimize portfolio risk?",
+   "answer": "$6/7$ in A and $1/7$ in B",
+   "explanation": "With equal expected returns, only variance matters. For weight $w$ in A,\n$$\\sigma_p^2=w^2\\sigma_A^2+(1-w)^2\\sigma_B^2+2w(1-w)\\rho\\sigma_A\\sigma_B.$$\nSetting the derivative to zero gives $w=\\frac{\\sigma_B^2-\\rho\\sigma_A\\sigma_B}{\\sigma_A^2-2\\rho\\sigma_A\\sigma_B+\\sigma_B^2}=\\frac{0.09-0.03}{0.04-0.06+0.09}=\\frac{0.06}{0.07}=\\frac67$.\nThe resulting portfolio volatility is about 19.6%, slightly below A's 20%.",
+   "distractors": [
+    "$3/5$ in A and $2/5$ in B",
+    "$1/2$ in A and $1/2$ in B",
+    "$9/13$ in A and $4/13$ in B"
+   ]
+  },
+  {
+   "id": "6-min-variance-formula",
+   "section": "6.4",
+   "name": "Two-asset min-variance weight",
+   "kind": "concept",
+   "page": 164,
+   "prompt": "For two assets with volatilities $\\sigma_A,\\sigma_B$ and correlation $\\rho$, what weight in A minimizes the variance of a fully invested portfolio?",
+   "answer": "$w_A=\\frac{\\sigma_B^2-\\rho\\sigma_A\\sigma_B}{\\sigma_A^2-2\\rho\\sigma_A\\sigma_B+\\sigma_B^2}$",
+   "explanation": "Minimize $w^2\\sigma_A^2+(1-w)^2\\sigma_B^2+2w(1-w)\\rho\\sigma_A\\sigma_B$ over $w$.\nThe numerator uses B's variance: the riskier B is, the more weight goes to A. The weight exceeds 1 (meaning you short B) when $\\rho>\\sigma_A/\\sigma_B$.",
+   "distractors": [
+    "$w_A=\\frac{\\sigma_A^2-\\rho\\sigma_A\\sigma_B}{\\sigma_A^2-2\\rho\\sigma_A\\sigma_B+\\sigma_B^2}$",
+    "$w_A=\\frac{\\sigma_B^2+\\rho\\sigma_A\\sigma_B}{\\sigma_A^2+2\\rho\\sigma_A\\sigma_B+\\sigma_B^2}$",
+    "$w_A=\\frac{\\sigma_B^2-\\rho\\sigma_A\\sigma_B}{\\sigma_A^2+\\sigma_B^2}$"
+   ]
+  },
+  {
+   "id": "6-markowitz",
+   "section": "6.4",
+   "name": "Markowitz mean-variance problem",
+   "kind": "concept",
+   "page": 163,
+   "prompt": "State the Markowitz mean-variance problem for portfolio weights $w$ with target expected return $\\mu_p$, where $\\Sigma$ is the covariance matrix, $\\mu$ the vector of mean returns and $e$ the all-ones vector.",
+   "answer": "$\\min_w w^T\\Sigma w$ s.t. $w^T\\mu=\\mu_p,\\ w^Te=1$",
+   "explanation": "The portfolio mean is $w^T\\mu$ and the variance is $w^T\\Sigma w=\\sum_i w_i^2\\sigma_i^2+\\sum_{i\\ne j}w_iw_j\\sigma_{ij}$.\nEfficient portfolios minimize variance for each target return, and varying $\\mu_p$ traces out the efficient frontier. With only these two equality constraints there is a closed form, $w^*=\\lambda\\Sigma^{-1}e+\\gamma\\Sigma^{-1}\\mu$, where the scalars $\\lambda,\\gamma$ are set by the constraints.",
+   "distractors": [
+    "$\\max_w w^T\\mu$ s.t. $w^T\\Sigma w=\\mu_p,\\ w^Te=1$",
+    "$\\min_w w^T\\Sigma w$ s.t. $w^T\\mu=\\mu_p$ only (no budget constraint)",
+    "$\\min_w w^T\\mu$ s.t. $w^T\\Sigma w=\\mu_p,\\ w^Te=1$"
+   ]
+  },
+  {
+   "id": "6-var-definition",
+   "section": "6.4",
+   "name": "Value at risk",
+   "kind": "problem",
+   "page": 164,
+   "prompt": "Briefly explain Value at Risk (VaR) at confidence level $\\alpha$ (for example 95% or 99%).",
+   "answer": "The loss over the horizon that is exceeded only with probability $1-\\alpha$",
+   "explanation": "VaR is a quantile: $P(\\text{loss}>\\text{VaR})=1-\\alpha$. Equivalently, it is the negative of the $(1-\\alpha)$ percentile of the P&L distribution, i.e. the 5th percentile at 95% or the 1st percentile at 99%.\nIts appeal is that it sums up risk as a single dollar figure for a given horizon and confidence level.\nThe expected loss beyond that quantile is a different measure: expected shortfall, or CVaR.",
+   "distractors": [
+    "The expected loss over the horizon, given that losses exceed the $\\alpha$ quantile",
+    "The largest possible loss over the horizon",
+    "The standard deviation of P&L over the horizon, scaled by $\\alpha$"
+   ]
+  },
+  {
+   "id": "6-var-tail-drawback",
+   "section": "6.4",
+   "name": "VaR drawback: tail blindness",
+   "kind": "problem",
+   "page": 165,
+   "prompt": "You are short protection on a USD 1M credit default swap on bond A, which has a 3% default probability and zero recovery. What is the 95% VaR, and what weakness of VaR does this show?",
+   "answer": "VaR = 0 because the 3% default chance is below 5%; VaR ignores losses beyond the quantile",
+   "explanation": "With probability 97% there is no loss, so the 5th percentile of P&L is 0 and the 95% VaR is 0, even though there is a 3% chance of losing the entire USD 1M.\nBecause VaR looks at only one quantile, it says nothing about how bad losses are beyond it. For derivatives with highly non-normal, fat-tailed or jumpy P&L, this can badly understate risk, which is why stress tests are used alongside VaR.",
+   "distractors": [
+    "VaR = USD 1M because any default loses the full notional; VaR overstates tail risk",
+    "VaR = USD 30,000, the expected loss; VaR equals the mean loss",
+    "VaR = USD 50,000, i.e. 5% of notional; VaR is linear in the confidence level"
+   ]
+  },
+  {
+   "id": "6-var-subadditivity",
+   "section": "6.4",
+   "name": "VaR is not subadditive",
+   "kind": "problem",
+   "page": 165,
+   "prompt": "Add a second short USD 1M CDS position on bond B (3% default probability, zero recovery, independent of A). Each position alone has a 95% VaR of 0. What is the 95% VaR of the combined portfolio?",
+   "answer": "USD 1M, since P(at least one default) $\\approx5.91\\%>5\\%$",
+   "explanation": "$P(\\text{at least one default})=1-0.97^2=5.91\\%$, which exceeds 5%. So the 5th percentile of P&L is a loss of USD 1M (both defaulting has only a 0.09% chance).\nSo $\\text{VaR}(A+B)>\\text{VaR}(A)+\\text{VaR}(B)$: combining the positions appears to increase risk, which contradicts the idea that diversification shouldn't. This failure of subadditivity means VaR is not a coherent risk measure.",
+   "distractors": [
+    "0, since each position alone has zero VaR and VaRs add",
+    "USD 2M, since both bonds could default together",
+    "USD 60,000, the sum of the two expected losses"
+   ]
+  },
+  {
+   "id": "6-coherent-risk-measure",
+   "section": "6.4",
+   "name": "Coherent risk measures",
+   "kind": "concept",
+   "page": 165,
+   "prompt": "Which four properties define a coherent risk measure $\\rho$, and which common measure satisfies them all where VaR does not?",
+   "answer": "Subadditive, positively homogeneous, monotone, translation invariant; CVaR (expected shortfall)",
+   "explanation": "The axioms of Artzner et al., for positions $X,Y$:\n- Subadditivity: $\\rho(X+Y)\\le\\rho(X)+\\rho(Y)$.\n- Positive homogeneity: $\\rho(aX)=a\\rho(X)$ for $a>0$.\n- Monotonicity: if $X\\le Y$ in every state, then $\\rho(X)\\ge\\rho(Y)$.\n- Translation invariance: $\\rho(X+k)=\\rho(X)-k$ for a cash amount $k$.\nVaR can violate subadditivity, while conditional VaR satisfies all four.",
+   "distractors": [
+    "Subadditive, positively homogeneous, monotone, translation invariant; 99% VaR",
+    "Additive, convex, symmetric, translation invariant; standard deviation",
+    "Superadditive, homogeneous, monotone, translation invariant; CVaR (expected shortfall)"
+   ]
+  },
+  {
+   "id": "6-duration-convexity",
+   "section": "6.4",
+   "name": "Duration and convexity",
+   "kind": "concept",
+   "page": 165,
+   "prompt": "Define a bond's duration and convexity in terms of its price $P(y)$ and yield $y$ (primes denote derivatives with respect to $y$), and give the second-order approximation for the price change.",
+   "answer": "$D=-P'/P$, $C=P''/P$, $\\Delta P/P\\approx-D\\,\\Delta y+\\tfrac12C\\,\\Delta y^2$",
+   "explanation": "Duration is the percentage price sensitivity to yield, with a sign flip; convexity is the curvature. The formula is a second-order Taylor expansion of $P(y)$, and for small $\\Delta y$, $\\Delta P/P\\approx-D\\Delta y$.\nPositive convexity means the price rises more when yields fall than it drops when yields rise by the same amount.",
+   "distractors": [
+    "$D=P'/P$, $C=P''/P$, $\\Delta P/P\\approx D\\,\\Delta y+\\tfrac12C\\,\\Delta y^2$",
+    "$D=-P'/P$, $C=P''/P$, $\\Delta P/P\\approx-D\\,\\Delta y-\\tfrac12C\\,\\Delta y^2$",
+    "$D=-P'$, $C=P''$, $\\Delta P/P\\approx-D\\,\\Delta y+C\\,\\Delta y^2$"
+   ]
+  },
+  {
+   "id": "6-duration-drivers",
+   "section": "6.4",
+   "name": "What drives duration and convexity",
+   "kind": "concept",
+   "page": 166,
+   "prompt": "For a fixed-rate coupon bond, how do duration and convexity typically change when (a) maturity $T$ increases, (b) the coupon rate $c$ increases, (c) the yield $y$ increases?",
+   "answer": "Longer $T$: both up; higher coupon: both down; higher yield: both down",
+   "explanation": "Duration is a present-value-weighted average time of the cash flows.\n- Longer maturity pushes cash flows later.\n- A higher coupon puts more weight on early cash flows, shortening it.\n- A higher yield discounts distant cash flows more heavily, also shortening it.\nConvexity moves in the same directions. One exception: for some deep-discount long bonds, duration can dip slightly as maturity grows.",
+   "distractors": [
+    "Longer $T$: both up; higher coupon: both up; higher yield: both down",
+    "Longer $T$: both down; higher coupon: both down; higher yield: both up",
+    "Longer $T$: both up; higher coupon: both down; higher yield: both up"
+   ]
+  },
+  {
+   "id": "6-dollar-duration-dv01",
+   "section": "6.4",
+   "name": "Dollar duration and DV01",
+   "kind": "concept",
+   "page": 166,
+   "prompt": "Define dollar duration and DV01. Why is dollar duration preferred for instruments such as swaps?",
+   "answer": "Dollar duration $=-dP/dy=PD$; DV01 $=-\\frac{dP}{dy}/10{,}000$; a swap can have $P=0$, so $D$ fails",
+   "explanation": "DV01 is the price change for a one-basis-point (0.0001) move in yield.\nDuration divides by price, so it breaks down for positions worth about zero, such as an at-market swap, while dollar duration still measures the rate exposure. Dollar durations are also additive across positions.",
+   "distractors": [
+    "Dollar duration $=D/P$; DV01 $=-\\frac{dP}{dy}/100$; a swap's duration is constant",
+    "Dollar duration $=-dP/dy=PD$; DV01 $=-\\frac{dP}{dy}\\times10{,}000$; swaps have no rate risk",
+    "Dollar duration $=PD^2$; DV01 $=-\\frac{dP}{dy}/10{,}000$; a swap always trades at par"
+   ]
+  },
+  {
+   "id": "6-portfolio-duration",
+   "section": "6.4",
+   "name": "Portfolio duration",
+   "kind": "concept",
+   "page": 166,
+   "prompt": "A portfolio holds bonds with values $P_i$ (total $P$), durations $D_i$ and convexities $C_i$. What are the portfolio's duration, convexity and dollar duration?",
+   "answer": "$D=\\sum\\frac{P_i}{P}D_i$, $C=\\sum\\frac{P_i}{P}C_i$; dollar duration is the sum of the dollar durations",
+   "explanation": "The portfolio price is $P=\\sum P_i$, so $dP/dy=\\sum dP_i/dy$: dollar durations simply add.\nDividing by $P$ turns that sum into a value-weighted average of the individual durations. The same logic applies to convexity.",
+   "distractors": [
+    "$D=\\sum D_i$, $C=\\sum C_i$; dollar duration is the value-weighted average of dollar durations",
+    "$D=\\frac1n\\sum D_i$, $C=\\frac1n\\sum C_i$; dollar duration is the sum of the dollar durations",
+    "$D=\\sum\\frac{P_i}{P}D_i$, $C=\\sum\\frac{P_i}{P}C_i^2$; dollar duration is the largest dollar duration"
+   ]
+  },
+  {
+   "id": "6-inverse-floater-price",
+   "section": "6.4",
+   "name": "Inverse floater price",
+   "kind": "problem",
+   "page": 166,
+   "prompt": "An inverse floater has face value USD 100, matures in 5 years, and pays an annual coupon rate of $30\\%-3r$ semiannually, where $r$ is the floating rate reset each period. The yield curve is flat at 7.5%. What is its price, and how do you replicate it?",
+   "answer": "USD 100: long 4 par 7.5% fixed-rate bonds, short 3 par floating-rate bonds",
+   "explanation": "Each half-year the inverse floater pays $100\\cdot\\frac{0.30-3r}{2}=15-150r$, and it returns 100 at maturity.\n- 4 fixed-rate bonds with a 7.5% coupon pay $4\\times3.75=15$ per period and 400 at maturity.\n- Shorting 3 floaters costs $3\\times50r=150r$ per period and 300 at maturity.\nThe net is $15-150r$ per period and 100 at the end, an exact match. With a flat 7.5% curve both kinds of bond trade at par, so the price is $4\\cdot100-3\\cdot100=100$. (This ignores the zero floor on the coupon, which would bind if $r>10\\%$.)",
+   "distractors": [
+    "USD 100: long 3 par 7.5% fixed-rate bonds, short 4 par floating-rate bonds",
+    "USD 70: long 1 par 7.5% fixed-rate bond, short 3 zero-coupon bonds",
+    "USD 130: long 4 par 7.5% fixed-rate bonds, short 3 par floating-rate bonds"
+   ],
+   "hint": "Replicate the cash flows with fixed-rate and floating-rate bonds."
+  },
+  {
+   "id": "6-inverse-floater-duration",
+   "section": "6.4",
+   "name": "Inverse floater duration",
+   "kind": "problem",
+   "page": 167,
+   "prompt": "For the same inverse floater (face 100, 5 years, coupon $30\\%-3r$ paid semiannually, flat 7.5% curve, price 100), estimate its duration.",
+   "answer": "About 15 (≈ 14.98), far above its 5-year maturity",
+   "explanation": "Dollar durations add across the replicating portfolio: $\\mathrm{DD}_{inv}=4\\,\\mathrm{DD}_{fixed}-3\\,\\mathrm{DD}_{float}$.\n- A par floater just after a reset behaves like a 6-month zero paying 103.75, so $\\mathrm{DD}_{float}=\\frac{0.5\\cdot103.75}{1.0375^2}=\\frac{50}{1.0375}\\approx48.19$.\n- A 5-year 7.5% par bond with semiannual coupons has $\\mathrm{DD}_{fixed}=-dP/dy\\approx410.64$ (modified duration about 4.11).\nSo $\\mathrm{DD}_{inv}\\approx1642.6-144.6\\approx1498$ and $D_{inv}=1498/100\\approx14.98$. Leverage makes an inverse floater far more rate-sensitive than its maturity suggests.",
+   "distractors": [
+    "About 4.1, the same as a 5-year par bond",
+    "About 16.4, i.e. 4 times a par bond's duration",
+    "About 5, equal to its time to maturity"
+   ]
+  },
+  {
+   "id": "6-futures-vs-forwards",
+   "section": "6.4",
+   "name": "Futures vs. forwards",
+   "kind": "problem",
+   "page": 167,
+   "prompt": "What are the main differences between futures and forward contracts?",
+   "answer": "Futures: exchange-traded, standardized, marked to market daily; forwards: OTC, customizable, settled at end",
+   "explanation": "Daily marking to market means futures gains and losses are paid in cash along the way through margin accounts, which reduces counterparty risk.\nForwards are bilateral and flexible in size and date, but they carry counterparty credit risk until settlement.\nWith deterministic interest rates the two have the same theoretical price; they diverge when rates are random.",
+   "distractors": [
+    "Futures: OTC, customizable, settled at end; forwards: exchange-traded, standardized, marked to market daily",
+    "Futures: exchange-traded, settled at end; forwards: OTC, marked to market daily",
+    "No structural difference; futures simply have longer maturities than forwards"
+   ]
+  },
+  {
+   "id": "6-futures-forward-correlation",
+   "section": "6.4",
+   "name": "Futures vs. forwards with random rates",
+   "kind": "problem",
+   "page": 167,
+   "prompt": "Interest rates are stochastic, and the underlying asset's price is strongly positively correlated with them. Which is higher, the futures price or the forward price, and why?",
+   "answer": "Futures: daily gains arrive when rates are high and losses when rates are low",
+   "explanation": "With positive correlation, a long futures holder receives variation margin when the asset rises, which tends to happen when rates are high, so the cash can be reinvested at a high rate. Losses tend to come when rates are low, so they are cheap to finance.\nThis systematic advantage makes a long futures position worth more than a long forward, so the futures price must be higher to offset it. With negative correlation the ordering flips, and with deterministic rates the two prices coincide.",
+   "distractors": [
+    "Forwards: daily gains arrive when rates are low and losses when rates are high",
+    "They are equal: both equal $Se^{(r+u-y)\\tau}$ regardless of rates",
+    "Forwards: settling only at maturity avoids reinvestment risk, so they are worth more"
+   ]
+  },
+  {
+   "id": "6-forward-price",
+   "section": "6.4",
+   "name": "Forward price with carry",
+   "kind": "concept",
+   "page": 168,
+   "prompt": "With deterministic interest rates, what is the forward (= futures) price of an asset with storage cost rate $u$ and yield $y$ (a dividend yield, convenience yield or foreign interest rate)?",
+   "answer": "$F=Se^{(r+u-y)\\tau}$",
+   "explanation": "Cost of carry: buying the asset now and holding it to $T$ costs financing at $r$ plus storage at $u$, and earns the yield $y$. No-arbitrage forces the forward price to equal the spot price carried forward at that net rate.\nFor a foreign currency, $y$ is the foreign risk-free rate $r_f$; for a commodity, $y$ is the convenience yield.",
+   "distractors": [
+    "$F=Se^{(r-u+y)\\tau}$",
+    "$F=Se^{(r+u+y)\\tau}$",
+    "$F=Se^{-(r+u-y)\\tau}$"
+   ]
+  },
+  {
+   "id": "6-rate-model-classes",
+   "section": "6.4",
+   "name": "Classes of interest rate models",
+   "kind": "concept",
+   "page": 168,
+   "prompt": "What are two common ways of classifying interest rate models?",
+   "answer": "Short-rate vs. forward-rate (e.g. HJM) models; equilibrium vs. no-arbitrage models",
+   "explanation": "Short-rate models (Vasicek, CIR, Ho-Lee, Hull-White) specify the dynamics of the instantaneous rate $R(t)$. Forward-rate models such as Heath-Jarrow-Morton model the whole forward curve.\nNo-arbitrage models (Ho-Lee, Hull-White) are calibrated to fit today's term structure exactly. Equilibrium models (Vasicek, CIR) derive the curve from a few parameters and need not match current bond prices.",
+   "distractors": [
+    "Discrete vs. continuous models; real-world vs. risk-neutral models",
+    "Short-rate vs. forward-rate (e.g. HJM) models; normal vs. lognormal equity models",
+    "Equilibrium vs. no-arbitrage models; European vs. American rate models"
+   ]
+  },
+  {
+   "id": "6-vasicek",
+   "section": "6.4",
+   "name": "Vasicek model",
+   "kind": "concept",
+   "page": 168,
+   "prompt": "Write the Vasicek short-rate model. What are its key strength and weakness?",
+   "answer": "$dR=a(b-R)\\,dt+\\sigma\\,dW$: mean-reverting to $b$, but rates can go negative",
+   "explanation": "The drift $a(b-R)$ is negative when $R>b$ and positive when $R<b$, pulling the rate toward the long-run level $b$ at speed $a$.\nBecause the volatility is constant, $R$ is Gaussian and has a positive probability of turning negative. It is an equilibrium model and does not automatically fit the current term structure.",
+   "distractors": [
+    "$dR=a(b-R)\\,dt+\\sigma\\sqrt R\\,dW$: mean-reverting to $b$, and rates stay nonnegative",
+    "$dR=\\theta(t)\\,dt+\\sigma\\,dW$: fits today's curve, but has no mean reversion",
+    "$dR=aR\\,dt+\\sigma R\\,dW$: rates stay positive, but there is no mean reversion"
+   ]
+  },
+  {
+   "id": "6-cir",
+   "section": "6.4",
+   "name": "Cox-Ingersoll-Ross model",
+   "kind": "concept",
+   "page": 168,
+   "prompt": "Write the Cox-Ingersoll-Ross (CIR) short-rate model. How does it improve on Vasicek?",
+   "answer": "$dR=a(b-R)\\,dt+\\sigma\\sqrt{R}\\,dW$: keeps mean reversion but keeps rates nonnegative",
+   "explanation": "The diffusion term $\\sigma\\sqrt R$ shrinks as the rate approaches zero, so the pull toward $b$ dominates and the rate cannot go negative. It stays strictly positive if $2ab\\ge\\sigma^2$ (the Feller condition).\nLike Vasicek, CIR is an equilibrium model and need not fit today's curve.",
+   "distractors": [
+    "$dR=a(b-R)\\,dt+\\sigma R\\,dW$: keeps mean reversion but keeps rates nonnegative",
+    "$dR=a(b(t)-R)\\,dt+\\sigma\\,dW$: keeps mean reversion and fits today's curve",
+    "$dR=a(b-R)\\,dt+\\sigma\\sqrt{R}\\,dW$: drops mean reversion to keep rates positive"
+   ]
+  },
+  {
+   "id": "6-ho-lee",
+   "section": "6.4",
+   "name": "Ho-Lee model",
+   "kind": "concept",
+   "page": 169,
+   "prompt": "Write the Ho-Lee short-rate model and explain the role of its drift.",
+   "answer": "$dr=\\theta(t)\\,dt+\\sigma\\,dW$; $\\theta(t)$ is chosen so the model fits today's rate curve",
+   "explanation": "Ho-Lee is the simplest no-arbitrage short-rate model: a normal model whose time-dependent drift is calibrated to match current bond prices.\nIt has no mean reversion, and like Vasicek it allows negative rates.",
+   "distractors": [
+    "$dr=\\theta\\,dt+\\sigma\\,dW$ with constant $\\theta$; $\\theta$ is the long-run mean rate",
+    "$dr=a(\\theta(t)-r)\\,dt+\\sigma\\,dW$; $\\theta(t)$ sets the speed of mean reversion",
+    "$dr=\\theta(t)\\,dt+\\sigma\\sqrt r\\,dW$; $\\theta(t)$ keeps rates positive"
+   ]
+  },
+  {
+   "id": "6-hull-white",
+   "section": "6.4",
+   "name": "Hull-White model",
+   "kind": "concept",
+   "page": 169,
+   "prompt": "Write the Hull-White short-rate model and explain how it differs from Vasicek.",
+   "answer": "$dR=a(b(t)-R)\\,dt+\\sigma\\,dW$: Vasicek with a time-dependent $b(t)$ fitted to today's curve",
+   "explanation": "Hull-White keeps Vasicek's mean reversion and Gaussian dynamics, but the reversion level varies over time so the model is arbitrage-free with respect to the current term structure.\nIt can be viewed as Ho-Lee with mean reversion added.",
+   "distractors": [
+    "$dR=a(b-R)\\,dt+\\sigma\\sqrt R\\,dW$: Vasicek with square-root volatility",
+    "$dR=\\theta(t)\\,dt+\\sigma\\,dW$: Vasicek without mean reversion",
+    "$dR=a(t)(b-R)\\,dt+\\sigma\\,dW$: Vasicek with a time-dependent speed fitted to volatility"
+   ]
+  }
+ ]
+}

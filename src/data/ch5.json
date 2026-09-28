@@ -1,0 +1,989 @@
+{
+ "chapter": 5,
+ "title": "Stochastic Process and Stochastic Calculus",
+ "sections": [
+  {
+   "id": "5.1",
+   "title": "Markov Chain"
+  },
+  {
+   "id": "5.2",
+   "title": "Martingale and Random Walk"
+  },
+  {
+   "id": "5.3",
+   "title": "Dynamic Programming"
+  },
+  {
+   "id": "5.4",
+   "title": "Brownian Motion and Stochastic Calculus"
+  }
+ ],
+ "cards": [
+  {
+   "id": "5-markov-property",
+   "section": "5.1",
+   "name": "Markov property",
+   "kind": "concept",
+   "page": 105,
+   "prompt": "What property defines a (discrete-time) Markov chain $X_0, X_1, X_2, \\dots$?",
+   "answer": "The next state depends only on the current state, not on how the chain got there",
+   "explanation": "A Markov chain is memoryless: $P(X_{n+1}=j\\mid X_n=i, X_{n-1}=i_{n-1},\\dots,X_0=i_0)=P(X_{n+1}=j\\mid X_n=i)=p_{ij}$.\n- In a **homogeneous** chain $p_{ij}$ does not depend on $n$.\n- A finite chain with $M$ states is fully described by an $M\\times M$ transition matrix $P=(p_{ij})$ plus the distribution of $X_0$.\nThe martingale property (expected next value equals current value) is a different condition; neither implies the other.",
+   "distractors": [
+    "The next state depends on the full history, weighted toward recent states",
+    "The increments $X_{n+1}-X_n$ are independent with mean zero",
+    "The expected next state equals the current one: $E[X_{n+1}\\mid X_n]=X_n$"
+   ],
+   "hint": "Think 'memoryless'."
+  },
+  {
+   "id": "5-transition-matrix",
+   "section": "5.1",
+   "name": "Transition matrix and path probability",
+   "kind": "concept",
+   "page": 105,
+   "prompt": "For a homogeneous Markov chain with transition matrix $P=(p_{ij})$, what is $P(X_1=i_1, X_2=i_2,\\dots,X_n=i_n\\mid X_0=i_0)$?",
+   "answer": "$p_{i_0i_1}\\,p_{i_1i_2}\\cdots p_{i_{n-1}i_n}$",
+   "explanation": "By the Markov property each step depends only on the state just before it, so the probability of one specific path is the product of its one-step transition probabilities.\n- Each row of $P$ sums to 1, since it is the distribution of the next state.\n- Summing this product over all possible intermediate states gives the $n$-step probability $(P^n)_{i_0i_n}$, which is not the probability of one particular path.",
+   "distractors": [
+    "$p_{i_0i_n}$",
+    "$p_{i_0i_1}+p_{i_1i_2}+\\cdots+p_{i_{n-1}i_n}$",
+    "$(P^n)_{i_0i_n}$"
+   ],
+   "hint": "Chain the one-step conditional probabilities."
+  },
+  {
+   "id": "5-accessible-communicate",
+   "section": "5.1",
+   "name": "Accessible and communicating states",
+   "kind": "concept",
+   "page": 106,
+   "prompt": "In a Markov chain, when is state $j$ accessible from state $i$, and when do $i$ and $j$ communicate?",
+   "answer": "$j$ is reachable from $i$ with positive probability; they communicate if reachable both ways",
+   "explanation": "State $j$ is accessible from $i$ if $P^{(n)}_{ij}>0$ for some $n$, i.e. there is a directed path $i\\to j$ in the transition graph. Equivalently the first hitting time satisfies $P(T_{ij}<\\infty)>0$.\n- $i$ and $j$ communicate when each is accessible from the other.\n- Example: if state 4 is absorbing and reachable from state 1, then 4 is accessible from 1, but they do not communicate because the chain can never leave 4.",
+   "distractors": [
+    "$p_{ij}>0$ in a single step; they communicate if $p_{ij}=p_{ji}$",
+    "$j$ is reachable from $i$; they communicate if both lead to the same absorbing state",
+    "$j$ is reached from $i$ with probability 1; they communicate if both are recurrent"
+   ]
+  },
+  {
+   "id": "5-recurrent-transient",
+   "section": "5.1",
+   "name": "Recurrent vs transient states",
+   "kind": "concept",
+   "page": 106,
+   "prompt": "When is a state $i$ of a finite Markov chain recurrent, and when is it transient?",
+   "answer": "Recurrent: every state reachable from $i$ can reach $i$ again. Otherwise transient",
+   "explanation": "For a finite chain, $i$ is recurrent if whatever you can reach from $i$ can lead you back to $i$. It is transient if some reachable state $j$ offers no way back, so there is a positive chance of leaving $i$ forever.\n- Every absorbing state is recurrent.\n- A state that can leak into an absorbing state (like the intermediate states in gambler's ruin) is transient: eventually the chain leaves it for good.",
+   "distractors": [
+    "Recurrent: $p_{ii}>0$ (it has a self-loop). Otherwise transient",
+    "Recurrent: $i$ can reach every other state. Otherwise transient",
+    "Recurrent: $i$ is not absorbing. Otherwise transient"
+   ]
+  },
+  {
+   "id": "5-absorbing-chain",
+   "section": "5.1",
+   "name": "Absorbing state and absorbing chain",
+   "kind": "concept",
+   "page": 106,
+   "prompt": "What makes a state absorbing, and when is a Markov chain called an absorbing chain?",
+   "answer": "$p_{ii}=1$ (never left); a chain is absorbing if it has one and every state can reach one",
+   "explanation": "A state $i$ is absorbing when $p_{ii}=1$ and $p_{ij}=0$ for every $j\\ne i$: once entered, the chain stays there forever. A chain is absorbing if (1) it has at least one absorbing state and (2) some absorbing state is reachable from every state. All other states are then transient, and the natural questions are which absorbing state is hit and how long it takes, both answered by first-step analysis.",
+   "distractors": [
+    "$p_{ii}>0$; the chain is absorbing if every state has a self-loop",
+    "$p_{ii}=1$; the chain is absorbing only if every state is absorbing",
+    "$p_{ii}=0$; the chain is absorbing if it always returns to its start"
+   ]
+  },
+  {
+   "id": "5-absorption-probability",
+   "section": "5.1",
+   "name": "Absorption probability equations",
+   "kind": "concept",
+   "page": 106,
+   "prompt": "In an absorbing Markov chain, let $a_i$ be the probability of eventually being absorbed in a particular absorbing state $s$, starting from state $i$. What equations determine the $a_i$?",
+   "answer": "$a_s=1$, $a_k=0$ at other absorbing states, and $a_i=\\sum_j p_{ij}a_j$ for transient $i$",
+   "explanation": "Condition on the first step (law of total probability): from transient state $i$ the chain moves to $j$ with probability $p_{ij}$, after which the absorption probability is $a_j$. So $a_i=\\sum_j p_{ij}a_j$.\nThe boundary values pin down the solution: $a_s=1$ and $a_k=0$ for every other absorbing state $k$. For an absorbing chain this linear system has a unique solution. This first-step analysis solves gambler's ruin, the dice question and the coin-triplet race.",
+   "distractors": [
+    "$a_s=1$, $a_k=0$ at other absorbing states, and $a_i=1+\\sum_j p_{ij}a_j$ for transient $i$",
+    "$a_s=0$, $a_k=1$ at other absorbing states, and $a_i=\\sum_j p_{ji}a_j$ for transient $i$",
+    "$a_i=p_{is}$ for every transient state $i$"
+   ],
+   "hint": "Condition on where the chain goes next."
+  },
+  {
+   "id": "5-absorption-time",
+   "section": "5.1",
+   "name": "Expected time to absorption",
+   "kind": "concept",
+   "page": 107,
+   "prompt": "In an absorbing Markov chain, let $\\mu_i$ be the expected number of steps until absorption starting from state $i$. What equations determine the $\\mu_i$?",
+   "answer": "$\\mu_i=0$ for absorbing $i$; $\\mu_i=1+\\sum_j p_{ij}\\mu_j$ for transient $i$",
+   "explanation": "Condition on the first step (law of total expectation). One step is always used, which is where the $+1$ comes from; after moving to $j$ (probability $p_{ij}$) the expected remaining time is $\\mu_j$. An absorbing state needs no further steps, so $\\mu_i=0$ there. Solving this system gives, for example, 14 expected tosses to see HHH and 8 to see THH.",
+   "distractors": [
+    "$\\mu_i=0$ for absorbing $i$; $\\mu_i=\\sum_j p_{ij}\\mu_j$ for transient $i$",
+    "$\\mu_i=1$ for absorbing $i$; $\\mu_i=1+\\sum_j p_{ij}\\mu_j$ for transient $i$",
+    "$\\mu_i=1/(1-p_{ii})$ for every transient state $i$"
+   ],
+   "hint": "Every step costs one unit of time."
+  },
+  {
+   "id": "5-gamblers-ruin",
+   "section": "5.1",
+   "name": "Gambler's ruin problem",
+   "kind": "problem",
+   "page": 107,
+   "prompt": "Player M starts with 1 dollar and player N with 2 dollars. In each game the winner takes 1 dollar from the loser, and M wins each game independently with probability $2/3$. They play until one of them is broke. What is the probability that M ends up with all the money?",
+   "answer": "$4/7$",
+   "explanation": "Track M's bankroll $m\\in\\{0,1,2,3\\}$; states 0 and 3 are absorbing. Let $a_m$ be the probability that M reaches 3 from $m$.\n- $a_0=0$, $a_3=1$\n- $a_1=\\tfrac13a_0+\\tfrac23a_2=\\tfrac23a_2$\n- $a_2=\\tfrac13a_1+\\tfrac23$\nSubstituting gives $a_1=\\tfrac29a_1+\\tfrac49$, so $a_1=4/7$ (and $a_2=6/7$). Check with the general ruin formula: with $r=q/p=1/2$, $a_1=(1-r)/(1-r^3)=(1/2)/(7/8)=4/7$.",
+   "distractors": [
+    "$2/3$",
+    "$4/9$",
+    "$1/3$"
+   ],
+   "hint": "Use M's bankroll (0 to 3) as the state and solve two linear equations."
+  },
+  {
+   "id": "5-dice-question",
+   "section": "5.1",
+   "name": "Dice question",
+   "kind": "problem",
+   "page": 108,
+   "prompt": "Two players repeatedly roll a pair of fair dice and record each sum. Player A wins if a sum of 12 appears before two consecutive rolls that both sum to 7; player B wins if two consecutive 7s come first. What is the probability that A wins?",
+   "answer": "$7/13$",
+   "explanation": "Use transient states S (fresh start, or the last roll was neither 7 nor 12) and '7' (the last roll was a 7), plus absorbing states '12' (A wins) and '7-7' (B wins). Each roll gives 12 with probability $1/36$, 7 with probability $6/36$, and something else with probability $29/36$.\n- $a_S=\\tfrac1{36}+\\tfrac6{36}a_7+\\tfrac{29}{36}a_S$\n- $a_7=\\tfrac1{36}+\\tfrac6{36}\\cdot0+\\tfrac{29}{36}a_S$\nSubstituting the second equation into the first gives $78a_S=42$, so $a_S=7/13$. A is favored: a single 12 and a pair of 7s each look like 1-in-36 events, but a lone 7 that is not followed by another 7 is wasted.",
+   "distractors": [
+    "$1/2$",
+    "$6/13$",
+    "$1/7$"
+   ],
+   "hint": "You only need two transient states: 'start' and 'just rolled a 7'."
+  },
+  {
+   "id": "5-coin-triplets-hhh",
+   "section": "5.1",
+   "name": "Coin triplets (A, HHH)",
+   "kind": "problem",
+   "page": 109,
+   "prompt": "You toss a fair coin repeatedly. What is the expected number of tosses until you first get three heads in a row (HHH)?",
+   "answer": "14",
+   "explanation": "States: S (no useful progress), H, HH, and absorbing HHH. A tail from any state sends you back to S.\n- $\\mu_S=1+\\tfrac12\\mu_S+\\tfrac12\\mu_H$\n- $\\mu_H=1+\\tfrac12\\mu_S+\\tfrac12\\mu_{HH}$\n- $\\mu_{HH}=1+\\tfrac12\\mu_S$\nSolving: $\\mu_{HH}=8$, $\\mu_H=12$, $\\mu_S=14$. Shortcut: $n$ heads in a row take $2^{n+1}-2$ tosses on average, which is 14 for $n=3$.",
+   "distractors": [
+    "8",
+    "12",
+    "6"
+   ],
+   "hint": "Every tail sends you all the way back to the start."
+  },
+  {
+   "id": "5-coin-triplets-thh",
+   "section": "5.1",
+   "name": "Coin triplets (A, THH)",
+   "kind": "problem",
+   "page": 110,
+   "prompt": "You toss a fair coin repeatedly. What is the expected number of tosses until the pattern THH (tail, head, head) first appears?",
+   "answer": "8",
+   "explanation": "States: S, T, TH, and absorbing THH. Unlike HHH, a failure never sends you back to the very start: an extra T keeps you in state T, and TH followed by T is again state T.\n- $\\mu_S=1+\\tfrac12\\mu_S+\\tfrac12\\mu_T$\n- $\\mu_T=1+\\tfrac12\\mu_T+\\tfrac12\\mu_{TH}$\n- $\\mu_{TH}=1+\\tfrac12\\mu_T$\nSolving: $\\mu_T=6$, $\\mu_{TH}=4$, $\\mu_S=8$. (The book lists the intermediate values as 4 and 2; they should be 6 and 4, but the final answer 8 is right.) THH does not overlap itself, so its waiting time is just $2^3=8$, while HHH's self-overlap pushes it up to 14.",
+   "distractors": [
+    "14",
+    "10",
+    "6"
+   ],
+   "hint": "Once you have a T, how far back can a bad toss send you?"
+  },
+  {
+   "id": "5-coin-triplets-race",
+   "section": "5.1",
+   "name": "Coin triplets (B)",
+   "kind": "problem",
+   "page": 110,
+   "prompt": "A fair coin is flipped until either HHH or THH appears as three consecutive flips. What is the probability that HHH appears first?",
+   "answer": "$1/8$",
+   "explanation": "HHH can only win if the first three flips are HHH, which has probability $1/8$. If a T appears anywhere before HHH is complete, then the first HH that follows it is immediately preceded by a T, so THH is completed first. The absorption equations agree: $a_T=a_{TH}=0$, $a_{HH}=1/2$, $a_H=1/4$, $a_S=1/8$.",
+   "distractors": [
+    "$1/2$",
+    "$7/8$",
+    "$1/4$"
+   ],
+   "hint": "What happens as soon as a single tail shows up?"
+  },
+  {
+   "id": "5-coin-triplets-game",
+   "section": "5.1",
+   "name": "Coin triplets (C)",
+   "kind": "problem",
+   "page": 111,
+   "prompt": "Two players race coin triplets. Player 1 picks a triplet (such as HTH) and announces it; then player 2 picks a different triplet. A fair coin is flipped until one of the two triplets appears, and its owner wins. If both play optimally, should you go first, and what is player 2's probability of winning?",
+   "answer": "Go second: player 2 can always win with probability at least $2/3$",
+   "explanation": "Which triplet comes first is not transitive (this is Penney's game): every triplet has a reply that beats it.\n- Reply rule: against $abc$, pick $\\bar b\\,a\\,b$ (the opposite of the middle coin, then player 1's first two coins).\n- Against HHH or TTT the reply wins with probability $7/8$; against HHT or TTH, $3/4$; against HTH, HTT, THH or THT, $2/3$.\nSo player 1's best choice (HTH, HTT, THH or THT) still leaves player 2 winning with probability $2/3$. Always choose to go second.",
+   "distractors": [
+    "Either order: all triplets are equally likely, so each player wins $1/2$",
+    "Go first: choosing THH guarantees player 1 at least $1/2$",
+    "Go second: player 2 always wins with probability $7/8$"
+   ],
+   "hint": "Is 'beats' a transitive relation for coin patterns?"
+  },
+  {
+   "id": "5-coin-triplets-reply",
+   "section": "5.1",
+   "name": "Coin triplets: best-reply rule",
+   "kind": "concept",
+   "page": 112,
+   "prompt": "In the two-player coin-triplet race, player 1 announces the triplet $abc$ (each letter H or T). Which triplet should player 2 choose?",
+   "answer": "$\\bar b\\,a\\,b$: the opposite of player 1's middle coin, then player 1's first two coins",
+   "explanation": "Player 2 wants a triplet that ends with player 1's first two coins, so that whenever player 1's pattern is about to start, player 2's pattern is often just finishing. Making the first coin the opposite of player 1's middle coin keeps player 1 from completing his own pattern through the overlap.\n- HHH → THH (wins $7/8$)\n- HTH → HHT (wins $2/3$)\n- THH → TTH (wins $2/3$)\n- TTH → HTT (wins $3/4$)\nSince every triplet has a better reply, there is no best triplet overall.",
+   "distractors": [
+    "$\\bar a\\,\\bar b\\,\\bar c$: the complement of player 1's triplet",
+    "$b\\,c\\,\\bar c$: player 1's last two coins, then the opposite of the last",
+    "$a\\,b\\,\\bar c$: player 1's first two coins, then the opposite of the last"
+   ]
+  },
+  {
+   "id": "5-color-balls",
+   "section": "5.1",
+   "name": "Color balls",
+   "kind": "problem",
+   "page": 113,
+   "prompt": "A box holds $n$ balls, each a different color. At each step you pick an ordered pair of distinct balls at random, repaint the first ball to match the second, and put both back. What is the expected number of steps until all balls are the same color?",
+   "answer": "$(n-1)^2$",
+   "explanation": "By symmetry each color is equally likely to be the final one, and the expected time is the same whichever color wins. So condition on color 1 winning and track $i$, the number of color-1 balls.\n- With $i$ balls of a color, that color wins with probability $i/n$.\n- Unconditionally, $i\\to i\\pm1$ each have probability $\\frac{i(n-i)}{n(n-1)}$. By Bayes, conditioning on color 1 winning changes these to $\\frac{(i-1)(n-i)}{n(n-1)}$ (down) and $\\frac{(i+1)(n-i)}{n(n-1)}$ (up).\n- First-step analysis with $Z_i=E[N\\mid i,\\text{color 1 wins}]$: $2i(n-i)Z_i=n(n-1)+(n-i)(i+1)Z_{i+1}+(n-i)(i-1)Z_{i-1}$, with $Z_n=0$.\nSolving gives $Z_1=(n-1)^2$, e.g. 1 step for $n=2$ and 4 for $n=3$.",
+   "distractors": [
+    "$n(n-1)$",
+    "$n^2-1$",
+    "$\\binom{n}{2}$"
+   ],
+   "hint": "Condition on which color wins; by symmetry you can assume color 1."
+  },
+  {
+   "id": "5-color-balls-win-chance",
+   "section": "5.1",
+   "name": "Color balls: chance a color wins",
+   "kind": "concept",
+   "page": 114,
+   "prompt": "In the repaint-a-random-pair process with $n$ balls, suppose exactly $i$ balls currently have color $c$. What is the probability that all balls eventually end up color $c$?",
+   "answer": "$i/n$",
+   "explanation": "Give the $i$ balls of color $c$ distinct labels $c_1,\\dots,c_i$; the repainting rule does not care about labels. If all $n$ labels are distinct, symmetry makes each one equally likely, $1/n$, to take over the box. Color $c$ wins exactly when one of $c_1,\\dots,c_i$ wins, so the probability is $i/n$. Another way to see it: up and down moves of the count are equally likely, so the count is a martingale ending at 0 or $n$.",
+   "distractors": [
+    "$1/n$",
+    "$i/(n-i)$",
+    "$(i/n)^2$"
+   ]
+  },
+  {
+   "id": "5-symmetric-random-walk",
+   "section": "5.2",
+   "name": "Symmetric random walk",
+   "kind": "concept",
+   "page": 115,
+   "prompt": "Let $S_n=X_1+\\cdots+X_n$ where the $X_i$ are IID and equal $+1$ or $-1$ with probability $1/2$ each. What are $E[S_n]$ and $\\operatorname{var}(S_n)$?",
+   "answer": "$E[S_n]=0$ and $\\operatorname{var}(S_n)=E[S_n^2]=n$",
+   "explanation": "Each step has mean 0 and variance $E[X_i^2]=1$. Means add, and because the steps are independent the variances add too, so $\\operatorname{var}(S_n)=n$. The typical distance from the origin after $n$ steps is therefore about $\\sqrt n$, not $n$. A simple random walk in general has $P(X_i=1)=p$; it is symmetric when $p=1/2$.",
+   "distractors": [
+    "$E[S_n]=0$ and $\\operatorname{var}(S_n)=\\sqrt n$",
+    "$E[S_n]=0$ and $\\operatorname{var}(S_n)=n^2$",
+    "$E[S_n]=n/2$ and $\\operatorname{var}(S_n)=n/4$"
+   ]
+  },
+  {
+   "id": "5-martingale-definition",
+   "section": "5.2",
+   "name": "Martingale definition",
+   "kind": "concept",
+   "page": 115,
+   "prompt": "What two conditions make a stochastic process $\\{Z_n\\}$ a martingale?",
+   "answer": "$E[|Z_n|]<\\infty$ for all $n$, and $E[Z_{n+1}\\mid Z_n,\\dots,Z_1]=Z_n$",
+   "explanation": "A martingale is a fair game: given everything observed so far, the expected next value is the current value. Iterating gives $E[Z_m\\mid Z_n,\\dots,Z_1]=Z_n$ for every $m>n$, so the unconditional mean never changes.\n- With $\\ge$ in place of $=$ you get a submartingale; with $\\le$, a supermartingale.\n- Martingale and Markov are different properties.\n- Example: the symmetric random walk $S_n$ is a martingale.",
+   "distractors": [
+    "$E[Z_n]=0$ for all $n$, and the increments are independent",
+    "$E[|Z_n|]<\\infty$ for all $n$, and $E[Z_{n+1}\\mid Z_n,\\dots,Z_1]\\ge Z_n$",
+    "$Z_{n+1}$ depends on the past only through $Z_n$"
+   ]
+  },
+  {
+   "id": "5-random-walk-quadratic-martingale",
+   "section": "5.2",
+   "name": "Quadratic martingale of a random walk",
+   "kind": "concept",
+   "page": 115,
+   "prompt": "For a symmetric $\\pm1$ random walk $S_n$, which quantity built from $S_n^2$ is a martingale?",
+   "answer": "$S_n^2-n$",
+   "explanation": "Given $S_n$, the next value is $S_n\\pm1$ with probability $1/2$ each, so $E[S_{n+1}^2\\mid S_n]=\\tfrac12[(S_n+1)^2+(S_n-1)^2]=S_n^2+1$. Subtracting this predictable growth of 1 per step gives $E[S_{n+1}^2-(n+1)\\mid S_n]=S_n^2-n$. $S_n^2$ by itself is a submartingale. Together with $S_n$, this martingale gives the expected exit time of a random walk.",
+   "distractors": [
+    "$S_n^2$",
+    "$S_n^2-n^2$",
+    "$S_n^2/n$"
+   ]
+  },
+  {
+   "id": "5-martingale-vs-markov",
+   "section": "5.2",
+   "name": "Martingale vs Markov",
+   "kind": "concept",
+   "page": 115,
+   "prompt": "True or false: every martingale is a Markov process, and every Markov process is a martingale.",
+   "answer": "False: neither property implies the other",
+   "explanation": "The Markov property says the whole conditional distribution of the future depends only on the present. The martingale property only says the conditional mean equals the present value.\n- Markov but not a martingale: a biased random walk ($p\\ne1/2$) has nonzero drift.\n- Martingale but not Markov: a fair bet whose stake depends on older values, e.g. $Z_{n+1}=Z_n+\\xi_{n+1}(1+|Z_{n-1}|)$ with fair $\\xi_{n+1}=\\pm1$. The mean of the next value is $Z_n$, but its spread depends on $Z_{n-1}$.",
+   "distractors": [
+    "True: the two definitions are equivalent",
+    "Every martingale is Markov, but not conversely",
+    "Every Markov process is a martingale, but not conversely"
+   ]
+  },
+  {
+   "id": "5-stopping-rule",
+   "section": "5.2",
+   "name": "Stopping rule (stopping time)",
+   "kind": "concept",
+   "page": 116,
+   "prompt": "For IID random variables $X_1,X_2,\\dots$, what must a positive integer random variable $N$ satisfy to be a stopping rule (stopping time)?",
+   "answer": "Whether $N\\le n$ is decided by $X_1,\\dots,X_n$ alone: no peeking at future values",
+   "explanation": "Formally, for each $n$ the event $\\{N\\le n\\}$ is independent of $X_{n+1},X_{n+2},\\dots$, so the decision to stop at time $n$ uses only what has been seen by then. 'Stop at the first roll showing 1, 2 or 3' is a stopping time; 'stop one roll before the first 6' is not, because it needs to see the future. $N$ can depend heavily on the $X_i$ it has already seen; it just cannot look ahead.",
+   "distractors": [
+    "$N$ must be independent of all the $X_i$",
+    "$N$ must be bounded by a fixed constant",
+    "$N$ must be the first time the running sum crosses zero"
+   ]
+  },
+  {
+   "id": "5-wald-equality",
+   "section": "5.2",
+   "name": "Wald's equality",
+   "kind": "concept",
+   "page": 116,
+   "prompt": "Let $X_1,X_2,\\dots$ be IID with finite mean, and let $N$ be a stopping time with $E[N]<\\infty$. What is $E[S_N]$, where $S_N=X_1+\\cdots+X_N$?",
+   "answer": "$E[S_N]=E[X]\\,E[N]$",
+   "explanation": "Write $S_N=\\sum_{n\\ge1}X_nI_n$ with $I_n=\\mathbf 1\\{N\\ge n\\}$. Whether $N\\ge n$ is decided by $X_1,\\dots,X_{n-1}$, so $I_n$ is independent of $X_n$ and $E[X_nI_n]=E[X]\\,P(N\\ge n)$. Summing over $n$ gives $E[S_N]=E[X]\\sum_nP(N\\ge n)=E[X]\\,E[N]$. Example: a die game where you keep rolling on 4 to 6 has $E[N]=2$ and $E[X]=3.5$, so the expected total is 7.",
+   "distractors": [
+    "$E[S_N]=0$ for any stopping time $N$",
+    "$E[S_N]=E[X]/E[N]$",
+    "$E[S_N]=E[X]\\,E[N]+\\operatorname{var}(X)\\,E[N]$"
+   ]
+  },
+  {
+   "id": "5-optional-stopping",
+   "section": "5.2",
+   "name": "Optional stopping",
+   "kind": "concept",
+   "page": 116,
+   "prompt": "What key fact about stopping a martingale lets you compute hitting probabilities and expected hitting times of random walks?",
+   "answer": "A martingale stopped at a stopping time is still a martingale, so $E[Z_N]=Z_0$",
+   "explanation": "If $N$ is a stopping time and the stopped process is well behaved (for example bounded, or $E[N]<\\infty$ with bounded increments), then $Z_{\\min(n,N)}$ is a martingale and $E[Z_N]=E[Z_0]$. Typical use: apply it to $S_n$ to get exit probabilities, then to $S_n^2-n$ to get $E[N]$. The conditions matter. A symmetric walk stopped at its first visit to $+1$ has $E[S_N]=1\\ne0$, because that $N$ has infinite mean and the walk is unbounded below.",
+   "distractors": [
+    "A martingale stopped at any random time has $E[Z_N]=0$",
+    "A stopped martingale becomes a Markov chain with absorbing states",
+    "A martingale stopped at a stopping time has $E[Z_N]=E[N]$"
+   ]
+  },
+  {
+   "id": "5-drunk-man-probability",
+   "section": "5.2",
+   "name": "Drunk man (probability)",
+   "kind": "problem",
+   "page": 116,
+   "prompt": "A drunk man stands at the 17-meter mark of a 100-meter bridge. Each step he moves 1 meter forward or backward with probability $1/2$ each. What is the probability that he reaches the far end (the 100-meter mark) before the near end (the 0 mark)?",
+   "answer": "$0.17$",
+   "explanation": "Shift coordinates so he starts at 0; the walk stops at $+83$ or $-17$. $S_n$ is a martingale, so by optional stopping $E[S_N]=0$: $83p-17(1-p)=0$, which gives $p=17/100$. In general a symmetric walk hits $\\alpha$ before $-\\beta$ with probability $\\beta/(\\alpha+\\beta)$: here that is his distance from the near end divided by the bridge length.",
+   "distractors": [
+    "$0.83$",
+    "$0.50$",
+    "$0.34$"
+   ],
+   "hint": "Position is a martingale; its expected value at the stopping time is still 17."
+  },
+  {
+   "id": "5-drunk-man-steps",
+   "section": "5.2",
+   "name": "Drunk man (expected steps)",
+   "kind": "problem",
+   "page": 117,
+   "prompt": "The drunk man starts at the 17-meter mark of a 100-meter bridge and steps $\\pm1$ meter with equal probability. What is the expected number of steps until he reaches either end?",
+   "answer": "1411",
+   "explanation": "$S_n^2-n$ is a martingale, so $E[S_N^2]=E[N]$. He exits at $+83$ with probability $0.17$ and at $-17$ with probability $0.83$, so $E[N]=0.17\\cdot83^2+0.83\\cdot17^2=1171.13+239.87=1411$. This matches the general rule $E[N]=\\alpha\\beta=83\\times17$. (The book prints 1441, an arithmetic slip; $83\\times17=1411$.)",
+   "distractors": [
+    "1441",
+    "2500",
+    "289"
+   ],
+   "hint": "Use the martingale $S_n^2-n$."
+  },
+  {
+   "id": "5-random-walk-exit",
+   "section": "5.2",
+   "name": "Symmetric random walk exit results",
+   "kind": "concept",
+   "page": 117,
+   "prompt": "A symmetric $\\pm1$ random walk starts at 0 and stops the first time it hits $\\alpha>0$ or $-\\beta<0$. What is the probability that it stops at $\\alpha$, and what is the expected number of steps?",
+   "answer": "$P(\\text{hit }\\alpha)=\\beta/(\\alpha+\\beta)$ and $E[N]=\\alpha\\beta$",
+   "explanation": "Let $p=P(\\text{hit }\\alpha)$.\n- $S_n$ is a martingale: $E[S_N]=p\\alpha-(1-p)\\beta=0$, so $p=\\beta/(\\alpha+\\beta)$. The nearer barrier is the more likely one.\n- $S_n^2-n$ is a martingale: $E[N]=E[S_N^2]=p\\alpha^2+(1-p)\\beta^2=\\alpha\\beta$.\nThe same formulas hold for a standard Brownian motion leaving the interval $(-\\beta,\\alpha)$.",
+   "distractors": [
+    "$P(\\text{hit }\\alpha)=\\alpha/(\\alpha+\\beta)$ and $E[N]=\\alpha\\beta$",
+    "$P(\\text{hit }\\alpha)=\\beta/(\\alpha+\\beta)$ and $E[N]=(\\alpha+\\beta)^2$",
+    "$P(\\text{hit }\\alpha)=1/2$ and $E[N]=\\alpha+\\beta$"
+   ]
+  },
+  {
+   "id": "5-asymmetric-random-walk",
+   "section": "5.2",
+   "name": "Asymmetric random walk exit",
+   "kind": "concept",
+   "page": 117,
+   "prompt": "A simple random walk steps $+1$ with probability $p$ and $-1$ with probability $q=1-p$, where $p\\ne1/2$. Starting from 0, what is the probability that it hits $+\\alpha$ before $-\\beta$?",
+   "answer": "$\\dfrac{1-(q/p)^{\\beta}}{1-(q/p)^{\\alpha+\\beta}}$",
+   "explanation": "$(q/p)^{S_n}$ is a martingale: $E[(q/p)^{S_{n+1}}\\mid S_n]=(q/p)^{S_n}\\big[p\\cdot\\tfrac qp+q\\cdot\\tfrac pq\\big]=(q/p)^{S_n}$. Optional stopping with $P=P(\\text{hit }\\alpha)$ gives $P(q/p)^{\\alpha}+(1-P)(q/p)^{-\\beta}=1$, and solving gives the formula. It is gambler's ruin with starting wealth $\\beta$ and target $\\alpha+\\beta$. Check: $p=2/3$, $\\alpha=2$, $\\beta=1$ gives $(1-\\tfrac12)/(1-\\tfrac18)=4/7$, matching the gambler's ruin problem. The continuous version uses the martingale $e^{-2mX}$ for Brownian motion with drift $m$.",
+   "distractors": [
+    "$\\dfrac{1-(p/q)^{\\beta}}{1-(p/q)^{\\alpha+\\beta}}$",
+    "$\\dfrac{\\beta}{\\alpha+\\beta}$",
+    "$\\dfrac{(q/p)^{\\beta}}{(q/p)^{\\alpha}+(q/p)^{\\beta}}$"
+   ],
+   "hint": "Find a function of $S_n$ that is a martingale even with drift."
+  },
+  {
+   "id": "5-dice-game-martingale",
+   "section": "5.2",
+   "name": "Dice game (martingale)",
+   "kind": "problem",
+   "page": 117,
+   "prompt": "You roll a fair die and are paid its face value in dollars. If the roll is 4, 5 or 6 you roll again and are paid again; the first time you roll 1, 2 or 3 you are paid and the game ends. What is the expected total payoff?",
+   "answer": "7 dollars",
+   "explanation": "The number of rolls $N$ is a stopping time, since you stop based only on rolls already seen. Each roll ends the game with probability $1/2$, so $N$ is geometric with $E[N]=2$. By Wald's equality, $E[\\text{total}]=E[X]\\,E[N]=3.5\\times2=7$. Check by conditioning on the first roll: $E=\\tfrac12\\cdot2+\\tfrac12(5+E)$, which gives $E=7$.",
+   "distractors": [
+    "3.5 dollars",
+    "10.5 dollars",
+    "9 dollars"
+   ],
+   "hint": "Wald's equality: expected rolls times expected value per roll."
+  },
+  {
+   "id": "5-ticket-line",
+   "section": "5.2",
+   "name": "Ticket line",
+   "kind": "problem",
+   "page": 117,
+   "prompt": "$2n$ people queue in random order for 5-dollar tickets: $n$ of them have only a 5-dollar bill and $n$ have only a 10-dollar bill. The seller starts with no change. What is the probability that everyone can buy a ticket without anyone changing places?",
+   "answer": "$\\dfrac{1}{n+1}$",
+   "explanation": "Score a 5-dollar customer as $+1$ and a 10-dollar customer as $-1$; the running sum is the number of 5-dollar bills in the till. Everyone is served if and only if the path from $(0,0)$ to $(2n,0)$ never drops to $-1$.\n- Total paths: $\\binom{2n}{n}$.\n- Bad paths touch $-1$. Reflecting the part after the first touch across $y=-1$ matches them one-to-one with paths ending at $-2$, and there are $\\binom{2n}{n-1}$ of those.\n- Good paths: $\\binom{2n}{n}-\\binom{2n}{n-1}=\\frac1{n+1}\\binom{2n}{n}$ (a Catalan number).\nSo the probability is $1/(n+1)$.",
+   "distractors": [
+    "$\\dfrac{1}{2}$",
+    "$\\dfrac{1}{2n}$",
+    "$\\dfrac{n}{n+1}$"
+   ],
+   "hint": "Count lattice paths that never go below zero using a reflection."
+  },
+  {
+   "id": "5-reflection-principle-walk",
+   "section": "5.2",
+   "name": "Reflection principle (random walk)",
+   "kind": "concept",
+   "page": 118,
+   "prompt": "For a simple random walk and heights $a,b>0$, the reflection principle counts the $n$-step paths from height $a$ to height $b$ that touch 0 at some point. What are they in one-to-one correspondence with?",
+   "answer": "All $n$-step paths from $-a$ to $b$",
+   "explanation": "Take a path from $(0,a)$ to $(n,b)$ that touches 0 and reflect the part before its first visit to 0 across the axis. The result is a path from $(0,-a)$ to $(n,b)$. The map is a bijection because every path from $-a$ to $b>0$ has to cross 0. So the number of paths from $a$ to $b$ that touch 0 equals the total number of paths from $-a$ to $b$. The same trick (reflecting after the first hit of a level) gives the ticket-line (Catalan) count and the first-passage law of Brownian motion.",
+   "distractors": [
+    "All $n$-step paths from $a$ to $b$ that stay strictly positive",
+    "Half of all $n$-step paths from $a$ to $b$",
+    "All $n$-step paths from $0$ to $b-a$"
+   ]
+  },
+  {
+   "id": "5-coin-sequence-heads",
+   "section": "5.2",
+   "name": "Coin sequence (n heads)",
+   "kind": "problem",
+   "page": 119,
+   "prompt": "With a fair coin, what is the expected number of tosses needed to get $n$ heads in a row?",
+   "answer": "$2^{n+1}-2$",
+   "explanation": "Let $e_n$ be the expected number of tosses to get $n$ heads in a row. To get $n+1$ heads you first need $n$ heads ($e_n$ tosses) and then one more toss: heads (probability $1/2$) finishes, tails (probability $1/2$) sends you back to the start. So $e_{n+1}=e_n+1+\\tfrac12e_{n+1}$, i.e. $e_{n+1}=2e_n+2$. With $e_1=2$ this gives $e_2=6$, $e_3=14$, and in general $e_n=2^{n+1}-2$. The fair-gambler martingale argument gives the same answer: $2+4+\\cdots+2^n$.",
+   "distractors": [
+    "$2^n$",
+    "$2^{n+1}-1$",
+    "$n\\,2^n$"
+   ],
+   "hint": "Relate $e_{n+1}$ to $e_n$: after $n$ heads, one more toss either finishes or restarts."
+  },
+  {
+   "id": "5-coin-sequence-hhtthh",
+   "section": "5.2",
+   "name": "Coin sequence (HHTTHH)",
+   "kind": "problem",
+   "page": 120,
+   "prompt": "With a fair coin, what is the expected number of tosses until the pattern HHTTHH first appears?",
+   "answer": "70",
+   "explanation": "Use the fair-gambler martingale. Before each toss a new gambler arrives with 1 dollar and bets it all, at fair odds, that the coming tosses spell HHTTHH, letting winnings ride until he loses or completes the pattern. The game is fair, so total wealth minus total amount staked is a martingale; stop when the pattern first appears. At that moment the gamblers still alive are those whose partial run matches the end of the sequence: the winner holds $2^6$, the one who arrived for the final HH holds $2^2$, and the newest one (final H) holds $2^1$. Optional stopping gives $E[\\text{tosses}]=64+4+2=70$.",
+   "distractors": [
+    "64",
+    "68",
+    "126"
+   ],
+   "hint": "Which beginnings of the pattern also appear at its end?"
+  },
+  {
+   "id": "5-pattern-waiting-time",
+   "section": "5.2",
+   "name": "Waiting time for a coin pattern",
+   "kind": "concept",
+   "page": 120,
+   "prompt": "Using the fair-gambler martingale argument, what is the expected number of fair-coin tosses until a given pattern $A$ of length $n$ first appears?",
+   "answer": "Sum of $2^k$ over all $k\\le n$ where $A$'s first $k$ letters equal its last $k$ letters",
+   "explanation": "Each arriving gambler stakes 1 dollar on the pattern at fair odds, so total wealth minus the number of tosses is a martingale. When the pattern first completes, the surviving gamblers are exactly those whose partial run is both a prefix and a suffix of $A$; one who has matched $k$ letters holds $2^k$. Optional stopping gives $E[T]=\\sum 2^k$ over those overlaps, including $k=n$.\n- HHH: $8+4+2=14$\n- THH: $8$\n- HHTTHH: $64+4+2=70$\nFor a die or any other alphabet, replace 2 by the number of equally likely symbols.",
+   "distractors": [
+    "Always $2^n$, since each window of length $n$ matches with probability $2^{-n}$",
+    "Sum of $2^k$ over all $k\\le n$ where the $k$-th letter of $A$ is H",
+    "$2^{n+1}-2$ for every pattern of length $n$"
+   ]
+  },
+  {
+   "id": "5-dp-model",
+   "section": "5.3",
+   "name": "Dynamic programming model",
+   "kind": "concept",
+   "page": 121,
+   "prompt": "What are the two basic components of a discrete-time dynamic programming model?",
+   "answer": "A dynamic system $x_{k+1}=f(x_k,u_k,w_k)$ and a cost (or profit) that adds up over stages",
+   "explanation": "- Dynamics: the next state depends on the current state $x_k$, the decision $u_k$ and a random disturbance $w_k$: $x_{k+1}=f(x_k,u_k,w_k)$.\n- Additive cost: the total is $g_N(x_N)+\\sum_{k=0}^{N-1}g_k(x_k,u_k,w_k)$, where the terminal cost depends only on $x_N$.\nThe goal is a policy $\\pi=\\{u_0,\\dots,u_{N-1}\\}$ (decisions as functions of the state) that minimizes expected total cost or maximizes expected profit.",
+   "distractors": [
+    "A transition matrix and a set of absorbing states",
+    "A martingale and a stopping time with finite mean",
+    "A dynamic system $x_{k+1}=f(x_k)$ and a cost paid only at the final stage"
+   ]
+  },
+  {
+   "id": "5-principle-of-optimality",
+   "section": "5.3",
+   "name": "Principle of optimality",
+   "kind": "concept",
+   "page": 122,
+   "prompt": "State Bellman's principle of optimality for a multi-stage decision problem.",
+   "answer": "The tail of an optimal policy is optimal for the subproblem that starts at that stage",
+   "explanation": "If $\\pi^*=\\{u_0^*,\\dots,u_{N-1}^*\\}$ is optimal and the process is in some state at stage $i$, then following $\\{u_i^*,\\dots,u_{N-1}^*\\}$ from there must be optimal for the remaining expected cost $E\\{g_N(x_N)+\\sum_{k=i}^{N-1}g_k\\}$. Otherwise swapping in a better tail would beat $\\pi^*$. This is why such problems can be solved backward, one stage at a time. It is not a greedy rule: each decision accounts for the optimal value of everything that follows.",
+   "distractors": [
+    "Choosing the best immediate reward at every stage is optimal overall",
+    "The first half of an optimal policy is optimal for the first-half subproblem",
+    "Each stage's decision should be made without regard to the current state"
+   ]
+  },
+  {
+   "id": "5-dp-algorithm",
+   "section": "5.3",
+   "name": "DP algorithm (backward induction)",
+   "kind": "concept",
+   "page": 122,
+   "prompt": "How does the dynamic programming algorithm compute the optimal expected cost $J_0(x_0)$?",
+   "answer": "Set $J_N=g_N$, then go backward: $J_k(x)=\\min_u E[g_k(x,u,w)+J_{k+1}(f(x,u,w))]$",
+   "explanation": "Start at the last stage, where there is the most information and no decisions are left: $J_N(x_N)=g_N(x_N)$. For $k=N-1,\\dots,0$, compute the cost-to-go $J_k(x_k)$ by choosing, in each state, the decision that minimizes the expected stage cost plus the optimal cost-to-go of the resulting state. The minimizing $u_k$ in each state form the optimal policy, and $J_0(x_0)$ is the optimal expected cost. Pricing an American option on a binomial tree uses exactly this recursion.",
+   "distractors": [
+    "Set $J_0=g_0$, then go forward: $J_{k+1}(x)=\\min_u E[g_k(x,u,w)+J_k(x)]$",
+    "Set $J_N=g_N$, then go backward: $J_k(x)=E[\\min_u g_k(x,u,w)]+J_{k+1}(x)$",
+    "Enumerate all policies and keep the one with the smallest realized cost"
+   ]
+  },
+  {
+   "id": "5-dice-game-dp",
+   "section": "5.3",
+   "name": "Dice game (DP)",
+   "kind": "problem",
+   "page": 123,
+   "prompt": "You may roll a fair die up to 3 times. After roll 1 or roll 2 shows $x$, you can either take $x$ dollars and stop, or give it up and roll again; if you reach roll 3 you must take its value. With optimal play, what is the game worth?",
+   "answer": "$14/3\\approx4.67$ dollars",
+   "explanation": "Work backward.\n- Roll 3: worth $3.5$.\n- After roll 2: keep $x$ if $x>3.5$ (4, 5 or 6), otherwise reroll. Value before roll 2: $\\tfrac16(4+5+6)+\\tfrac36(3.5)=4.25$.\n- After roll 1: keep $x$ if $x>4.25$ (5 or 6), otherwise reroll. Value before roll 1: $\\tfrac16(5+6)+\\tfrac46(4.25)=14/3$.\nSo the game is worth $14/3\\approx4.67$ dollars.",
+   "distractors": [
+    "$3.5$ dollars",
+    "$4.25$ dollars",
+    "$5.25$ dollars"
+   ],
+   "hint": "Start from the last roll and work backward."
+  },
+  {
+   "id": "5-dice-game-dp-strategy",
+   "section": "5.3",
+   "name": "Dice game (DP, strategy)",
+   "kind": "problem",
+   "page": 123,
+   "prompt": "In the up-to-3-rolls die game (take the current face value in dollars or roll again; the third roll is final), what is the optimal stopping strategy?",
+   "answer": "Stop after roll 1 on 5 or 6; stop after roll 2 on 4, 5 or 6; otherwise roll again",
+   "explanation": "Compare what you hold with the value of continuing. With one roll left, continuing is worth 3.5, so after roll 2 you keep 4 or more. With two rolls left, continuing is worth 4.25, so after roll 1 you keep only 5 or 6. The bar is higher early because you still have more chances to improve.",
+   "distractors": [
+    "Stop after roll 1 on 4, 5 or 6; stop after roll 2 on 4, 5 or 6",
+    "Stop after roll 1 only on 6; stop after roll 2 on 5 or 6",
+    "Stop after roll 1 on 5 or 6; stop after roll 2 on 5 or 6"
+   ],
+   "hint": "Compare each roll with the value of continuing."
+  },
+  {
+   "id": "5-world-series",
+   "section": "5.3",
+   "name": "World series",
+   "kind": "problem",
+   "page": 123,
+   "prompt": "The Red Sox and the Rockies play a best-of-7 series (first to 4 wins). You want a double-or-nothing outcome on the Red Sox: net +100 dollars if they win the series and −100 dollars if they lose. You may only bet, at even odds, on individual games. How much should you bet on the Red Sox in game 1?",
+   "answer": "31.25 dollars",
+   "explanation": "Let $f(i,j)$ be your net winnings when the Red Sox have $i$ wins and the Rockies $j$, with $f(4,j)=100$ and $f(i,4)=-100$. Betting $y$ at $(i,j)$ requires $f(i+1,j)=f(i,j)+y$ and $f(i,j+1)=f(i,j)-y$, so\n- $f(i,j)=\\tfrac12[f(i+1,j)+f(i,j+1)]$\n- $y=\\tfrac12[f(i+1,j)-f(i,j+1)]$\nFilling the grid backward gives $f(1,0)=31.25$ and $f(0,1)=-31.25$, so the first bet is $31.25$. Shortcut: the bet is 100 times the chance (at 50/50 odds) that the current game is decisive, which at the start is $100\\binom63/2^6=31.25$.",
+   "distractors": [
+    "50 dollars",
+    "25 dollars",
+    "12.5 dollars"
+   ],
+   "hint": "Work backward from the end states, where your position must be exactly +100 or −100."
+  },
+  {
+   "id": "5-world-series-hedge",
+   "section": "5.3",
+   "name": "World series: bets as delta hedges",
+   "kind": "concept",
+   "page": 124,
+   "prompt": "In the best-of-7 betting problem, let $f(i,j)$ be your required net position at state $(i,j)$. What bet $y$ on the next game achieves the target, and what is it analogous to?",
+   "answer": "$y=\\tfrac12[f(i+1,j)-f(i,j+1)]$, the delta of a binomial-tree hedge",
+   "explanation": "Your position must move to $f(i+1,j)$ after a win and to $f(i,j+1)$ after a loss. Solving $f+y=f(i+1,j)$ and $f-y=f(i,j+1)$ makes $f(i,j)$ the average of the two next values (a 50/50, zero-interest price) and $y$ half their difference. This is exactly delta hedging on a binomial tree whose underlying moves up or down by 1: the series payoff is a digital option you replicate by trading game by game. Sample bets: 31.25 at 0–0, 12.5 at 3–0, 100 at 3–3.",
+   "distractors": [
+    "$y=\\tfrac12[f(i+1,j)+f(i,j+1)]$, the price of a binomial-tree option",
+    "$y=f(i+1,j)-f(i,j+1)$, the gamma of a binomial-tree hedge",
+    "$y=100/(7-i-j)$, an equal split over the games that remain"
+   ]
+  },
+  {
+   "id": "5-dynamic-dice-game",
+   "section": "5.3",
+   "name": "Dynamic dice game",
+   "kind": "problem",
+   "page": 126,
+   "prompt": "A casino lets you roll a fair die as many times as you like. A roll of 1 to 5 adds that many dollars to your winnings, and you may then stop and keep them; a roll of 6 wipes out all your winnings and ends the game. If you are risk neutral, what is the most you should pay to play?",
+   "answer": "About 6.15 dollars",
+   "explanation": "With $n$ dollars in hand, one more roll is worth $\\tfrac16\\sum_{i=1}^5(n+i)=\\tfrac56n+2.5$ on average. That beats stopping exactly when $n<15$. Once you reach 15 you either stay at 15 or more or lose everything, so this one-step rule is optimal: keep rolling while you hold 14 or less. Then $V(n)=n$ for $15\\le n\\le19$ and $V(n)=\\tfrac16\\sum_{i=1}^5V(n+i)$ for $n\\le14$. Working down from $V(14)\\approx14.17$ gives $V(0)\\approx6.15$.",
+   "distractors": [
+    "About 2.50 dollars",
+    "About 7.50 dollars",
+    "About 15 dollars"
+   ],
+   "hint": "First find the winnings level at which you should stop."
+  },
+  {
+   "id": "5-dynamic-dice-game-rule",
+   "section": "5.3",
+   "name": "Dynamic dice game (stopping rule)",
+   "kind": "problem",
+   "page": 126,
+   "prompt": "In the casino die game (a roll of 1 to 5 adds that many dollars and you may stop; a 6 wipes out everything and ends the game), at what level of accumulated winnings should you stop rolling?",
+   "answer": "Stop once winnings reach 15 dollars or more; keep rolling at 14 or less",
+   "explanation": "A roll from $n$ gains $\\tfrac16(1+2+3+4+5)=2.5$ on average but loses $n$ with probability $1/6$. The net expected change is $2.5-n/6$, positive exactly when $n<15$ (zero at 15, so stopping there costs nothing). Your winnings only grow while you play, so once $n\\ge15$ you never want to continue, and this myopic rule is optimal. The largest possible final amount is 19 (reach 14, then roll a 5).",
+   "distractors": [
+    "Stop once winnings reach 10 dollars or more; keep rolling below 10",
+    "Stop once winnings reach 20 dollars or more; keep rolling below 20",
+    "Never stop voluntarily: every roll has a positive expected gain"
+   ],
+   "hint": "Compare the expected gain of one roll with the expected loss from a 6."
+  },
+  {
+   "id": "5-dynamic-card-game",
+   "section": "5.3",
+   "name": "Dynamic card game",
+   "kind": "problem",
+   "page": 127,
+   "prompt": "A shuffled 52-card deck (26 red, 26 black) is dealt one card at a time without replacement. Each red card pays you 1 dollar and each black card costs you 1 dollar, and you may tell the dealer to stop at any time. With optimal stopping, how much is the game worth?",
+   "answer": "About 2.62 dollars",
+   "explanation": "Let $(b,r)$ be the numbers of black and red cards left; your running profit is $b-r$. The value satisfies\n$$f(b,r)=\\max\\Big(b-r,\\ \\tfrac{b}{b+r}f(b-1,r)+\\tfrac{r}{b+r}f(b,r-1)\\Big)$$\nwith $f(0,r)=0$ (only reds left: draw them all) and $f(b,0)=b$ (only blacks left: stop now). Computing backward to $f(26,26)$ gives about $2.62$. The value is positive even though the deck is balanced, because you can stop when ahead while drawing to the end always gets you back to 0. It works like an American option on the running count.",
+   "distractors": [
+    "0 dollars, since the deck is balanced",
+    "About 1.00 dollar",
+    "About 3.50 dollars"
+   ],
+   "hint": "Use (black left, red left) as the state and compare stopping with continuing."
+  },
+  {
+   "id": "5-dynamic-card-game-rule",
+   "section": "5.3",
+   "name": "Dynamic card game (stopping rule)",
+   "kind": "problem",
+   "page": 127,
+   "prompt": "In the red/black card game (red pays 1 dollar, black costs 1 dollar, stop whenever you like), with $b$ black and $r$ red cards left, what is the optimal stopping rule? In particular, should you ever stop while behind or even?",
+   "answer": "Stop only when the lead $b-r$ is at least the value of continuing; never when behind or even",
+   "explanation": "Drawing all 52 cards always ends at exactly 0, so continuing is never worth less than 0: when you are behind or even, keep drawing. When ahead, compare the lead $b-r$ with $\\frac{b}{b+r}f(b-1,r)+\\frac{r}{b+r}f(b,r-1)$ and stop when the lead is at least as large. Stopping the first time you are ahead is usually too early. After one red card you are up 1 dollar, but continuing from $(26,25)$ is worth about $2.93$.",
+   "distractors": [
+    "Stop the first time you are ahead by at least 1 dollar",
+    "Never stop early: drawing the whole balanced deck is optimal",
+    "Stop when you are behind by 3 or more dollars, to cut losses"
+   ]
+  },
+  {
+   "id": "5-brownian-motion-definition",
+   "section": "5.4",
+   "name": "Brownian motion (A)",
+   "kind": "problem",
+   "page": 129,
+   "prompt": "Define a standard Brownian motion $W(t)$, $t\\ge0$.",
+   "answer": "$W(0)=0$, continuous paths, independent increments, $W(t)-W(s)\\sim N(0,t-s)$",
+   "explanation": "A continuous-time process $W$ is a standard Brownian motion (Wiener process) if\n- $W(0)=0$ and its paths are continuous;\n- increments over non-overlapping intervals are independent;\n- $W(t)-W(s)\\sim N(0,\\,t-s)$ for $s<t$.\nConsequences: $W(t)\\sim N(0,t)$, $E[W(t)]=0$, $E[W(t)^2]=t$, $\\operatorname{cov}(W(s),W(t))=\\min(s,t)$, and $W$ is both a martingale and a Markov process.",
+   "distractors": [
+    "$W(0)=0$, continuous paths, independent increments, $W(t)-W(s)\\sim N(0,(t-s)^2)$",
+    "$W(0)=0$, independent increments, $W(t)-W(s)\\sim\\text{Poisson}(t-s)$",
+    "$W(0)=0$, continuous paths, $W(t)\\sim N(0,t)$, perfectly correlated increments"
+   ]
+  },
+  {
+   "id": "5-brownian-covariance",
+   "section": "5.4",
+   "name": "Brownian motion covariance",
+   "kind": "concept",
+   "page": 129,
+   "prompt": "For a standard Brownian motion and $0<s<t$, what is $\\operatorname{cov}(W(s),W(t))$?",
+   "answer": "$s$, i.e. $\\min(s,t)$",
+   "explanation": "Write $W(t)=W(s)+[W(t)-W(s)]$. The increment is independent of $W(s)$ and has mean 0, so $\\operatorname{cov}(W(s),W(t))=\\operatorname{var}(W(s))=s$. The correlation is therefore $\\sqrt{s/t}$; for example $\\operatorname{corr}(W(1),W(2))=1/\\sqrt2$.",
+   "distractors": [
+    "$t$, i.e. $\\max(s,t)$",
+    "$\\sqrt{st}$",
+    "$t-s$"
+   ]
+  },
+  {
+   "id": "5-brownian-quadratic-martingale",
+   "section": "5.4",
+   "name": "Brownian quadratic martingale",
+   "kind": "concept",
+   "page": 129,
+   "prompt": "Which process built from $W(t)^2$ is a martingale, and how does Ito's lemma show it?",
+   "answer": "$W(t)^2-t$, since $d(W^2-t)=2W\\,dW$ has no $dt$ term",
+   "explanation": "Ito's lemma gives $d(W^2)=2W\\,dW+\\tfrac12\\cdot2\\,dt=2W\\,dW+dt$. The extra $dt$, which comes from $(dW)^2=dt$, is a drift, so $W^2$ alone is a submartingale. Subtracting $t$ removes it: $d(W^2-t)=2W\\,dW$ is a pure martingale increment. This is the continuous version of $S_n^2-n$ and gives expected exit times through optional stopping.",
+   "distractors": [
+    "$W(t)^2$, since $d(W^2)=2W\\,dW$ has no $dt$ term",
+    "$W(t)^2-t^2$, since $d(W^2-t^2)=2W\\,dW$",
+    "$W(t)^2/t$, since its mean stays constant at 1"
+   ]
+  },
+  {
+   "id": "5-exponential-martingale",
+   "section": "5.4",
+   "name": "Exponential martingale",
+   "kind": "concept",
+   "page": 129,
+   "prompt": "For a standard Brownian motion $W(t)$ and any constant $\\lambda$, which exponential process is a martingale?",
+   "answer": "$Z(t)=\\exp\\{\\lambda W(t)-\\tfrac12\\lambda^2t\\}$",
+   "explanation": "Use independent increments and the normal moment generating function $E[e^{\\lambda N(0,s)}]=e^{\\lambda^2s/2}$:\n$E[Z(t+s)\\mid\\mathcal F_t]=e^{\\lambda W(t)-\\frac12\\lambda^2(t+s)}\\,E[e^{\\lambda(W(t+s)-W(t))}]=Z(t)$.\nThe $-\\tfrac12\\lambda^2t$ term exactly cancels the growth of $E[e^{\\lambda W(t)}]$. Choosing $\\lambda$ well (e.g. $\\lambda=-2m$ for drift $m$) turns hitting problems with drift into simple optional-stopping equations.",
+   "distractors": [
+    "$Z(t)=\\exp\\{\\lambda W(t)\\}$",
+    "$Z(t)=\\exp\\{\\lambda W(t)+\\tfrac12\\lambda^2t\\}$",
+    "$Z(t)=\\exp\\{\\lambda W(t)-\\lambda^2t\\}$"
+   ]
+  },
+  {
+   "id": "5-brownian-square-correlation",
+   "section": "5.4",
+   "name": "Brownian motion (B)",
+   "kind": "problem",
+   "page": 130,
+   "prompt": "What is the correlation between a Brownian motion $B_t$ and its square $B_t^2$, at the same time $t>0$?",
+   "answer": "0",
+   "explanation": "$B_t\\sim N(0,t)$ is symmetric about 0, so $E[B_t]=0$ and $E[B_t^3]=0$. Then $\\operatorname{cov}(B_t,B_t^2)=E[B_t^3]-E[B_t]\\,E[B_t^2]=0$, so the correlation is 0. They are uncorrelated yet clearly dependent ($B_t^2$ is a function of $B_t$): zero correlation only rules out a linear relationship.",
+   "distractors": [
+    "1",
+    "$1/\\sqrt2$",
+    "$\\sqrt{2/\\pi}$"
+   ],
+   "hint": "Odd moments of a centered normal vanish."
+  },
+  {
+   "id": "5-brownian-sign-change",
+   "section": "5.4",
+   "name": "Brownian motion (C)",
+   "kind": "problem",
+   "page": 130,
+   "prompt": "Let $B_t$ be a standard Brownian motion. What is $P(B_1>0\\text{ and }B_2<0)$?",
+   "answer": "$1/8$",
+   "explanation": "Let $X=B_1$ and $Y=B_2-B_1$, which are independent $N(0,1)$. We need $X>0$ and $Y<-X$. The pair $(X,Y)$ is rotationally symmetric, and the lines $x=0$, $y=0$, $y=x$ and $y=-x$ split the plane into 8 wedges of equal probability. The event is exactly one of them (angle $\\pi/4$), so the probability is $1/8$. Equivalently, $P(X>0)\\,P(Y<0)\\,P(|Y|>|X|)=\\tfrac12\\cdot\\tfrac12\\cdot\\tfrac12$.",
+   "distractors": [
+    "$1/4$",
+    "$3/8$",
+    "$1/6$"
+   ],
+   "hint": "Split $B_2$ into $B_1$ plus an independent increment."
+  },
+  {
+   "id": "5-stopping-time-exit",
+   "section": "5.4",
+   "name": "Stopping time (A)",
+   "kind": "problem",
+   "page": 131,
+   "prompt": "A standard Brownian motion starts at 0. What is the expected time until it first hits either $+1$ or $-1$?",
+   "answer": "1",
+   "explanation": "$B_t^2-t$ is a martingale (Ito: $d(B_t^2-t)=2B_t\\,dB_t$). Let $T$ be the first time $|B_t|=1$. Optional stopping gives $E[B_T^2-T]=0$, and $B_T^2=1$, so $E[T]=1$. More generally, the expected time to leave $(-\\beta,\\alpha)$ is $\\alpha\\beta$, just as for a symmetric random walk.",
+   "distractors": [
+    "$\\infty$",
+    "2",
+    "1/2"
+   ],
+   "hint": "Find a martingale that involves both $B_t$ and $t$."
+  },
+  {
+   "id": "5-first-passage-density",
+   "section": "5.4",
+   "name": "Stopping time (B, density)",
+   "kind": "problem",
+   "page": 132,
+   "prompt": "Let $W$ be a standard Brownian motion and, for $x>0$, let $\\tau_x=\\min\\{t: W(t)=x\\}$. What is the probability density function of $\\tau_x$?",
+   "answer": "$f(t)=\\dfrac{x}{\\sqrt{2\\pi t^{3}}}\\,e^{-x^2/(2t)}$ for $t>0$",
+   "explanation": "Reflection principle: a path that has hit $x$ by time $t$ is equally likely to end above or below $x$, so $P(\\tau_x\\le t)=2P(W(t)\\ge x)=2\\big[1-N(x/\\sqrt t)\\big]$. Differentiate with respect to $t$: $\\frac{d}{dt}\\big[-2N(x/\\sqrt t)\\big]=2\\phi(x/\\sqrt t)\\cdot\\tfrac x2t^{-3/2}$, which gives $f(t)=\\frac{x}{t\\sqrt{2\\pi t}}e^{-x^2/(2t)}$ (the Lévy distribution).",
+   "distractors": [
+    "$f(t)=\\dfrac{1}{\\sqrt{2\\pi t}}\\,e^{-x^2/(2t)}$ for $t>0$",
+    "$f(t)=\\dfrac{2x}{\\sqrt{2\\pi t^{3}}}\\,e^{-x^2/(2t)}$ for $t>0$",
+    "$f(t)=\\dfrac{x}{\\sqrt{2\\pi t^{3}}}\\,e^{-x^2/t}$ for $t>0$"
+   ],
+   "hint": "First find $P(\\tau_x\\le t)$ with the reflection principle, then differentiate."
+  },
+  {
+   "id": "5-first-passage-mean",
+   "section": "5.4",
+   "name": "Stopping time (B, mean)",
+   "kind": "problem",
+   "page": 132,
+   "prompt": "For a standard Brownian motion and a level $x>0$, what is the expected first passage time $E[\\tau_x]$?",
+   "answer": "$\\infty$, even though $\\tau_x<\\infty$ with probability 1",
+   "explanation": "$P(\\tau_x\\le t)=2-2N(x/\\sqrt t)\\to1$ as $t\\to\\infty$, so the level is hit with probability 1. But the density decays like $t^{-3/2}$, so $\\int_0^\\infty t\\,f(t)\\,dt$ diverges. Intuitively, the expected time to leave $(-\\beta,x)$ is $x\\beta$, and letting the lower barrier $\\beta\\to\\infty$ sends it to infinity.",
+   "distractors": [
+    "$x^2$",
+    "$x$",
+    "$x^2/2$"
+   ],
+   "hint": "Think of it as an exit problem with the lower barrier at $-\\infty$."
+  },
+  {
+   "id": "5-reflection-principle-bm",
+   "section": "5.4",
+   "name": "Reflection principle (Brownian motion)",
+   "kind": "concept",
+   "page": 132,
+   "prompt": "Let $M(t)=\\max_{0\\le s\\le t}W(s)$ be the running maximum of a standard Brownian motion. For $x>0$, what does the reflection principle give for $P(M(t)\\ge x)$?",
+   "answer": "$2P(W(t)\\ge x)=2\\big[1-N(x/\\sqrt t)\\big]$",
+   "explanation": "$M(t)\\ge x$ exactly when $\\tau_x\\le t$. After $\\tau_x$, flipping the sign of every later move maps a path ending at $y>x$ to one ending at $2x-y<x$, and both are equally likely. So half the paths that hit $x$ end above it, and every path ending above $x$ must have hit it. Hence $P(M(t)\\ge x)=2P(W(t)\\ge x)$. Differentiating in $x$ gives the density of the maximum; differentiating in $t$ gives the first-passage density.",
+   "distractors": [
+    "$1-N(x/\\sqrt t)$",
+    "$2\\big[1-N(2x/\\sqrt t)\\big]$",
+    "$\\big[1-N(x/\\sqrt t)\\big]^2$"
+   ]
+  },
+  {
+   "id": "5-hit-before-no-drift",
+   "section": "5.4",
+   "name": "Stopping time (C, no drift)",
+   "kind": "problem",
+   "page": 133,
+   "prompt": "A driftless Brownian motion $X$ ($dX=dW$) starts at 0. What is the probability that it hits $3$ before $-5$?",
+   "answer": "$5/8$",
+   "explanation": "$X$ is a martingale, and stopping it when it first leaves $(-5,3)$ keeps it a martingale: $3p-5(1-p)=0$, so $p=5/8$. General rule: $P(\\text{hit }\\alpha\\text{ before }-\\beta)=\\beta/(\\alpha+\\beta)$, so the nearer barrier is the more likely one.",
+   "distractors": [
+    "$3/8$",
+    "$1/2$",
+    "$3/5$"
+   ],
+   "hint": "The expected position at the stopping time is still 0."
+  },
+  {
+   "id": "5-hit-before-drift",
+   "section": "5.4",
+   "name": "Stopping time (C, drift m)",
+   "kind": "problem",
+   "page": 133,
+   "prompt": "Now $X$ has drift $m$: $dX=m\\,dt+dW$ with $X(0)=0$. What is the probability that $X$ hits $3$ before $-5$?",
+   "answer": "$\\dfrac{e^{10m}-1}{e^{10m}-e^{-6m}}$",
+   "explanation": "Use the exponential martingale with $\\lambda=-2m$. Since $W=X-mt$, $\\exp\\{-2m(X-mt)-\\tfrac12(4m^2)t\\}=e^{-2mX}$ is a martingale (the $t$ terms cancel). Optional stopping with $p=P(\\text{hit }3)$:\n$$p\\,e^{-6m}+(1-p)\\,e^{10m}=1\\ \\Rightarrow\\ p=\\frac{e^{10m}-1}{e^{10m}-e^{-6m}}.$$\nAs $m\\to0$ this tends to $10/16=5/8$, the driftless answer. Solving $mP'+\\tfrac12P''=0$ with $P(3)=1$, $P(-5)=0$ (Feynman–Kac) gives the same result.",
+   "distractors": [
+    "$\\dfrac{1-e^{-6m}}{e^{10m}-e^{-6m}}$",
+    "$\\dfrac{e^{6m}-1}{e^{6m}-e^{-10m}}$",
+    "$5/8$, whatever the value of $m$"
+   ],
+   "hint": "Find a $\\lambda$ that makes the exponential martingale free of $t$."
+  },
+  {
+   "id": "5-ever-reach-negative",
+   "section": "5.4",
+   "name": "Stopping time (D)",
+   "kind": "problem",
+   "page": 134,
+   "prompt": "Let $dX=dt+dW$ with $X(0)=0$, a Brownian motion with drift $+1$. What is the probability that $X$ ever reaches $-1$?",
+   "answer": "$e^{-2}\\approx0.135$",
+   "explanation": "With $m=1$, $e^{-2mX}=e^{-2X}$ is a martingale. Treat $+\\infty$ as the upper barrier: paths that never hit $-1$ drift off to $+\\infty$, where $e^{-2X}\\to0$. Optional stopping gives $P\\cdot e^{2}+(1-P)\\cdot0=1$, so $P=e^{-2}$. In general, for drift $\\mu>0$ and volatility $\\sigma$, $P(\\text{ever reach }-a)=e^{-2\\mu a/\\sigma^2}$.",
+   "distractors": [
+    "$e^{-1}\\approx0.368$",
+    "$1$",
+    "$0$"
+   ],
+   "hint": "Reuse the martingale $e^{-2mX}$ with an upper barrier at $+\\infty$."
+  },
+  {
+   "id": "5-feynman-kac",
+   "section": "5.4",
+   "name": "Feynman–Kac equation",
+   "kind": "concept",
+   "page": 134,
+   "prompt": "For an Ito process $dX=\\beta(t,X)\\,dt+\\gamma(t,X)\\,dW$, what PDE does $V(t,x)=E[f(X_T)\\mid X_t=x]$ satisfy?",
+   "answer": "$V_t+\\beta V_x+\\tfrac12\\gamma^2V_{xx}=0$ with terminal condition $V(T,x)=f(x)$",
+   "explanation": "$V(t,X_t)$ is the conditional expectation of a fixed terminal quantity, so it is a martingale and its Ito drift must vanish: $V_t+\\beta V_x+\\tfrac12\\gamma^2V_{xx}=0$, with $V(T,x)=f(x)$. For hitting probabilities of a time-homogeneous process the $V_t$ term drops out. For example, drift $m$ with unit volatility gives $mP'+\\tfrac12P''=0$, with $P=1$ at the target barrier and $P=0$ at the other.",
+   "distractors": [
+    "$V_t+\\beta V_x+\\gamma^2V_{xx}=0$ with terminal condition $V(T,x)=f(x)$",
+    "$V_t+\\beta V_x+\\tfrac12\\gamma^2V_{xx}=0$ with initial condition $V(0,x)=f(x)$",
+    "$V_t+\\tfrac12\\beta V_x+\\gamma V_{xx}=0$ with terminal condition $V(T,x)=f(x)$"
+   ]
+  },
+  {
+   "id": "5-ito-lemma",
+   "section": "5.4",
+   "name": "Ito's lemma",
+   "kind": "concept",
+   "page": 135,
+   "prompt": "Let $dX=\\beta(t,X)\\,dt+\\gamma(t,X)\\,dW$ and let $f(X,t)$ be twice differentiable. What is $df$ according to Ito's lemma?",
+   "answer": "$df=\\big(f_t+\\beta f_x+\\tfrac12\\gamma^2f_{xx}\\big)dt+\\gamma f_x\\,dW$",
+   "explanation": "Expand $f$ to second order: $df=f_t\\,dt+f_x\\,dX+\\tfrac12f_{xx}(dX)^2$. Unlike ordinary calculus, $(dX)^2=\\gamma^2(dW)^2=\\gamma^2\\,dt$ is not negligible, while $dt\\,dW$ and $(dt)^2$ are. Collecting terms gives drift $f_t+\\beta f_x+\\tfrac12\\gamma^2f_{xx}$ and diffusion coefficient $\\gamma f_x$. A process is a martingale exactly when its drift term is zero.",
+   "distractors": [
+    "$df=\\big(f_t+\\beta f_x\\big)dt+\\gamma f_x\\,dW$",
+    "$df=\\big(f_t+\\beta f_x+\\gamma^2f_{xx}\\big)dt+\\gamma f_x\\,dW$",
+    "$df=\\big(f_t+\\beta f_x+\\tfrac12\\gamma^2f_{xx}\\big)dt+\\gamma^2f_x\\,dW$"
+   ],
+   "hint": "Keep second-order terms, using $(dW)^2=dt$."
+  },
+  {
+   "id": "5-martingale-zero-drift",
+   "section": "5.4",
+   "name": "When is an Ito process a martingale?",
+   "kind": "concept",
+   "page": 135,
+   "prompt": "When is a generalized Wiener process $dx=a(x,t)\\,dt+b(x,t)\\,dW$ a martingale?",
+   "answer": "When its drift coefficient is zero: $a(x,t)=0$",
+   "explanation": "Over a short step, $E[dx\\mid\\mathcal F_t]=a\\,dt$ because $E[dW]=0$. For the expected change to be zero at all times, the drift must vanish (given enough integrability for the $dW$ part). Recipe: apply Ito's lemma and check whether the $dt$ term is identically zero. For example, $d(W^2-t)=2W\\,dW$ has no drift (a martingale), but $d(W^3)=3W\\,dt+3W^2\\,dW$ does (not a martingale).",
+   "distractors": [
+    "When its volatility is constant: $b(x,t)=b$",
+    "When its drift equals half its variance: $a=\\tfrac12b^2$",
+    "When its drift is constant: $a(x,t)=a$"
+   ]
+  },
+  {
+   "id": "5-ito-sqrt-t-bt",
+   "section": "5.4",
+   "name": "Ito's lemma (A)",
+   "kind": "problem",
+   "page": 135,
+   "prompt": "Let $B_t$ be a standard Brownian motion and $Z_t=\\sqrt t\\,B_t$. What are the mean and variance of $Z_t$, and is $Z_t$ a martingale?",
+   "answer": "Mean 0, variance $t^2$ (so $Z_t\\sim N(0,t^2)$); not a martingale",
+   "explanation": "$B_t\\sim N(0,t)$, so $\\sqrt t\\,B_t\\sim N(0,t\\cdot t)=N(0,t^2)$. Apply Ito's lemma to $f(b,t)=\\sqrt t\\,b$: $f_t=\\tfrac{b}{2\\sqrt t}$, $f_b=\\sqrt t$, $f_{bb}=0$, so $dZ_t=\\frac{B_t}{2\\sqrt t}dt+\\sqrt t\\,dB_t$. The drift is nonzero whenever $B_t\\ne0$, which happens with probability 1, so $Z_t$ is not a martingale. A constant mean is necessary for a martingale but not sufficient.",
+   "distractors": [
+    "Mean 0, variance $t^2$; a martingale, since its mean is constant",
+    "Mean 0, variance $t$; a martingale",
+    "Mean 0, variance $t^{3/2}$; not a martingale"
+   ],
+   "hint": "Check the $dt$ term from Ito's lemma."
+  },
+  {
+   "id": "5-ito-w-cubed",
+   "section": "5.4",
+   "name": "Ito's lemma (B)",
+   "kind": "problem",
+   "page": 135,
+   "prompt": "Let $W(t)$ be a standard Brownian motion. Is $W(t)^3$ a martingale?",
+   "answer": "No: $d(W^3)=3W\\,dt+3W^2\\,dW$ has a nonzero drift",
+   "explanation": "With $f(w)=w^3$: $f'=3w^2$, $f''=6w$, $f_t=0$. Ito's lemma gives $d(W^3)=3W^2\\,dW+\\tfrac12(6W)\\,dt=3W\\,dt+3W^2\\,dW$. The drift $3W$ is nonzero almost surely, so $W^3$ is not a martingale, even though $E[W(t)^3]=0$ for every $t$. The corrected process $W(t)^3-3\\int_0^tW(s)\\,ds$ is a martingale.",
+   "distractors": [
+    "Yes: $E[W(t)^3]=0$ for all $t$",
+    "Yes: $d(W^3)=3W^2\\,dW$ has no drift",
+    "No: $d(W^3)=3W^2\\,dt+3W\\,dW$ has a nonzero drift"
+   ],
+   "hint": "Compute the second-derivative term."
+  }
+ ]
+}

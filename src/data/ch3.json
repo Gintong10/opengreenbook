@@ -1,0 +1,1110 @@
+{
+ "chapter": 3,
+ "title": "Calculus and Linear Algebra",
+ "sections": [
+  {
+   "id": "3.1",
+   "title": "Limits and Derivatives"
+  },
+  {
+   "id": "3.2",
+   "title": "Integration"
+  },
+  {
+   "id": "3.3",
+   "title": "Partial Derivatives and Multiple Integrals"
+  },
+  {
+   "id": "3.4",
+   "title": "Important Calculus Methods"
+  },
+  {
+   "id": "3.5",
+   "title": "Ordinary Differential Equations"
+  },
+  {
+   "id": "3.6",
+   "title": "Linear Algebra"
+  }
+ ],
+ "cards": [
+  {
+   "id": "3-derivative-definition",
+   "section": "3.1",
+   "name": "Definition of the derivative",
+   "kind": "concept",
+   "page": 33,
+   "prompt": "Write the limit definition of the derivative $f'(x)$ of $y=f(x)$.",
+   "answer": "$f'(x)=\\lim_{\\Delta x\\to 0}\\frac{f(x+\\Delta x)-f(x)}{\\Delta x}$",
+   "explanation": "The derivative is the limiting slope of secant lines: the change in $y$ divided by the change in $x$ as the step shrinks to zero.\nGeometrically it is the slope of the tangent line at $x$; physically it is the instantaneous rate of change of $y$ with respect to $x$.\nEquivalent notation: $f'(x)=\\frac{dy}{dx}=\\lim_{\\Delta x\\to0}\\frac{\\Delta y}{\\Delta x}$.",
+   "distractors": [
+    "$f'(x)=\\lim_{\\Delta x\\to 0}\\frac{f(x+\\Delta x)-f(x)}{x}$",
+    "$f'(x)=\\lim_{\\Delta x\\to 0}\\frac{f(x)-f(x+\\Delta x)}{\\Delta x}$",
+    "$f'(x)=\\lim_{\\Delta x\\to \\infty}\\frac{f(x+\\Delta x)-f(x)}{\\Delta x}$"
+   ]
+  },
+  {
+   "id": "3-product-rule",
+   "section": "3.1",
+   "name": "Product rule",
+   "kind": "concept",
+   "page": 33,
+   "prompt": "Product rule: if $u(x)$ and $v(x)$ are differentiable, what is $(uv)'$?",
+   "answer": "$(uv)'=u'v+uv'$",
+   "explanation": "Each factor takes a turn being differentiated while the other is held fixed, and the two pieces are added.\nIn Leibniz form: $\\frac{d(uv)}{dx}=u\\frac{dv}{dx}+v\\frac{du}{dx}$.\nMultiplying the derivatives ($u'v'$) is a classic mistake: with $u=v=x$ it would give $(x^2)'=1$ instead of $2x$.",
+   "distractors": [
+    "$(uv)'=u'v'$",
+    "$(uv)'=u'v-uv'$",
+    "$(uv)'=u'v'+uv$"
+   ]
+  },
+  {
+   "id": "3-quotient-rule",
+   "section": "3.1",
+   "name": "Quotient rule",
+   "kind": "concept",
+   "page": 33,
+   "prompt": "Quotient rule: for differentiable $u(x)$ and $v(x)$ with $v\\ne0$, what is $\\left(\\frac{u}{v}\\right)'$?",
+   "answer": "$\\left(\\frac{u}{v}\\right)'=\\frac{u'v-uv'}{v^2}$",
+   "explanation": "Write $\\frac{u}{v}=u\\cdot v^{-1}$ and use the product and chain rules: $u'v^{-1}-uv^{-2}v'=\\frac{u'v-uv'}{v^2}$.\nMnemonic: 'low d-high minus high d-low, over low squared.' The order in the numerator matters; swapping it flips the sign.",
+   "distractors": [
+    "$\\left(\\frac{u}{v}\\right)'=\\frac{uv'-u'v}{v^2}$",
+    "$\\left(\\frac{u}{v}\\right)'=\\frac{u'v+uv'}{v^2}$",
+    "$\\left(\\frac{u}{v}\\right)'=\\frac{u'v-uv'}{v}$"
+   ]
+  },
+  {
+   "id": "3-chain-rule",
+   "section": "3.1",
+   "name": "Chain rule",
+   "kind": "concept",
+   "page": 33,
+   "prompt": "Chain rule: if $y=f(u)$ and $u=u(x)$, express $\\frac{dy}{dx}$.",
+   "answer": "$\\frac{dy}{dx}=\\frac{dy}{du}\\cdot\\frac{du}{dx}$",
+   "explanation": "Differentiate the outer function at the inner value, then multiply by the derivative of the inner function: $\\big(f(u(x))\\big)'=f'(u(x))\\,u'(x)$.\nUseful special cases: the generalized power rule $\\frac{d}{dx}y^n=ny^{n-1}\\frac{dy}{dx}$, $\\frac{d}{dx}e^{u}=e^{u}u'$, $\\frac{d}{dx}a^{u}=a^{u}\\ln a\\,u'$ and $\\frac{d}{dx}\\ln u=\\frac{u'}{u}$.",
+   "distractors": [
+    "$\\frac{dy}{dx}=\\frac{dy}{du}+\\frac{du}{dx}$",
+    "$\\frac{dy}{dx}=\\frac{dy}{du}\\Big/\\frac{du}{dx}$",
+    "$\\frac{dy}{dx}=\\frac{du}{dy}\\cdot\\frac{du}{dx}$"
+   ]
+  },
+  {
+   "id": "3-derivative-lnx-power-lnx",
+   "section": "3.1",
+   "name": "Derivative of (ln x)^(ln x)",
+   "kind": "problem",
+   "page": 34,
+   "prompt": "Find the derivative of $y=(\\ln x)^{\\ln x}$ for $x>1$.",
+   "answer": "$y'=\\frac{(\\ln x)^{\\ln x}}{x}\\big(\\ln(\\ln x)+1\\big)$",
+   "explanation": "Take logs first: $\\ln y=\\ln x\\cdot\\ln(\\ln x)$.\nDifferentiate both sides using the product and chain rules: $\\frac{y'}{y}=\\frac{1}{x}\\ln(\\ln x)+\\ln x\\cdot\\frac{1}{x\\ln x}=\\frac{\\ln(\\ln x)+1}{x}$.\nMultiply by $y$ to finish.\nLogarithmic differentiation is the standard trick whenever the variable appears in both the base and the exponent; the plain power rule fails because the exponent is not constant.",
+   "distractors": [
+    "$y'=\\frac{(\\ln x)^{\\ln x}}{x}\\ln(\\ln x)$",
+    "$y'=\\ln x\\,(\\ln x)^{\\ln x-1}\\cdot\\frac{1}{x}$",
+    "$y'=\\frac{(\\ln x)^{\\ln x}}{x\\ln x}\\big(\\ln(\\ln x)+1\\big)$"
+   ],
+   "hint": "Take the natural log of both sides before differentiating."
+  },
+  {
+   "id": "3-local-extremum-condition",
+   "section": "3.1",
+   "name": "Local maximum or minimum",
+   "kind": "concept",
+   "page": 35,
+   "prompt": "If $f$ is differentiable at an interior point $c$ and $f(c)$ is a local maximum or local minimum, what must be true of $f'(c)$?",
+   "answer": "$f'(c)=0$",
+   "explanation": "At an interior local extremum the tangent line is horizontal (Fermat's theorem): if $f'(c)>0$ the function would increase through $c$, and if $f'(c)<0$ it would decrease.\nThe converse fails: $f'(c)=0$ only makes $c$ a critical point, e.g. $x^3$ at $0$.\nExtrema can also occur at endpoints or at points where $f$ is not differentiable (like $|x|$ at 0).",
+   "distractors": [
+    "$f''(c)=0$",
+    "$f'(c)>0$",
+    "$f'(c)\\ne0$"
+   ]
+  },
+  {
+   "id": "3-second-derivative-test",
+   "section": "3.1",
+   "name": "Second derivative test",
+   "kind": "concept",
+   "page": 35,
+   "prompt": "Second derivative test: suppose $f''$ is continuous near $c$ and $f'(c)=0$. What do $f''(c)>0$ and $f''(c)<0$ tell you?",
+   "answer": "$f''(c)>0$: local minimum; $f''(c)<0$: local maximum",
+   "explanation": "A positive second derivative means the graph is concave up (cup-shaped), so a flat point is a bottom: a local minimum.\nA negative second derivative means concave down, so a flat point is a top: a local maximum.\nIf $f''(c)=0$ the test is inconclusive ($x^4$, $-x^4$ and $x^3$ at 0 behave differently). The conclusions are local, not global.",
+   "distractors": [
+    "$f''(c)>0$: local maximum; $f''(c)<0$: local minimum",
+    "$f''(c)>0$: inflection point; $f''(c)<0$: local maximum",
+    "$f''(c)>0$: global minimum; $f''(c)<0$: global maximum"
+   ]
+  },
+  {
+   "id": "3-lnx-over-x-max",
+   "section": "3.1",
+   "name": "Maximum of ln(x)/x",
+   "kind": "concept",
+   "page": 35,
+   "prompt": "For $x>0$, where does $f(x)=\\frac{\\ln x}{x}$ attain its global maximum, and what is the maximum value?",
+   "answer": "At $x=e$, with maximum value $1/e$",
+   "explanation": "$f'(x)=\\frac{\\frac1x\\cdot x-\\ln x}{x^2}=\\frac{1-\\ln x}{x^2}$, which is positive for $x<e$ and negative for $x>e$.\nSo $f$ rises up to $x=e$ and falls afterwards: $x=e$ is the global maximum, with $f(e)=\\frac1e$.\nThis monotonicity is the key to comparing expressions such as $a^b$ versus $b^a$.",
+   "distractors": [
+    "At $x=1$, with maximum value $0$",
+    "At $x=e$, with maximum value $1$",
+    "At $x=\\sqrt{e}$, with maximum value $\\frac{1}{2\\sqrt e}$"
+   ],
+   "hint": "Use the quotient rule and find where the derivative changes sign."
+  },
+  {
+   "id": "3-e-pi-vs-pi-e",
+   "section": "3.1",
+   "name": "e^pi versus pi^e",
+   "kind": "problem",
+   "page": 35,
+   "prompt": "Without computing numerically, which is larger: $e^\\pi$ or $\\pi^e$?",
+   "answer": "$e^\\pi>\\pi^e$",
+   "explanation": "Take logs: compare $\\pi\\ln e=\\pi$ with $e\\ln\\pi$, which is the same as comparing $\\frac{\\ln e}{e}$ with $\\frac{\\ln\\pi}{\\pi}$.\n$g(x)=\\frac{\\ln x}{x}$ has $g'(x)=\\frac{1-\\ln x}{x^2}<0$ for $x>e$ and its global maximum at $x=e$, so $\\frac{\\ln e}{e}>\\frac{\\ln\\pi}{\\pi}$ and hence $e^\\pi>\\pi^e$.\nAlternative: $e^x>1+x$ for $x>0$. With $x=\\frac{\\pi}{e}-1$ this gives $e^{\\pi/e}>\\pi$; raising both sides to the power $e$ gives $e^\\pi>\\pi^e$.\n(Numerically about 23.14 versus 22.46.)",
+   "distractors": [
+    "$\\pi^e>e^\\pi$",
+    "$e^\\pi=\\pi^e$",
+    "Cannot tell without computing both numerically"
+   ],
+   "hint": "Take logs and study the function $\\frac{\\ln x}{x}$."
+  },
+  {
+   "id": "3-lhospital-rule",
+   "section": "3.1",
+   "name": "L'Hospital's rule",
+   "kind": "concept",
+   "page": 35,
+   "prompt": "State L'Hospital's rule for evaluating $\\lim_{x\\to a}\\frac{f(x)}{g(x)}$.",
+   "answer": "For $0/0$ or $\\infty/\\infty$ forms, $\\lim\\frac{f}{g}=\\lim\\frac{f'}{g'}$",
+   "explanation": "When $f$ and $g$ both tend to 0, or both tend to $\\pm\\infty$, the limit of the ratio equals the limit of the ratio of derivatives (provided $g'\\ne0$ near $a$ and that latter limit exists).\nDifferentiate numerator and denominator **separately**; do not apply the quotient rule.\nThe rule can be applied repeatedly. Other indeterminate forms such as $0\\cdot\\infty$ must first be rewritten as a ratio.",
+   "distractors": [
+    "For $0/0$ or $\\infty/\\infty$ forms, $\\lim\\frac{f}{g}=\\lim\\left(\\frac{f}{g}\\right)'$",
+    "For $0/0$ or $\\infty/\\infty$ forms, $\\lim\\frac{f}{g}=\\lim\\frac{f'g-fg'}{g^2}$",
+    "For any form, $\\lim\\frac{f}{g}=\\frac{f'(a)}{g'(a)}$"
+   ]
+  },
+  {
+   "id": "3-limit-ex-over-x2",
+   "section": "3.1",
+   "name": "Limit of e^x / x^2",
+   "kind": "problem",
+   "page": 36,
+   "prompt": "Evaluate $\\lim_{x\\to\\infty}\\frac{e^x}{x^2}$.",
+   "answer": "$+\\infty$",
+   "explanation": "Both numerator and denominator go to $\\infty$, so apply L'Hospital's rule: $\\lim\\frac{e^x}{2x}$, which is still $\\infty/\\infty$.\nApply it again: $\\lim\\frac{e^x}{2}=\\infty$.\nIn general $e^x$ outgrows every power: $x^re^{-x}\\to0$ as $x\\to\\infty$ for any $r$.",
+   "distractors": [
+    "$0$",
+    "$1$",
+    "$\\frac12$"
+   ],
+   "hint": "Apply L'Hospital's rule more than once."
+  },
+  {
+   "id": "3-limit-x2-lnx",
+   "section": "3.1",
+   "name": "Limit of x^2 ln x as x -> 0+",
+   "kind": "problem",
+   "page": 36,
+   "prompt": "Evaluate $\\lim_{x\\to0^+}x^2\\ln x$.",
+   "answer": "$0$",
+   "explanation": "This is a $0\\cdot(-\\infty)$ form, so rewrite it as a ratio: $\\frac{\\ln x}{x^{-2}}$, which is $\\frac{-\\infty}{\\infty}$.\nL'Hospital's rule gives $\\frac{1/x}{-2x^{-3}}=-\\frac{x^2}{2}\\to0$.\nPowers beat logarithms: $x^r\\ln x\\to0$ as $x\\to0^+$ for every $r>0$.",
+   "distractors": [
+    "$-\\infty$",
+    "$1$",
+    "$-\\frac12$"
+   ],
+   "hint": "Rewrite the product as $\\ln x$ divided by something that blows up."
+  },
+  {
+   "id": "3-power-rule-integral",
+   "section": "3.2",
+   "name": "Power rule in reverse",
+   "kind": "concept",
+   "page": 37,
+   "prompt": "What is $\\int u^k\\,du$ for a constant $k\\ne-1$?",
+   "answer": "$\\frac{u^{k+1}}{k+1}+C$",
+   "explanation": "It is the power rule for derivatives run backwards: differentiating $\\frac{u^{k+1}}{k+1}$ returns $u^k$.\nThe formula breaks down at $k=-1$ (division by zero); there $\\int u^{-1}\\,du=\\ln|u|+C$.\n(The scanned book prints the exclusion as $k\\ne1$; the correct condition is $k\\ne-1$.)",
+   "distractors": [
+    "$\\frac{u^{k-1}}{k-1}+C$",
+    "$k\\,u^{k-1}+C$",
+    "$(k+1)\\,u^{k+1}+C$"
+   ]
+  },
+  {
+   "id": "3-integration-by-substitution",
+   "section": "3.2",
+   "name": "Integration by substitution",
+   "kind": "concept",
+   "page": 37,
+   "prompt": "Using the substitution $u=g(x)$, rewrite the definite integral $\\int_a^b f(g(x))\\,g'(x)\\,dx$.",
+   "answer": "$\\int_{g(a)}^{g(b)}f(u)\\,du$",
+   "explanation": "With $u=g(x)$ we have $du=g'(x)\\,dx$, so the factor $g'(x)\\,dx$ is absorbed into $du$.\nFor a definite integral the limits change as well: $x=a$ becomes $u=g(a)$ and $x=b$ becomes $u=g(b)$.\nThis is the chain rule read backwards. Forgetting to transform the limits is the classic error.",
+   "distractors": [
+    "$\\int_a^b f(u)\\,du$",
+    "$\\int_{g(a)}^{g(b)}f(u)\\,g'(u)\\,du$",
+    "$\\int_{g(a)}^{g(b)}\\frac{f(u)}{g'(u)}\\,du$"
+   ]
+  },
+  {
+   "id": "3-integration-by-parts",
+   "section": "3.2",
+   "name": "Integration by parts",
+   "kind": "concept",
+   "page": 37,
+   "prompt": "State the integration by parts formula.",
+   "answer": "$\\int u\\,dv=uv-\\int v\\,du$",
+   "explanation": "It comes from integrating the product rule $d(uv)=u\\,dv+v\\,du$ and rearranging.\nPick $u$ to be something that simplifies when differentiated (logs, polynomials) and $dv$ something easy to integrate.\nClassic uses: $\\int\\ln x\\,dx$, $\\int xe^x\\,dx$, $\\int x\\sin x\\,dx$.",
+   "distractors": [
+    "$\\int u\\,dv=uv+\\int v\\,du$",
+    "$\\int u\\,dv=\\int v\\,du-uv$",
+    "$\\int u\\,dv=uv-\\int u\\,dv$"
+   ]
+  },
+  {
+   "id": "3-integral-ln-x",
+   "section": "3.2",
+   "name": "Integral of ln x (A)",
+   "kind": "problem",
+   "page": 37,
+   "prompt": "Compute $\\int\\ln x\\,dx$.",
+   "answer": "$x\\ln x-x+C$",
+   "explanation": "Integrate by parts with $u=\\ln x$ and $dv=dx$, so $du=\\frac{dx}{x}$ and $v=x$.\nThen $\\int\\ln x\\,dx=x\\ln x-\\int x\\cdot\\frac1x\\,dx=x\\ln x-x+C$.\nCheck: $\\frac{d}{dx}(x\\ln x-x)=\\ln x+1-1=\\ln x$.",
+   "distractors": [
+    "$\\frac{1}{x}+C$",
+    "$x\\ln x+x+C$",
+    "$\\frac{(\\ln x)^2}{2}+C$"
+   ],
+   "hint": "Integrate by parts with $dv=dx$."
+  },
+  {
+   "id": "3-antiderivative-sec",
+   "section": "3.2",
+   "name": "Antiderivative of sec x",
+   "kind": "concept",
+   "page": 38,
+   "prompt": "What is $\\int\\sec x\\,dx$?",
+   "answer": "$\\ln|\\sec x+\\tan x|+C$",
+   "explanation": "From the quotient rule, $(\\sec x)'=\\left(\\frac{1}{\\cos x}\\right)'=\\frac{\\sin x}{\\cos^2x}=\\sec x\\tan x$ and $(\\tan x)'=\\frac{\\cos^2x+\\sin^2x}{\\cos^2x}=\\sec^2x$.\nSo $(\\sec x+\\tan x)'=\\sec x(\\sec x+\\tan x)$, and therefore $\\frac{d}{dx}\\ln|\\sec x+\\tan x|=\\frac{\\sec x(\\sec x+\\tan x)}{\\sec x+\\tan x}=\\sec x$.\nOnly $(\\sin x)'=\\cos x$ and $(\\cos x)'=-\\sin x$ need to be memorized; the rest follow from the product and quotient rules.",
+   "distractors": [
+    "$\\sec x\\tan x+C$",
+    "$\\ln|\\cos x|+C$",
+    "$\\ln|\\sec x-\\tan x|+C$"
+   ],
+   "hint": "Differentiate $\\sec x+\\tan x$ and look for a $\\frac{u'}{u}$ pattern."
+  },
+  {
+   "id": "3-integral-sec-0-pi6",
+   "section": "3.2",
+   "name": "Integral of sec x on [0, pi/6] (B)",
+   "kind": "problem",
+   "page": 37,
+   "prompt": "Evaluate $\\int_0^{\\pi/6}\\sec x\\,dx$.",
+   "answer": "$\\ln\\sqrt3=\\frac12\\ln3$",
+   "explanation": "Use $\\int\\sec x\\,dx=\\ln|\\sec x+\\tan x|+C$.\nAt $x=\\pi/6$: $\\sec x=\\frac{2}{\\sqrt3}$ and $\\tan x=\\frac{1}{\\sqrt3}$, so $\\sec x+\\tan x=\\frac{3}{\\sqrt3}=\\sqrt3$.\nAt $x=0$: $\\sec x+\\tan x=1$ and $\\ln1=0$.\nSo the integral is $\\ln\\sqrt3\\approx0.549$.",
+   "distractors": [
+    "$\\ln 3$",
+    "$\\ln\\frac{2}{\\sqrt3}$",
+    "$\\frac{2}{\\sqrt3}-1$"
+   ],
+   "hint": "First find an antiderivative of $\\sec x$ via $\\sec x+\\tan x$."
+  },
+  {
+   "id": "3-volume-by-cross-sections",
+   "section": "3.2",
+   "name": "Volume from cross-sections",
+   "kind": "concept",
+   "page": 38,
+   "prompt": "How do you compute the volume of a solid from its cross-sections perpendicular to the $z$-axis, for $z$ from $z_1$ to $z_2$?",
+   "answer": "$V=\\int_{z_1}^{z_2}A(z)\\,dz$ ($A(z)$ = cross-sectional area)",
+   "explanation": "Slice the solid into thin slabs of thickness $dz$; each slab has volume about $A(z)\\,dz$, and summing the slabs gives the integral.\nIn interview problems the hard part is finding a clean expression for $A(z)$, usually by spotting that each slice is a simple shape (square, disk) thanks to symmetry.\nDisks of radius $r(z)$ give the familiar $V=\\int\\pi r(z)^2\\,dz$.",
+   "distractors": [
+    "$V=\\int_{z_1}^{z_2}\\pi A(z)^2\\,dz$ ($A(z)$ = cross-sectional area)",
+    "$V=\\int_{z_1}^{z_2}A'(z)\\,dz$ ($A(z)$ = cross-sectional area)",
+    "$V=(z_2-z_1)\\,A\\big(\\frac{z_1+z_2}{2}\\big)$ ($A$ = cross-sectional area)"
+   ]
+  },
+  {
+   "id": "3-two-cylinders",
+   "section": "3.2",
+   "name": "Intersection of two cylinders (A)",
+   "kind": "problem",
+   "page": 38,
+   "prompt": "Two solid cylinders, each of radius 1, have axes that cross at right angles (the axes intersect). What is the volume of the region common to both?",
+   "answer": "$\\frac{16}{3}$",
+   "explanation": "Put the axes along the $x$- and $y$-axes. At height $z$ each cylinder is cut in a strip of half-width $\\sqrt{1-z^2}$, so the slice of the intersection is a square of side $2\\sqrt{1-z^2}$ and area $4(1-z^2)$.\n$V=\\int_{-1}^{1}4(1-z^2)\\,dz=4\\left(2-\\frac23\\right)=\\frac{16}{3}$.\nSlick alternative: the unit ball fits inside, and every horizontal slice of it is a disk inscribed in the square slice, so the area ratio is $\\frac{\\pi}{4}$ at every height. Hence $V=\\frac{4\\pi/3}{\\pi/4}=\\frac{16}{3}$.\nFor radius $r$ the answer scales to $\\frac{16}{3}r^3$.",
+   "distractors": [
+    "$\\frac{4\\pi}{3}$",
+    "$\\frac{8}{3}$",
+    "$\\frac{16\\pi}{3}$"
+   ],
+   "hint": "Slice horizontally: what shape is each cross-section?"
+  },
+  {
+   "id": "3-snow-plow",
+   "section": "3.2",
+   "name": "Snow plow (B)",
+   "kind": "problem",
+   "page": 39,
+   "prompt": "Snow began falling at a constant rate some time before noon. A plow starts at noon and removes a constant volume of snow per unit time, so its speed is inversely proportional to the snow depth. It travels 2 miles in the first hour and 1 more mile in the second hour. When did the snow start?",
+   "answer": "$\\frac{\\sqrt5-1}{2}\\approx0.618$ h before noon, about 11:23 AM",
+   "explanation": "Let $t$ be hours after noon and suppose snow began $T$ hours before noon. Depth grows linearly, so speed is $v(t)=\\frac{c}{t+T}$.\nDistances: $\\int_0^1\\frac{c\\,dt}{t+T}=c\\ln\\frac{1+T}{T}=2$ and $\\int_0^2\\frac{c\\,dt}{t+T}=c\\ln\\frac{2+T}{T}=3$.\nEliminating $c$: $\\left(\\frac{1+T}{T}\\right)^3=\\left(\\frac{2+T}{T}\\right)^2\\Rightarrow(1+T)^3=T(2+T)^2\\Rightarrow T^2+T-1=0$.\nSo $T=\\frac{\\sqrt5-1}{2}\\approx0.618$ hours, about 37 minutes before noon.\n(The scan shows the quadratic as $T^2-T+1=0$, a typo; its stated root is correct.)",
+   "distractors": [
+    "$\\frac{\\sqrt5+1}{2}\\approx1.618$ h before noon, about 10:23 AM",
+    "$\\frac12$ h before noon, at 11:30 AM",
+    "$1$ h before noon, at 11:00 AM"
+   ],
+   "hint": "Speed is $\\frac{c}{t+T}$; integrate it over the first hour and the first two hours."
+  },
+  {
+   "id": "3-normal-conditional-mean",
+   "section": "3.2",
+   "name": "E[X | X > 0] for a standard normal",
+   "kind": "problem",
+   "page": 40,
+   "prompt": "If $X\\sim N(0,1)$, what is $E[X\\mid X>0]$?",
+   "answer": "$\\sqrt{2/\\pi}\\approx0.798$",
+   "explanation": "First compute the partial expectation. With $u=x^2/2$ (so $du=x\\,dx$): $\\int_0^\\infty x\\frac{1}{\\sqrt{2\\pi}}e^{-x^2/2}dx=\\frac{1}{\\sqrt{2\\pi}}\\int_0^\\infty e^{-u}du=\\frac{1}{\\sqrt{2\\pi}}$.\nThat quantity is $E[X\\,\\mathbf{1}_{X>0}]=E[\\max(X,0)]$. Conditioning divides by $P(X>0)=\\frac12$.\nSo $E[X\\mid X>0]=\\frac{2}{\\sqrt{2\\pi}}=\\sqrt{2/\\pi}\\approx0.798$.\nNote: the book stops at $\\frac{1}{\\sqrt{2\\pi}}\\approx0.399$, which is the partial expectation, not the conditional mean.",
+   "distractors": [
+    "$\\frac{1}{\\sqrt{2\\pi}}\\approx0.399$",
+    "$\\frac12$",
+    "$\\sqrt{\\pi/2}\\approx1.253$"
+   ],
+   "hint": "Integrate $x\\,\\phi(x)$ over $(0,\\infty)$, then remember to divide by $P(X>0)$."
+  },
+  {
+   "id": "3-multivariable-chain-rule",
+   "section": "3.3",
+   "name": "General chain rule",
+   "kind": "concept",
+   "page": 40,
+   "prompt": "If $w=f(x_1,\\dots,x_m)$ and each $x_j$ is a function of $t_1,\\dots,t_n$ (all with continuous first partials), what is $\\frac{\\partial w}{\\partial t_i}$?",
+   "answer": "$\\frac{\\partial w}{\\partial t_i}=\\sum_j\\frac{\\partial w}{\\partial x_j}\\frac{\\partial x_j}{\\partial t_i}$",
+   "explanation": "A change in $t_i$ reaches $w$ through every intermediate variable $x_j$, and the contributions add.\nEach path contributes (sensitivity of $w$ to $x_j$) times (sensitivity of $x_j$ to $t_i$).\nIn matrix form this is a product of Jacobians.",
+   "distractors": [
+    "$\\frac{\\partial w}{\\partial t_i}=\\prod_j\\frac{\\partial w}{\\partial x_j}\\frac{\\partial x_j}{\\partial t_i}$",
+    "$\\frac{\\partial w}{\\partial t_i}=\\frac{\\partial w}{\\partial x_i}\\frac{\\partial x_i}{\\partial t_i}$",
+    "$\\frac{\\partial w}{\\partial t_i}=\\sum_j\\frac{\\partial w}{\\partial x_j}\\frac{\\partial t_i}{\\partial x_j}$"
+   ]
+  },
+  {
+   "id": "3-polar-coordinates",
+   "section": "3.3",
+   "name": "Cartesian to polar integrals",
+   "kind": "concept",
+   "page": 41,
+   "prompt": "When converting $\\iint_R f(x,y)\\,dx\\,dy$ to polar coordinates $x=r\\cos\\theta$, $y=r\\sin\\theta$, what replaces $dx\\,dy$?",
+   "answer": "$r\\,dr\\,d\\theta$",
+   "explanation": "The Jacobian determinant of $(r,\\theta)\\mapsto(r\\cos\\theta,r\\sin\\theta)$ equals $r$.\nIntuitively, a small polar patch has radial side $dr$ and arc side $r\\,d\\theta$, so its area is $r\\,dr\\,d\\theta$.\nHence $\\iint_R f(x,y)\\,dx\\,dy=\\iint_R f(r\\cos\\theta,r\\sin\\theta)\\,r\\,dr\\,d\\theta$.",
+   "distractors": [
+    "$dr\\,d\\theta$",
+    "$r^2\\,dr\\,d\\theta$",
+    "$\\frac{1}{r}\\,dr\\,d\\theta$"
+   ]
+  },
+  {
+   "id": "3-half-gaussian-integral",
+   "section": "3.3",
+   "name": "Integral of exp(-x^2/2) on [0, inf)",
+   "kind": "problem",
+   "page": 41,
+   "prompt": "Compute $\\int_0^\\infty e^{-x^2/2}\\,dx$.",
+   "answer": "$\\sqrt{\\pi/2}$",
+   "explanation": "The standard normal density $\\frac{1}{\\sqrt{2\\pi}}e^{-x^2/2}$ integrates to 1 over the real line, so $\\int_{-\\infty}^\\infty e^{-x^2/2}dx=\\sqrt{2\\pi}$.\nThe integrand is even, so half of that lies on $[0,\\infty)$: $\\frac{\\sqrt{2\\pi}}{2}=\\sqrt{\\pi/2}\\approx1.2533$.\nCareful not to confuse it with $\\int_0^\\infty e^{-x^2}dx=\\frac{\\sqrt\\pi}{2}$.",
+   "distractors": [
+    "$\\sqrt{2\\pi}$",
+    "$\\frac{\\sqrt\\pi}{2}$",
+    "$\\sqrt{\\pi}$"
+   ],
+   "hint": "Relate it to the standard normal density and use symmetry."
+  },
+  {
+   "id": "3-gaussian-polar-trick",
+   "section": "3.3",
+   "name": "Gaussian integral via polar coordinates",
+   "kind": "concept",
+   "page": 41,
+   "prompt": "Let $I=\\int_{-\\infty}^{\\infty}e^{-x^2/2}\\,dx$. Using polar coordinates on $I^2$, what are $I^2$ and $I$?",
+   "answer": "$I^2=2\\pi$, so $I=\\sqrt{2\\pi}$",
+   "explanation": "$I^2=\\int\\!\\!\\int e^{-(x^2+y^2)/2}\\,dx\\,dy=\\int_0^{2\\pi}\\!\\int_0^\\infty e^{-r^2/2}\\,r\\,dr\\,d\\theta$.\nThe extra factor $r$ makes the radial integral elementary: $\\int_0^\\infty re^{-r^2/2}dr=\\left[-e^{-r^2/2}\\right]_0^\\infty=1$.\nThe angular integral contributes $2\\pi$, so $I^2=2\\pi$ and $I=\\sqrt{2\\pi}$. That is why the normal density carries the constant $\\frac{1}{\\sqrt{2\\pi}}$.",
+   "distractors": [
+    "$I^2=\\pi$, so $I=\\sqrt{\\pi}$",
+    "$I^2=4\\pi$, so $I=2\\sqrt{\\pi}$",
+    "$I^2=\\pi/2$, so $I=\\sqrt{\\pi/2}$"
+   ]
+  },
+  {
+   "id": "3-taylor-series",
+   "section": "3.4",
+   "name": "Taylor's series",
+   "kind": "concept",
+   "page": 41,
+   "prompt": "Write the Taylor series of $f(x)$ about the point $x=x_0$.",
+   "answer": "$f(x)=\\sum_{n=0}^\\infty\\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n$",
+   "explanation": "Expanded: $f(x_0)+f'(x_0)(x-x_0)+\\frac{f''(x_0)}{2!}(x-x_0)^2+\\cdots$\nThe $n!$ makes the $n$-th derivative of the series at $x_0$ match $f^{(n)}(x_0)$. With $x_0=0$ it is called a Maclaurin series.\nTruncating after the linear term gives the tangent-line approximation behind Newton's method.",
+   "distractors": [
+    "$f(x)=\\sum_{n=0}^\\infty f^{(n)}(x_0)(x-x_0)^n$",
+    "$f(x)=\\sum_{n=0}^\\infty\\frac{f^{(n)}(x)}{n!}(x-x_0)^n$",
+    "$f(x)=\\sum_{n=0}^\\infty\\frac{f^{(n)}(x_0)}{(n+1)!}(x-x_0)^n$"
+   ]
+  },
+  {
+   "id": "3-taylor-exp",
+   "section": "3.4",
+   "name": "Taylor series of e^x",
+   "kind": "concept",
+   "page": 42,
+   "prompt": "Give the Maclaurin series (Taylor series at 0) of $e^x$.",
+   "answer": "$\\sum_{n=0}^\\infty\\frac{x^n}{n!}=1+x+\\frac{x^2}{2!}+\\frac{x^3}{3!}+\\cdots$",
+   "explanation": "Every derivative of $e^x$ is $e^x$, which equals 1 at $x=0$, so every coefficient is $\\frac{1}{n!}$.\nThe series converges for all real (and complex) $x$.\nA handy consequence: $e^x>1+x$ for all $x\\ne0$.",
+   "distractors": [
+    "$\\sum_{n=0}^\\infty\\frac{(-1)^nx^n}{n!}=1-x+\\frac{x^2}{2!}-\\frac{x^3}{3!}+\\cdots$",
+    "$\\sum_{n=0}^\\infty x^n=1+x+x^2+x^3+\\cdots$",
+    "$\\sum_{n=1}^\\infty\\frac{x^n}{n}=x+\\frac{x^2}{2}+\\frac{x^3}{3}+\\cdots$"
+   ]
+  },
+  {
+   "id": "3-taylor-sin",
+   "section": "3.4",
+   "name": "Taylor series of sin x",
+   "kind": "concept",
+   "page": 42,
+   "prompt": "Give the Maclaurin series of $\\sin x$.",
+   "answer": "$\\sum_{n=0}^\\infty\\frac{(-1)^nx^{2n+1}}{(2n+1)!}=x-\\frac{x^3}{3!}+\\frac{x^5}{5!}-\\cdots$",
+   "explanation": "The derivatives of $\\sin x$ at 0 cycle through $0,1,0,-1$, so only odd powers survive, with alternating signs.\nThat matches $\\sin$ being an odd function. Near 0, $\\sin x\\approx x-\\frac{x^3}{6}$.",
+   "distractors": [
+    "$\\sum_{n=0}^\\infty\\frac{(-1)^nx^{2n}}{(2n)!}=1-\\frac{x^2}{2!}+\\frac{x^4}{4!}-\\cdots$",
+    "$\\sum_{n=0}^\\infty\\frac{x^{2n+1}}{(2n+1)!}=x+\\frac{x^3}{3!}+\\frac{x^5}{5!}+\\cdots$",
+    "$\\sum_{n=0}^\\infty\\frac{(-1)^nx^{2n+1}}{2n+1}=x-\\frac{x^3}{3}+\\frac{x^5}{5}-\\cdots$"
+   ]
+  },
+  {
+   "id": "3-taylor-cos",
+   "section": "3.4",
+   "name": "Taylor series of cos x",
+   "kind": "concept",
+   "page": 42,
+   "prompt": "Give the Maclaurin series of $\\cos x$.",
+   "answer": "$\\sum_{n=0}^\\infty\\frac{(-1)^nx^{2n}}{(2n)!}=1-\\frac{x^2}{2!}+\\frac{x^4}{4!}-\\cdots$",
+   "explanation": "The derivatives of $\\cos x$ at 0 cycle through $1,0,-1,0$, so only even powers appear, with alternating signs, matching $\\cos$ being even.\nDifferentiating the sine series term by term reproduces this series, as it should. Near 0, $\\cos x\\approx1-\\frac{x^2}{2}$.",
+   "distractors": [
+    "$\\sum_{n=0}^\\infty\\frac{(-1)^nx^{2n+1}}{(2n+1)!}=x-\\frac{x^3}{3!}+\\frac{x^5}{5!}-\\cdots$",
+    "$\\sum_{n=0}^\\infty\\frac{x^{2n}}{(2n)!}=1+\\frac{x^2}{2!}+\\frac{x^4}{4!}+\\cdots$",
+    "$\\sum_{n=0}^\\infty\\frac{(-1)^nx^{2n}}{n!}=1-x^2+\\frac{x^4}{2!}-\\cdots$"
+   ]
+  },
+  {
+   "id": "3-taylor-remainder",
+   "section": "3.4",
+   "name": "Taylor remainder bound",
+   "kind": "concept",
+   "page": 42,
+   "prompt": "Let $T_n$ be the degree-$n$ Taylor polynomial of $f$ about $x_0$ and $R_n(x)=f(x)-T_n(x)$. If $|f^{(n+1)}|\\le M$ between $x_0$ and $x$, what bound holds on $|R_n(x)|$?",
+   "answer": "$|R_n(x)|\\le\\frac{M\\,|x-x_0|^{n+1}}{(n+1)!}$",
+   "explanation": "Lagrange's form of the remainder: $R_n(x)=\\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-x_0)^{n+1}$ for some $\\xi$ between $x_0$ and $x$.\nIt looks like the next term of the series, evaluated at an unknown intermediate point. Bounding $|f^{(n+1)}(\\xi)|$ by $M$ gives the estimate.\nThe exact form is also handy for proving inequalities, by checking the sign of the remainder.",
+   "distractors": [
+    "$|R_n(x)|\\le\\frac{M\\,|x-x_0|^{n}}{n!}$",
+    "$|R_n(x)|\\le M\\,|x-x_0|^{n+1}$",
+    "$|R_n(x)|\\le\\frac{M\\,|x-x_0|^{n+1}}{n!}$"
+   ]
+  },
+  {
+   "id": "3-euler-formula",
+   "section": "3.4",
+   "name": "Euler's formula",
+   "kind": "concept",
+   "page": 42,
+   "prompt": "State Euler's formula for $e^{i\\theta}$.",
+   "answer": "$e^{i\\theta}=\\cos\\theta+i\\sin\\theta$",
+   "explanation": "Substitute $i\\theta$ into the series for $e^x$ and use $i^2=-1$.\nThe real terms are $1-\\frac{\\theta^2}{2!}+\\frac{\\theta^4}{4!}-\\cdots=\\cos\\theta$; the imaginary terms are $i\\left(\\theta-\\frac{\\theta^3}{3!}+\\cdots\\right)=i\\sin\\theta$.\nSpecial cases: $e^{i\\pi}=-1$ and $e^{i\\pi/2}=i$.",
+   "distractors": [
+    "$e^{i\\theta}=\\sin\\theta+i\\cos\\theta$",
+    "$e^{i\\theta}=\\cos\\theta-i\\sin\\theta$",
+    "$e^{i\\theta}=\\cosh\\theta+i\\sinh\\theta$"
+   ]
+  },
+  {
+   "id": "3-i-to-the-i",
+   "section": "3.4",
+   "name": "What is i^i? (A)",
+   "kind": "problem",
+   "page": 42,
+   "prompt": "What is $i^i$ (principal value)?",
+   "answer": "$e^{-\\pi/2}\\approx0.208$",
+   "explanation": "From Euler's formula, $e^{i\\pi/2}=\\cos\\frac\\pi2+i\\sin\\frac\\pi2=i$, so on the principal branch $\\ln i=\\frac{i\\pi}{2}$.\nThen $i^i=e^{i\\ln i}=e^{i\\cdot i\\pi/2}=e^{-\\pi/2}\\approx0.2079$, a real number.\nStrictly, $\\ln i=i\\left(\\frac\\pi2+2k\\pi\\right)$ for any integer $k$, so $i^i$ has infinitely many real values $e^{-\\pi/2-2k\\pi}$; $e^{-\\pi/2}$ is the principal one.",
+   "distractors": [
+    "$e^{\\pi/2}\\approx4.810$",
+    "$-1$",
+    "$i$"
+   ],
+   "hint": "Write $i$ as $e^{i\\pi/2}$."
+  },
+  {
+   "id": "3-bernoulli-inequality",
+   "section": "3.4",
+   "name": "Prove (1+x)^n >= 1+nx (B)",
+   "kind": "problem",
+   "page": 43,
+   "prompt": "Prove that $(1+x)^n\\ge1+nx$ for all $x>-1$ and all integers $n\\ge2$. What is the key step if you use Taylor's theorem about $x_0=0$?",
+   "answer": "$(1+x)^n=1+nx+\\frac{n(n-1)}{2}(1+\\xi)^{n-2}x^2$, and the last term is $\\ge0$",
+   "explanation": "Let $f(x)=(1+x)^n$: $f(0)=1$, $f'(0)=n$, $f''(x)=n(n-1)(1+x)^{n-2}$.\nTaylor with Lagrange remainder: $f(x)=1+nx+\\frac{f''(\\xi)}{2}x^2$ for some $\\xi$ between 0 and $x$.\nSince $x>-1$, also $1+\\xi>0$, so $f''(\\xi)\\ge0$ and the remainder is nonnegative. (Equivalently, $f$ is convex on $(-1,\\infty)$ and lies above its tangent line at 0.)\nInduction also works: $(1+x)^{k+1}\\ge(1+kx)(1+x)=1+(k+1)x+kx^2\\ge1+(k+1)x$, where multiplying by $1+x>0$ preserves the inequality.",
+   "distractors": [
+    "$(1+x)^n=1+nx+\\frac{n(n-1)}{2}x^2$ exactly, and $x^2\\ge0$",
+    "$(1+x)^n$ is concave in $x$, so it lies below its tangent line $1+nx$",
+    "Expand binomially: every term $\\binom{n}{k}x^k$ is $\\ge0$"
+   ],
+   "hint": "Expand to second order with a Lagrange remainder and check its sign."
+  },
+  {
+   "id": "3-newton-method",
+   "section": "3.4",
+   "name": "Newton's method",
+   "kind": "concept",
+   "page": 44,
+   "prompt": "Newton's (Newton-Raphson) method for solving $f(x)=0$: what is the iteration, and how fast does it converge near a simple root?",
+   "answer": "$x_{n+1}=x_n-\\frac{f(x_n)}{f'(x_n)}$; quadratic convergence",
+   "explanation": "Replace $f$ by its tangent line at $x_n$, $f(x)\\approx f(x_n)+f'(x_n)(x-x_n)$, and solve for where it hits zero.\nNear a simple root the error roughly squares each step, $|x_{n+1}-x^*|\\le\\delta\\,(x_n-x^*)^2$, so the number of correct digits roughly doubles.\nConvergence is not guaranteed: a poor starting point, $f'\\approx0$, or lack of smoothness near the root can make it diverge or cycle.",
+   "distractors": [
+    "$x_{n+1}=x_n-\\frac{f'(x_n)}{f(x_n)}$; quadratic convergence",
+    "$x_{n+1}=x_n+\\frac{f(x_n)}{f'(x_n)}$; quadratic convergence",
+    "$x_{n+1}=x_n-\\frac{f(x_n)}{f'(x_n)}$; linear convergence"
+   ]
+  },
+  {
+   "id": "3-sqrt-37",
+   "section": "3.4",
+   "name": "Solve x^2 = 37 (A)",
+   "kind": "problem",
+   "page": 44,
+   "prompt": "Estimate $\\sqrt{37}$ to three decimal places without a calculator.",
+   "answer": "$\\approx6.083$",
+   "explanation": "Apply Newton's method to $f(x)=x^2-37$ from $x_0=6$: $x_1=6-\\frac{36-37}{2\\cdot6}=6+\\frac{1}{12}\\approx6.0833$. Check: $6.083^2\\approx37.003$.\nEquivalent views: a first-order Taylor expansion of $\\sqrt{x}$ at 36 gives $6+\\frac{1}{2\\cdot6}$; or write $(6+y)^2=37$, i.e. $y^2+12y-1=0$, and drop the tiny $y^2$ to get $y\\approx\\frac{1}{12}$.\n(True value: $6.08276\\ldots$)",
+   "distractors": [
+    "$\\approx6.167$",
+    "$\\approx6.037$",
+    "$\\approx6.077$"
+   ],
+   "hint": "Take one Newton step from $x_0=6$."
+  },
+  {
+   "id": "3-bisection-method",
+   "section": "3.4",
+   "name": "Bisection method (B)",
+   "kind": "concept",
+   "page": 45,
+   "prompt": "Describe the bisection method for solving $f(x)=0$ (with $f$ continuous) and its convergence behavior.",
+   "answer": "Halve a sign-change bracket each step; linear convergence, guaranteed once bracketed",
+   "explanation": "Start with $a_0,b_0$ such that $f(a_0)<0<f(b_0)$; continuity guarantees a root between them.\nEvaluate $f$ at the midpoint and keep whichever half still has a sign change; stop when $|f|$ or the interval is small enough.\nThe error shrinks by a constant factor each step (linear convergence), slower than Newton, but convergence is guaranteed once a bracket exists and no derivative is needed.",
+   "distractors": [
+    "Halve a sign-change bracket each step; quadratic convergence, guaranteed once bracketed",
+    "Halve a sign-change bracket each step; linear convergence, may diverge from a poor start",
+    "Use tangent lines at both endpoints; superlinear convergence, not guaranteed"
+   ]
+  },
+  {
+   "id": "3-secant-method",
+   "section": "3.4",
+   "name": "Secant method (B)",
+   "kind": "concept",
+   "page": 45,
+   "prompt": "What is the secant-method update for solving $f(x)=0$, and what is its order of convergence?",
+   "answer": "$x_{n+1}=x_n-f(x_n)\\frac{x_n-x_{n-1}}{f(x_n)-f(x_{n-1})}$; order $\\frac{1+\\sqrt5}{2}$",
+   "explanation": "It is Newton's method with $f'(x_n)$ replaced by the slope through the last two iterates, $\\frac{f(x_n)-f(x_{n-1})}{x_n-x_{n-1}}$.\nIt needs two starting values but no derivative, which helps when $f'$ is costly or unavailable.\nIts order is the golden ratio $\\approx1.618$: faster than bisection (linear), slower than Newton (quadratic). Like Newton, it may fail from a poor start.",
+   "distractors": [
+    "$x_{n+1}=x_n-f(x_n)\\frac{x_n-x_{n-1}}{f(x_n)-f(x_{n-1})}$; order $2$",
+    "$x_{n+1}=x_n-f(x_n)\\frac{f(x_n)-f(x_{n-1})}{x_n-x_{n-1}}$; order $\\frac{1+\\sqrt5}{2}$",
+    "$x_{n+1}=\\frac{x_n+x_{n-1}}{2}$; order $\\frac{1+\\sqrt5}{2}$"
+   ]
+  },
+  {
+   "id": "3-lagrange-multipliers",
+   "section": "3.4",
+   "name": "Lagrange multipliers",
+   "kind": "concept",
+   "page": 45,
+   "prompt": "What is the first-order necessary condition for an extremum of $f(\\mathbf{x})$ subject to equality constraints $g_1(\\mathbf{x})=0,\\dots,g_k(\\mathbf{x})=0$?",
+   "answer": "$\\nabla f+\\sum_{i=1}^k\\lambda_i\\nabla g_i=0$, plus all constraints $g_i=0$",
+   "explanation": "At a constrained optimum you cannot improve $f$ by moving along the constraint surface, so $\\nabla f$ must be a linear combination of the constraint gradients (the surface normals).\nThe coefficients $\\lambda_i$ are the Lagrange multipliers. Solve the $n$ gradient equations together with the $k$ constraints for the $n+k$ unknowns.\nThis is the equality-constrained special case of the KKT conditions.",
+   "distractors": [
+    "$\\nabla f=0$ and $\\nabla g_i=0$ for every $i$",
+    "$\\nabla f+\\sum_{i=1}^k\\lambda_i g_i=0$, plus all constraints $g_i=0$",
+    "$\\nabla f\\cdot\\nabla g_i=0$ for every $i$, plus all constraints $g_i=0$"
+   ]
+  },
+  {
+   "id": "3-distance-origin-plane",
+   "section": "3.4",
+   "name": "Distance from origin to a plane",
+   "kind": "problem",
+   "page": 46,
+   "prompt": "What is the distance from the origin to the plane $2x+3y+4z=12$?",
+   "answer": "$\\frac{12}{\\sqrt{29}}\\approx2.228$",
+   "explanation": "Minimize $x^2+y^2+z^2$ subject to $2x+3y+4z=12$. The Lagrange conditions $2x=2\\mu$, $2y=3\\mu$, $2z=4\\mu$ say the closest point is a multiple of the normal vector $(2,3,4)$.\nSubstituting into the constraint gives the point $\\frac{12}{29}(2,3,4)=\\left(\\frac{24}{29},\\frac{36}{29},\\frac{48}{29}\\right)$, whose length is $\\frac{12}{29}\\sqrt{29}=\\frac{12}{\\sqrt{29}}$.\nGeneral formula: the distance from the origin to $ax+by+cz=d$ is $\\frac{|d|}{\\sqrt{a^2+b^2+c^2}}$.",
+   "distractors": [
+    "$\\frac{12}{29}\\approx0.414$",
+    "$\\frac{12}{9}\\approx1.333$",
+    "$\\frac{\\sqrt{29}}{12}\\approx0.449$"
+   ],
+   "hint": "Minimize squared distance with a Lagrange multiplier; the answer lies along the normal."
+  },
+  {
+   "id": "3-separable-ode",
+   "section": "3.5",
+   "name": "Separable differential equations",
+   "kind": "concept",
+   "page": 47,
+   "prompt": "How do you solve a separable ODE $\\frac{dy}{dx}=g(x)h(y)$?",
+   "answer": "Separate and integrate: $\\int\\frac{dy}{h(y)}=\\int g(x)\\,dx+C$",
+   "explanation": "Move all $y$-terms to one side and all $x$-terms to the other: $\\frac{dy}{h(y)}=g(x)\\,dx$.\nIntegrate both sides, solve for $y$ if possible, and use the initial condition to fix $C$.\nWatch for constant solutions $y=y_0$ with $h(y_0)=0$, which can be lost when dividing by $h(y)$.",
+   "distractors": [
+    "Separate and integrate: $\\int h(y)\\,dy=\\int g(x)\\,dx+C$",
+    "Separate and integrate: $\\int\\frac{dy}{h(y)}=\\int\\frac{dx}{g(x)}+C$",
+    "Multiply by the integrating factor $e^{\\int g(x)\\,dx}$ and integrate $h(y)$"
+   ]
+  },
+  {
+   "id": "3-ode-y-prime-6xy",
+   "section": "3.5",
+   "name": "Solve y' + 6xy = 0 (A)",
+   "kind": "problem",
+   "page": 47,
+   "prompt": "Solve $y'+6xy=0$ with $y(0)=1$.",
+   "answer": "$y=e^{-3x^2}$",
+   "explanation": "Separate: $\\frac{dy}{y}=-6x\\,dx$.\nIntegrate: $\\ln|y|=-3x^2+C$, so $y=Ae^{-3x^2}$.\nThe condition $y(0)=1$ gives $A=1$. Check: $y'=-6xe^{-3x^2}=-6xy$.",
+   "distractors": [
+    "$y=e^{-6x^2}$",
+    "$y=e^{3x^2}$",
+    "$y=1-3x^2$"
+   ],
+   "hint": "Separate variables: $\\frac{dy}{y}=-6x\\,dx$."
+  },
+  {
+   "id": "3-ode-x-minus-y-over-x-plus-y",
+   "section": "3.5",
+   "name": "Solve y' = (x-y)/(x+y) (B)",
+   "kind": "problem",
+   "page": 47,
+   "prompt": "Solve $y'=\\frac{x-y}{x+y}$ (give the general solution in implicit form).",
+   "answer": "$y^2+2xy-x^2=C$",
+   "explanation": "Substitute $z=x+y$, so $z'=1+y'=1+\\frac{x-(z-x)}{z}=\\frac{2x}{z}$.\nThis is separable: $z\\,dz=2x\\,dx\\Rightarrow z^2=2x^2+C$.\nBack-substituting, $(x+y)^2-2x^2=C$, i.e. $y^2+2xy-x^2=C$.\nCheck by implicit differentiation: $2yy'+2y+2xy'-2x=0\\Rightarrow y'=\\frac{x-y}{x+y}$.",
+   "distractors": [
+    "$y^2-2xy-x^2=C$",
+    "$y^2+2xy+x^2=C$",
+    "$x^2+y^2=C$"
+   ],
+   "hint": "Try the substitution $z=x+y$."
+  },
+  {
+   "id": "3-integrating-factor",
+   "section": "3.5",
+   "name": "First-order linear ODE: integrating factor",
+   "kind": "concept",
+   "page": 47,
+   "prompt": "For the first-order linear ODE $y'+P(x)y=Q(x)$, what is the integrating factor $I(x)$ and the resulting solution?",
+   "answer": "$I=e^{\\int P\\,dx}$ and $y=\\frac{1}{I}\\int I\\,Q\\,dx$",
+   "explanation": "Multiply the ODE by $I(x)$ chosen so the left side is an exact derivative: $Iy'+IPy=(Iy)'$ requires $I'=IP$, whose solution is $I=e^{\\int P\\,dx}$ (no constant needed; it would just rescale both sides).\nThen $(Iy)'=IQ$, so $Iy=\\int IQ\\,dx+C$ and $y=\\frac{1}{I}\\left(\\int IQ\\,dx+C\\right)$.\nThe integration constant is where the initial condition enters.",
+   "distractors": [
+    "$I=e^{-\\int P\\,dx}$ and $y=\\frac{1}{I}\\int I\\,Q\\,dx$",
+    "$I=e^{\\int Q\\,dx}$ and $y=\\frac{1}{I}\\int I\\,P\\,dx$",
+    "$I=\\int P\\,dx$ and $y=I\\int Q\\,dx$"
+   ]
+  },
+  {
+   "id": "3-ode-first-order-example",
+   "section": "3.5",
+   "name": "Solve y' + y/x = 1/x^2",
+   "kind": "problem",
+   "page": 48,
+   "prompt": "Solve $y'+\\frac{y}{x}=\\frac{1}{x^2}$ for $x>0$ with $y(1)=1$.",
+   "answer": "$y=\\frac{\\ln x+1}{x}$",
+   "explanation": "Here $P=\\frac1x$ and $Q=\\frac{1}{x^2}$, so the integrating factor is $e^{\\int dx/x}=e^{\\ln x}=x$.\nMultiplying through: $(xy)'=xy'+y=\\frac1x$.\nIntegrate: $xy=\\ln x+C$. The condition $y(1)=1$ gives $C=1$, so $y=\\frac{\\ln x+1}{x}$.",
+   "distractors": [
+    "$y=\\frac{\\ln x}{x}+1$",
+    "$y=\\frac{1}{x}$",
+    "$y=\\frac{1-\\ln x}{x}$"
+   ],
+   "hint": "The integrating factor is $e^{\\int dx/x}$."
+  },
+  {
+   "id": "3-char-eq-distinct-roots",
+   "section": "3.5",
+   "name": "Homogeneous ODE: distinct real roots",
+   "kind": "concept",
+   "page": 49,
+   "prompt": "For $ay''+by'+cy=0$ with constant coefficients, suppose the characteristic equation $ar^2+br+c=0$ has distinct real roots $r_1\\ne r_2$. What is the general solution?",
+   "answer": "$y=c_1e^{r_1x}+c_2e^{r_2x}$",
+   "explanation": "Try $y=e^{rx}$: substituting gives $e^{rx}(ar^2+br+c)=0$, so each root of the characteristic equation yields a solution.\nTwo distinct roots give two linearly independent solutions, and by linearity any combination $c_1y_1+c_2y_2$ also solves the equation.\nThe two constants are fixed by two initial conditions.",
+   "distractors": [
+    "$y=(c_1+c_2x)e^{r_1x}$",
+    "$y=c_1e^{(r_1+r_2)x}$",
+    "$y=c_1\\cos(r_1x)+c_2\\sin(r_2x)$"
+   ]
+  },
+  {
+   "id": "3-char-eq-repeated-root",
+   "section": "3.5",
+   "name": "Homogeneous ODE: repeated root",
+   "kind": "concept",
+   "page": 49,
+   "prompt": "For $ay''+by'+cy=0$ with constant coefficients, suppose the characteristic equation has a repeated real root $r$. What is the general solution?",
+   "answer": "$y=c_1e^{rx}+c_2xe^{rx}$",
+   "explanation": "With a double root, $e^{rx}$ supplies only one independent solution ($c_1e^{rx}+c_2e^{rx}$ collapses to one constant).\nThe second independent solution is $xe^{rx}$; substituting it works because a double root satisfies both $ar^2+br+c=0$ and $2ar+b=0$.",
+   "distractors": [
+    "$y=c_1e^{rx}+c_2e^{rx}$",
+    "$y=c_1e^{rx}+c_2x^2e^{rx}$",
+    "$y=c_1e^{rx}+c_2e^{-rx}$"
+   ]
+  },
+  {
+   "id": "3-char-eq-complex-roots",
+   "section": "3.5",
+   "name": "Homogeneous ODE: complex roots",
+   "kind": "concept",
+   "page": 49,
+   "prompt": "For $ay''+by'+cy=0$ with constant coefficients, suppose the characteristic roots are complex, $r=\\alpha\\pm i\\beta$. What is the real general solution?",
+   "answer": "$y=e^{\\alpha x}(c_1\\cos\\beta x+c_2\\sin\\beta x)$",
+   "explanation": "The complex exponentials $e^{(\\alpha\\pm i\\beta)x}=e^{\\alpha x}(\\cos\\beta x\\pm i\\sin\\beta x)$ solve the equation (Euler's formula).\nTaking suitable combinations gives the two real solutions $e^{\\alpha x}\\cos\\beta x$ and $e^{\\alpha x}\\sin\\beta x$.\nThe real part $\\alpha$ controls exponential growth or decay; the imaginary part $\\beta$ sets the oscillation frequency.",
+   "distractors": [
+    "$y=e^{\\beta x}(c_1\\cos\\alpha x+c_2\\sin\\alpha x)$",
+    "$y=c_1e^{\\alpha x}+c_2e^{\\beta x}$",
+    "$y=e^{\\alpha x}(c_1\\cosh\\beta x+c_2\\sinh\\beta x)$"
+   ]
+  },
+  {
+   "id": "3-ode-homogeneous-example",
+   "section": "3.5",
+   "name": "Solve y'' + y' + y = 0",
+   "kind": "problem",
+   "page": 49,
+   "prompt": "Find the general solution of $y''+y'+y=0$.",
+   "answer": "$y=e^{-x/2}\\left(c_1\\cos\\frac{\\sqrt3}{2}x+c_2\\sin\\frac{\\sqrt3}{2}x\\right)$",
+   "explanation": "The characteristic equation $r^2+r+1=0$ has discriminant $1-4=-3<0$, so $r=-\\frac12\\pm\\frac{\\sqrt3}{2}i$.\nWith $\\alpha=-\\frac12$ and $\\beta=\\frac{\\sqrt3}{2}$, the general solution is $e^{\\alpha x}(c_1\\cos\\beta x+c_2\\sin\\beta x)$: a decaying oscillation.",
+   "distractors": [
+    "$y=e^{x/2}\\left(c_1\\cos\\frac{\\sqrt3}{2}x+c_2\\sin\\frac{\\sqrt3}{2}x\\right)$",
+    "$y=e^{-x/2}\\left(c_1\\cos\\sqrt3x+c_2\\sin\\sqrt3x\\right)$",
+    "$y=e^{-\\sqrt3x/2}\\left(c_1\\cos\\frac{x}{2}+c_2\\sin\\frac{x}{2}\\right)$"
+   ],
+   "hint": "Solve $r^2+r+1=0$."
+  },
+  {
+   "id": "3-nonhomogeneous-structure",
+   "section": "3.5",
+   "name": "Nonhomogeneous linear equations",
+   "kind": "concept",
+   "page": 49,
+   "prompt": "How is the general solution of the nonhomogeneous equation $ay''+by'+cy=d(x)$ built?",
+   "answer": "$y=y_p+y_g$: one particular solution plus the general homogeneous solution",
+   "explanation": "If $y_p$ solves the full equation and $y_g$ is the general solution with $d(x)=0$, then by linearity $y_p+y_g$ solves the full equation.\nEvery solution has this form, because the difference of two solutions of the full equation solves the homogeneous one.\nWhen $d(x)$ is a polynomial, try a particular solution that is a polynomial of the same degree (undetermined coefficients).",
+   "distractors": [
+    "$y=y_p\\cdot y_g$: one particular solution times the general homogeneous solution",
+    "$y=y_p$: any single particular solution is already the general solution",
+    "$y=y_g+d(x)$: add the forcing term to the homogeneous solution"
+   ]
+  },
+  {
+   "id": "3-ode-rhs-constant",
+   "section": "3.5",
+   "name": "Solve y'' + y' + y = 1",
+   "kind": "problem",
+   "page": 50,
+   "prompt": "Find the general solution of $y''+y'+y=1$.",
+   "answer": "$y=e^{-x/2}\\left(c_1\\cos\\frac{\\sqrt3}{2}x+c_2\\sin\\frac{\\sqrt3}{2}x\\right)+1$",
+   "explanation": "The homogeneous part is the same as for $y''+y'+y=0$: $y_g=e^{-x/2}\\left(c_1\\cos\\frac{\\sqrt3}{2}x+c_2\\sin\\frac{\\sqrt3}{2}x\\right)$.\nA constant right-hand side suggests a constant particular solution: $y_p=k$ gives $k=1$.\nSo $y=y_g+1$.",
+   "distractors": [
+    "$y=e^{-x/2}\\left(c_1\\cos\\frac{\\sqrt3}{2}x+c_2\\sin\\frac{\\sqrt3}{2}x\\right)+x$",
+    "$y=e^{-x/2}\\left(c_1\\cos\\frac{\\sqrt3}{2}x+c_2\\sin\\frac{\\sqrt3}{2}x\\right)-1$",
+    "$y=e^{-x/2}\\left(c_1\\cos\\frac{\\sqrt3}{2}x+c_2\\sin\\frac{\\sqrt3}{2}x\\right)+x-1$"
+   ],
+   "hint": "Guess a constant particular solution."
+  },
+  {
+   "id": "3-ode-rhs-x",
+   "section": "3.5",
+   "name": "Solve y'' + y' + y = x",
+   "kind": "problem",
+   "page": 50,
+   "prompt": "Find a particular solution $y_p$ of $y''+y'+y=x$.",
+   "answer": "$y_p=x-1$",
+   "explanation": "Try a linear polynomial $y_p=mx+n$. Then $y_p''=0$ and $y_p'=m$, so the equation becomes $m+mx+n=x$.\nMatching coefficients: $m=1$ and $m+n=0$, so $n=-1$.\nThe general solution is $y=e^{-x/2}\\left(c_1\\cos\\frac{\\sqrt3}{2}x+c_2\\sin\\frac{\\sqrt3}{2}x\\right)+x-1$.",
+   "distractors": [
+    "$y_p=x$",
+    "$y_p=x+1$",
+    "$y_p=x-2$"
+   ],
+   "hint": "Try $y_p=mx+n$ and match coefficients."
+  },
+  {
+   "id": "3-dot-product-angle",
+   "section": "3.6",
+   "name": "Inner product and angle",
+   "kind": "concept",
+   "page": 51,
+   "prompt": "How is the angle $\\theta$ between vectors $x,y\\in\\mathbb{R}^n$ related to the dot product, and what does this say about correlation?",
+   "answer": "$\\cos\\theta=\\frac{x^Ty}{\\|x\\|\\|y\\|}$; correlation is the cosine of the angle",
+   "explanation": "The inner product is $x^Ty=\\sum_i x_iy_i$ and the Euclidean norm is $\\|x\\|=\\sqrt{x^Tx}$. Dividing the dot product by both lengths gives $\\cos\\theta$; $x^Ty=0$ means orthogonal.\nFor centered random variables viewed as vectors, covariance plays the role of the inner product and standard deviation the length, so $\\rho=\\cos\\theta$: uncorrelated means orthogonal.",
+   "distractors": [
+    "$\\cos\\theta=x^Ty$; correlation is the dot product itself",
+    "$\\sin\\theta=\\frac{x^Ty}{\\|x\\|\\|y\\|}$; correlation is the sine of the angle",
+    "$\\cos\\theta=\\frac{\\|x-y\\|}{\\|x\\|\\|y\\|}$; correlation is the cosine of the angle"
+   ]
+  },
+  {
+   "id": "3-correlation-bounds-angle",
+   "section": "3.6",
+   "name": "Correlation bounds (vector view)",
+   "kind": "problem",
+   "page": 51,
+   "prompt": "Random variables $x,y,z$ satisfy $\\rho_{xy}=0.8$ and $\\rho_{xz}=0.8$. What are the maximum and minimum possible values of $\\rho_{yz}$?",
+   "answer": "Maximum $1$, minimum $0.28$",
+   "explanation": "Treat the variables as unit vectors, with correlation equal to the cosine of the angle. Let $\\cos\\theta=0.8$, so $\\sin\\theta=0.6$.\nThe angle between $y$ and $z$ is smallest (zero) when they coincide, giving $\\rho_{yz}=1$.\nIt is largest, $2\\theta$, when $y$ and $z$ sit on opposite sides of $x$ in one plane: $\\rho_{yz}=\\cos2\\theta=\\cos^2\\theta-\\sin^2\\theta=0.64-0.36=0.28$.\nGeneral rule: $\\rho_{yz}\\in\\left[\\rho_{xy}\\rho_{xz}\\pm\\sqrt{(1-\\rho_{xy}^2)(1-\\rho_{xz}^2)}\\right]=[0.64\\pm0.36]$.",
+   "distractors": [
+    "Maximum $1$, minimum $0.64$",
+    "Maximum $1$, minimum $-1$",
+    "Maximum $0.8$, minimum $0.28$"
+   ],
+   "hint": "Correlations are cosines of angles between vectors."
+  },
+  {
+   "id": "3-qr-decomposition",
+   "section": "3.6",
+   "name": "QR decomposition",
+   "kind": "concept",
+   "page": 52,
+   "prompt": "Given a QR decomposition $A=QR$ of a nonsingular matrix ($Q$ orthogonal, $R$ upper triangular), how do you solve $Ax=b$?",
+   "answer": "Solve $Rx=Q^Tb$ by back substitution, starting from $x_n$",
+   "explanation": "Because $Q$ is orthogonal, $Q^{-1}=Q^T$, so $QRx=b$ becomes $Rx=Q^Tb$ at the cost of one matrix-vector product.\n$R$ is upper triangular, so the last equation involves only $x_n$; solve it, substitute upward, and continue to $x_1$.\nFor nonsingular $A$ the factorization is unique if $R$ has a positive diagonal; it is typically computed with (modified) Gram-Schmidt or Householder reflections.",
+   "distractors": [
+    "Solve $Rx=Qb$ by back substitution, starting from $x_n$",
+    "Solve $Rx=Q^Tb$ by forward substitution, starting from $x_1$",
+    "Solve $Qx=R^{-1}b$ by back substitution, starting from $x_n$"
+   ]
+  },
+  {
+   "id": "3-least-squares",
+   "section": "3.6",
+   "name": "Linear least squares from scratch",
+   "kind": "problem",
+   "page": 52,
+   "prompt": "Your language has no regression function. How would you compute the OLS coefficients $\\hat\\beta$ for $Y=X\\beta+\\varepsilon$, where $X$ is $n\\times p$ (including an intercept column)?",
+   "answer": "Solve the normal equations $X^TX\\hat\\beta=X^TY$, e.g. via QR",
+   "explanation": "Minimize $f(\\beta)=(Y-X\\beta)^T(Y-X\\beta)$. Its gradient is $-2X^T(Y-X\\beta)$; setting it to zero gives the $p\\times p$ symmetric system $(X^TX)\\hat\\beta=X^TY$.\nSolve that system with QR (or Cholesky, since $X^TX$ is positive definite when $X$ has full column rank).\nIf a matrix inverse routine exists, $\\hat\\beta=(X^TX)^{-1}X^TY$ works too, but explicit inversion is numerically fragile when $X^TX$ is nearly singular or badly scaled.",
+   "distractors": [
+    "Compute $\\hat\\beta=X^{-1}Y$ directly",
+    "Solve $XX^T\\hat\\beta=X^TY$, e.g. via QR",
+    "Compute $\\hat\\beta=(X^TY)^{-1}X^TX$"
+   ],
+   "hint": "Set the gradient of the sum of squared residuals to zero."
+  },
+  {
+   "id": "3-ols-assumptions",
+   "section": "3.6",
+   "name": "Assumptions of linear regression",
+   "kind": "concept",
+   "page": 53,
+   "prompt": "What are the classical assumptions behind ordinary least squares regression $Y=X\\beta+\\varepsilon$?",
+   "answer": "Linearity; zero-mean, homoscedastic, uncorrelated errors; no perfect collinearity; exogeneity",
+   "explanation": "- The model is linear: $Y=X\\beta+\\varepsilon$.\n- $E[\\varepsilon_i]=0$ for every observation.\n- $\\mathrm{var}(\\varepsilon_i)=\\sigma^2$ (constant variance) and $E[\\varepsilon_i\\varepsilon_j]=0$ for $i\\ne j$ (uncorrelated errors).\n- No perfect multicollinearity, so $X^TX$ is invertible.\n- Errors are independent of the regressors.\nUnder these conditions OLS is the best linear unbiased estimator (BLUE); in practice some are violated, which motivates much of econometrics.",
+   "distractors": [
+    "Linearity; zero-mean errors whose variance grows with $X$; no perfect collinearity; exogeneity",
+    "Linearity; zero-mean, homoscedastic, autocorrelated errors; perfectly collinear regressors",
+    "Linearity; zero-mean, homoscedastic errors; collinear regressors; errors correlated with $X$"
+   ]
+  },
+  {
+   "id": "3-matrix-calculus",
+   "section": "3.6",
+   "name": "Gradient of a quadratic form",
+   "kind": "concept",
+   "page": 53,
+   "prompt": "For a constant square matrix $A$, what is the gradient $\\frac{\\partial}{\\partial x}\\left(x^TAx\\right)$?",
+   "answer": "$(A+A^T)x$, which is $2Ax$ when $A$ is symmetric",
+   "explanation": "Write $x^TAx=\\sum_{i,j}A_{ij}x_ix_j$. Differentiating in $x_k$ gives $\\sum_jA_{kj}x_j+\\sum_iA_{ik}x_i=(Ax+A^Tx)_k$.\nThe Hessian is $A+A^T$ (that is, $2A$ for symmetric $A$).\nCompanion rules: $\\frac{\\partial a^Tx}{\\partial x}=a$ and $\\frac{\\partial Ax}{\\partial x}=A$. Together they give the OLS normal equations.",
+   "distractors": [
+    "$Ax$, regardless of whether $A$ is symmetric",
+    "$A+A^T$, which is $2A$ when $A$ is symmetric",
+    "$x^T(A+A^T)x$, which is $2x^TAx$ when $A$ is symmetric"
+   ]
+  },
+  {
+   "id": "3-determinant-properties",
+   "section": "3.6",
+   "name": "Determinant properties",
+   "kind": "concept",
+   "page": 54,
+   "prompt": "For $n\\times n$ matrices $A$ and $B$ (with $A$ invertible where needed), what are $\\det(A^T)$, $\\det(AB)$ and $\\det(A^{-1})$?",
+   "answer": "$\\det A$, $\\det A\\det B$, $1/\\det A$",
+   "explanation": "Transposing does not change the determinant, and the determinant is multiplicative.\nApplying multiplicativity to $AA^{-1}=I$ gives $\\det A\\cdot\\det A^{-1}=1$.\nSmall cases: $\\det\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}=ad-bc$; for a $3\\times3$ matrix with rows $(a,b,c),(d,e,f),(g,h,i)$ it is $aei+bfg+cdh-ceg-afh-bdi$.\nBeware: $\\det(A+B)\\ne\\det A+\\det B$ in general.",
+   "distractors": [
+    "$\\det A$, $\\det A+\\det B$, $1/\\det A$",
+    "$-\\det A$, $\\det A\\det B$, $1/\\det A$",
+    "$\\det A$, $\\det A\\det B$, $-\\det A$"
+   ]
+  },
+  {
+   "id": "3-eigen-trace-det",
+   "section": "3.6",
+   "name": "Eigenvalues, trace and determinant",
+   "kind": "concept",
+   "page": 54,
+   "prompt": "How are the eigenvalues $\\lambda_1,\\dots,\\lambda_n$ of an $n\\times n$ matrix $A$ related to its determinant and its trace?",
+   "answer": "$\\prod_i\\lambda_i=\\det A$ and $\\sum_i\\lambda_i=\\operatorname{tr}A$",
+   "explanation": "Eigenvalues are the roots of the characteristic equation $\\det(A-\\lambda I)=0$.\nComparing the constant term and the $\\lambda^{n-1}$ coefficient of $\\det(A-\\lambda I)=\\prod_i(\\lambda_i-\\lambda)$ with the matrix entries gives $\\det A=\\prod_i\\lambda_i$ and $\\operatorname{tr}A=\\sum_iA_{ii}=\\sum_i\\lambda_i$ (with multiplicity).\nFor a $2\\times2$ matrix these two facts alone determine the eigenvalues. Also, $A$ is singular exactly when 0 is an eigenvalue.",
+   "distractors": [
+    "$\\sum_i\\lambda_i=\\det A$ and $\\prod_i\\lambda_i=\\operatorname{tr}A$",
+    "$\\prod_i\\lambda_i=\\operatorname{tr}A$ and $\\max_i\\lambda_i=\\det A$",
+    "$\\prod_i\\lambda_i=\\det A$ and $\\sum_i\\lambda_i^2=\\operatorname{tr}A$"
+   ]
+  },
+  {
+   "id": "3-diagonalization",
+   "section": "3.6",
+   "name": "Diagonalization",
+   "kind": "concept",
+   "page": 54,
+   "prompt": "If $A$ has $n$ linearly independent eigenvectors forming the columns of $X$, how can you write $A$, and how do you compute $A^k$ efficiently?",
+   "answer": "$A=XDX^{-1}$ with $D=\\mathrm{diag}(\\lambda_i)$, so $A^k=XD^kX^{-1}$",
+   "explanation": "Column by column, $Ax_i=\\lambda_ix_i$ says $AX=XD$. Independent eigenvectors make $X$ invertible, so $A=XDX^{-1}$.\nThen $A^k=XDX^{-1}XDX^{-1}\\cdots=XD^kX^{-1}$, and $D^k$ just raises each eigenvalue to the $k$-th power: handy for Markov chains and linear recurrences.\n$n$ distinct eigenvalues guarantee diagonalizability; for symmetric $A$ the eigenvectors can be chosen orthonormal, so $X^{-1}=X^T$.",
+   "distractors": [
+    "$A=X^{-1}DX$ with $D=\\mathrm{diag}(\\lambda_i)$, so $A^k=X^{-1}D^kX$",
+    "$A=XDX^{-1}$ with $D=\\mathrm{diag}(\\lambda_i)$, so $A^k=X^kD^kX^{-k}$",
+    "$A=XDX^{-1}$ with $D=\\mathrm{diag}(\\lambda_i)$, so $A^k=XD^{k}X^{-k}$"
+   ]
+  },
+  {
+   "id": "3-eigen-2x2",
+   "section": "3.6",
+   "name": "Eigenvalues of [[2,1],[1,2]]",
+   "kind": "problem",
+   "page": 55,
+   "prompt": "Find the eigenvalues and eigenvectors of $A=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}$.",
+   "answer": "$\\lambda=3$ with $(1,1)^T$; $\\lambda=1$ with $(1,-1)^T$",
+   "explanation": "Quick route: $\\operatorname{tr}A=4=\\lambda_1+\\lambda_2$ and $\\det A=3=\\lambda_1\\lambda_2$, so the eigenvalues are 3 and 1. (Equivalently, solve $(2-\\lambda)^2-1=0$.)\nFor $\\lambda=3$: $2x_1+x_2=3x_1\\Rightarrow x_1=x_2$, normalized eigenvector $\\frac{1}{\\sqrt2}(1,1)^T$.\nFor $\\lambda=1$: $x_1+x_2=0$, normalized eigenvector $\\frac{1}{\\sqrt2}(1,-1)^T$.\nThe two eigenvectors are orthogonal, as expected for a symmetric matrix.",
+   "distractors": [
+    "$\\lambda=3$ with $(1,-1)^T$; $\\lambda=1$ with $(1,1)^T$",
+    "$\\lambda=2$ with $(1,0)^T$; $\\lambda=2$ with $(0,1)^T$",
+    "$\\lambda=4$ with $(1,1)^T$; $\\lambda=0$ with $(1,-1)^T$"
+   ],
+   "hint": "Use trace = sum and determinant = product of the eigenvalues."
+  },
+  {
+   "id": "3-psd-criteria",
+   "section": "3.6",
+   "name": "Positive semidefinite matrix",
+   "kind": "concept",
+   "page": 56,
+   "prompt": "Give equivalent conditions for a symmetric matrix $A$ to be positive semidefinite.",
+   "answer": "$x^TAx\\ge0$ for all $x$ ⇔ all eigenvalues $\\ge0$ ⇔ all principal minors $\\ge0$",
+   "explanation": "A symmetric matrix has real eigenvalues and an orthonormal eigenbasis $q_i$, so $x^TAx=\\sum_i\\lambda_i(q_i^Tx)^2$, which is $\\ge0$ for all $x$ exactly when every $\\lambda_i\\ge0$.\nCaution: for semidefiniteness you need **all** principal minors $\\ge0$, not just the leading (upper-left) ones; $\\mathrm{diag}(0,-1)$ has leading minors $0,0$ yet is not PSD. (The book states only the leading-minor version.)\nA quick necessary check is that all diagonal entries are $\\ge0$. Every covariance or correlation matrix is PSD.",
+   "distractors": [
+    "$x^TAx\\ge0$ for all $x$ ⇔ all entries $\\ge0$ ⇔ all diagonal entries $\\ge0$",
+    "$x^TAx\\ge0$ for all $x$ ⇔ $\\det A\\ge0$ ⇔ $\\operatorname{tr}A\\ge0$",
+    "$x^TAx\\ge0$ for all $x$ ⇔ some eigenvalue $\\ge0$ ⇔ $\\det A\\ge0$"
+   ]
+  },
+  {
+   "id": "3-pd-criteria",
+   "section": "3.6",
+   "name": "Positive definite matrix",
+   "kind": "concept",
+   "page": 56,
+   "prompt": "Give equivalent conditions for a symmetric matrix $A$ to be positive definite.",
+   "answer": "$x^TAx>0$ for all $x\\ne0$ ⇔ all eigenvalues $>0$ ⇔ all leading principal minors $>0$",
+   "explanation": "Positive definiteness is the strict version of PSD.\nThe leading-minor test is Sylvester's criterion: the determinants of the upper-left $1\\times1,2\\times2,\\dots,n\\times n$ blocks must all be positive.\nA covariance matrix is positive definite exactly when no nontrivial linear combination of the variables is constant (no perfect linear dependence). Positive definiteness is what Cholesky decomposition requires.",
+   "distractors": [
+    "$x^TAx>0$ for all $x\\ne0$ ⇔ all entries $>0$ ⇔ $\\det A>0$",
+    "$x^TAx>0$ for all $x\\ne0$ ⇔ all eigenvalues $>0$ ⇔ $\\operatorname{tr}A>0$",
+    "$x^TAx>0$ for all $x\\ne0$ ⇔ all eigenvalues $>0$ ⇔ all diagonal entries $>0$"
+   ]
+  },
+  {
+   "id": "3-correlation-bounds-psd",
+   "section": "3.6",
+   "name": "Correlation bounds (PSD view)",
+   "kind": "problem",
+   "page": 56,
+   "prompt": "With $\\rho_{xy}=\\rho_{xz}=0.8$ and unknown $\\rho=\\rho_{yz}$, use positive semidefiniteness of the $3\\times3$ correlation matrix to find the allowed range of $\\rho$.",
+   "answer": "$\\det=-\\rho^2+1.28\\rho-0.28\\ge0$, so $0.28\\le\\rho\\le1$",
+   "explanation": "The correlation matrix is $P=\\begin{pmatrix}1&0.8&0.8\\\\0.8&1&\\rho\\\\0.8&\\rho&1\\end{pmatrix}$.\nIts $1\\times1$ and $2\\times2$ principal minors ($1$, $0.36$, $1-\\rho^2$) are nonnegative whenever $|\\rho|\\le1$, so the binding condition is $\\det P\\ge0$.\nCofactor expansion: $\\det P=(1-\\rho^2)-0.8(0.8-0.8\\rho)+0.8(0.8\\rho-0.8)=-\\rho^2+1.28\\rho-0.28=-(\\rho-1)(\\rho-0.28)$.\nSo $0.28\\le\\rho\\le1$, matching the geometric (angle) argument.",
+   "distractors": [
+    "$\\det=-\\rho^2+1.28\\rho-0.28\\ge0$, so $-1\\le\\rho\\le0.28$",
+    "$\\det=1-\\rho^2\\ge0$, so $-1\\le\\rho\\le1$",
+    "$\\det=\\rho^2-1.28\\rho+0.28\\ge0$, so $\\rho\\le0.28$ or $\\rho\\ge1$"
+   ],
+   "hint": "Require $\\det P\\ge0$ and factor the quadratic in $\\rho$."
+  },
+  {
+   "id": "3-lu-decomposition",
+   "section": "3.6",
+   "name": "LU decomposition",
+   "kind": "concept",
+   "page": 57,
+   "prompt": "If $A=LU$ (lower triangular times upper triangular), how do you solve $Ax=b$ and compute $\\det A$?",
+   "answer": "Solve $Ly=b$, then $Ux=y$; $\\det A=\\prod_iL_{ii}\\prod_iU_{ii}$",
+   "explanation": "Set $y=Ux$. Then $LUx=b$ becomes $Ly=b$, solved by forward substitution, followed by $Ux=y$, solved by back substitution.\nThe determinant of a triangular matrix is the product of its diagonal, and determinants multiply.\nLU falls out of Gaussian elimination and is how determinants are computed in practice (never via the $n!$-term permutation formula).",
+   "distractors": [
+    "Solve $Uy=b$, then $Lx=y$; $\\det A=\\prod_iL_{ii}\\prod_iU_{ii}$",
+    "Solve $Ly=b$, then $Ux=y$; $\\det A=\\sum_iL_{ii}U_{ii}$",
+    "Solve $Ly=b$, then $Ux=y$; $\\det A=\\det L+\\det U$"
+   ]
+  },
+  {
+   "id": "3-cholesky",
+   "section": "3.6",
+   "name": "Cholesky decomposition",
+   "kind": "concept",
+   "page": 57,
+   "prompt": "What is the Cholesky decomposition, and which matrices have one?",
+   "answer": "$A=R^TR$, $R$ upper triangular with positive diagonal; for symmetric positive definite $A$",
+   "explanation": "Cholesky is an LU decomposition with $L=U^T$ (equivalently $A=LL^T$ with $L$ lower triangular). It exists and is unique for every symmetric positive definite matrix.\nIt costs about half as much as a general LU factorization.\nIts main use in quant work: turning a covariance matrix into a recipe for correlated random draws in Monte Carlo simulation.",
+   "distractors": [
+    "$A=R^TR$, $R$ upper triangular with positive diagonal; for any nonsingular $A$",
+    "$A=QR$, $Q$ orthogonal and $R$ upper triangular; for symmetric positive definite $A$",
+    "$A=R^2$, $R$ diagonal with positive entries; for symmetric positive definite $A$"
+   ]
+  },
+  {
+   "id": "3-correlated-normals",
+   "section": "3.6",
+   "name": "Generating correlated normals",
+   "kind": "problem",
+   "page": 57,
+   "prompt": "You can draw independent $N(0,1)$ variables $z_1,z_2$. How do you produce two standard normals $x_1,x_2$ with correlation $\\rho$?",
+   "answer": "$x_1=z_1$, $x_2=\\rho z_1+\\sqrt{1-\\rho^2}\\,z_2$",
+   "explanation": "$\\mathrm{var}(x_2)=\\rho^2+(1-\\rho^2)=1$ and $\\mathrm{cov}(x_1,x_2)=\\mathrm{cov}(z_1,\\rho z_1)=\\rho$; linear combinations of independent normals are normal.\nThis is exactly the Cholesky factor of $\\begin{pmatrix}1&\\rho\\\\ \\rho&1\\end{pmatrix}$, whose lower-triangular factor is $\\begin{pmatrix}1&0\\\\ \\rho&\\sqrt{1-\\rho^2}\\end{pmatrix}$.",
+   "distractors": [
+    "$x_1=z_1$, $x_2=\\rho z_1+(1-\\rho)\\,z_2$",
+    "$x_1=z_1$, $x_2=\\rho z_1+(1-\\rho^2)\\,z_2$",
+    "$x_1=z_1$, $x_2=\\sqrt{\\rho}\\,z_1+\\sqrt{1-\\rho}\\,z_2$"
+   ],
+   "hint": "Keep $x_1=z_1$ and choose weights so that $\\mathrm{var}(x_2)=1$ and $\\mathrm{cov}(x_1,x_2)=\\rho$."
+  },
+  {
+   "id": "3-mvn-simulation-cholesky",
+   "section": "3.6",
+   "name": "Simulating N(mu, Sigma) with Cholesky",
+   "kind": "concept",
+   "page": 58,
+   "prompt": "How do you simulate $X\\sim N(\\mu,\\Sigma)$ in $n$ dimensions, given a Cholesky factorization $\\Sigma=R^TR$ and a vector $Z$ of $n$ independent $N(0,1)$ draws?",
+   "answer": "$X=\\mu+R^TZ$",
+   "explanation": "For $Y=AZ+b$, $\\mathrm{cov}(Y)=A\\,\\mathrm{cov}(Z)\\,A^T$. With $\\mathrm{cov}(Z)=I$ and $A=R^T$, $\\mathrm{cov}(X)=R^TR=\\Sigma$, and the mean is $\\mu$.\nUsing $R$ instead would give covariance $RR^T$, which generally differs from $\\Sigma$; using $\\Sigma$ itself would give $\\Sigma^2$.\nThe two-variable correlated-normal recipe is the special case $n=2$.",
+   "distractors": [
+    "$X=\\mu+RZ$",
+    "$X=\\mu+\\Sigma Z$",
+    "$X=\\mu+(R^T)^{-1}Z$"
+   ],
+   "hint": "$\\mathrm{cov}(AZ)=AA^T$ when $Z$ has identity covariance."
+  },
+  {
+   "id": "3-mvn-simulation-eigen",
+   "section": "3.6",
+   "name": "Simulating N(mu, Sigma) with SVD",
+   "kind": "concept",
+   "page": 58,
+   "prompt": "Instead of Cholesky, how can you simulate $X\\sim N(\\mu,\\Sigma)$ using the eigen-decomposition (SVD) $\\Sigma=UDU^T$ and a vector $Z$ of independent standard normals?",
+   "answer": "$X=\\mu+UD^{1/2}Z$",
+   "explanation": "For a symmetric positive definite $\\Sigma$, the SVD coincides with the eigen-decomposition: $U$ holds orthonormal eigenvectors and $D$ the eigenvalues.\nLet $D^{1/2}=\\mathrm{diag}(\\sqrt{\\lambda_i})$. Then $(UD^{1/2})(UD^{1/2})^T=UDU^T=\\Sigma$, so $\\mathrm{cov}(\\mu+UD^{1/2}Z)=\\Sigma$.\n$UD^{1/2}$ plays the same role as $R^T$ in the Cholesky recipe, and this version also handles singular (merely PSD) covariance matrices.",
+   "distractors": [
+    "$X=\\mu+UDZ$",
+    "$X=\\mu+D^{1/2}UZ$",
+    "$X=\\mu+U^TD^{1/2}Z$"
+   ]
+  }
+ ]
+}

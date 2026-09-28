@@ -1,0 +1,958 @@
+{
+ "chapter": 4,
+ "title": "Probability Theory",
+ "sections": [
+  {
+   "id": "4.1",
+   "title": "Basic Probability Definitions and Set Operations"
+  },
+  {
+   "id": "4.2",
+   "title": "Combinatorial Analysis"
+  },
+  {
+   "id": "4.3",
+   "title": "Conditional Probability and Bayes' formula"
+  }
+ ],
+ "cards": [
+  {
+   "id": "4-probability-of-event",
+   "section": "4.1",
+   "name": "Probability of an event",
+   "kind": "concept",
+   "page": 60,
+   "prompt": "In a discrete sample space $\\Omega$, each outcome $\\omega$ has probability $P(\\omega)$. How is the probability of an event $A\\subseteq\\Omega$ computed, and what must the outcome probabilities satisfy?",
+   "answer": "$P(A)=\\sum_{\\omega\\in A}P(\\omega)$; each $P(\\omega)\\ge0$, summing to 1 over $\\Omega$",
+   "explanation": "An event is just a set of outcomes, so its probability is the total weight of the outcomes it contains.\n- Outcome weights are nonnegative, and the whole sample space carries total weight 1.\n- The ratio $|A|/|\\Omega|$ is only valid when every outcome is equally likely.\nExample: for a fair die and $A=\\{1,3,5\\}$ (odd), $P(A)=\\frac16+\\frac16+\\frac16=\\frac12$.",
+   "distractors": [
+    "$P(A)=\\frac{|A|}{|\\Omega|}$ always; each $P(\\omega)\\ge0$, summing to 1 over $\\Omega$",
+    "$P(A)=\\prod_{\\omega\\in A}P(\\omega)$; each $P(\\omega)\\ge0$, multiplying to 1 over $\\Omega$",
+    "$P(A)=\\max_{\\omega\\in A}P(\\omega)$; each $P(\\omega)\\le1$, with maximum 1 over $\\Omega$"
+   ],
+   "hint": "Think of each outcome as carrying a nonnegative weight."
+  },
+  {
+   "id": "4-mutually-exclusive-union",
+   "section": "4.1",
+   "name": "Union of mutually exclusive events",
+   "kind": "concept",
+   "page": 60,
+   "prompt": "Events $E_1,\\dots,E_N$ are mutually exclusive ($E_i\\cap E_j=\\varnothing$ for $i\\ne j$). What is $P\\left(\\bigcup_{i=1}^N E_i\\right)$?",
+   "answer": "$\\sum_{i=1}^N P(E_i)$",
+   "explanation": "Disjoint events share no outcomes, so nothing is counted twice and the probabilities simply add.\n- $1-\\prod_i(1-P(E_i))$ is the union rule for **independent** events, a different situation.\n- If the events can overlap, you need inclusion–exclusion instead.\nThis additivity is what drives the N-points-on-a-circle solution: the events there are disjoint, so their probabilities can be summed.",
+   "distractors": [
+    "$\\prod_{i=1}^N P(E_i)$",
+    "$1-\\prod_{i=1}^N\\bigl(1-P(E_i)\\bigr)$",
+    "$\\max_i P(E_i)$"
+   ],
+   "hint": "No outcome belongs to two of the events."
+  },
+  {
+   "id": "4-random-variable",
+   "section": "4.1",
+   "name": "Random variable",
+   "kind": "concept",
+   "page": 60,
+   "prompt": "Formally, what is a random variable?",
+   "answer": "A function that maps each outcome in the sample space to a real number",
+   "explanation": "Despite the name, a random variable is a deterministic function $X:\\Omega\\to\\mathbb{R}$; the randomness comes from which outcome $\\omega$ occurs.\n- A subset of $\\Omega$ is an **event**, not a random variable.\n- Example: for a die roll, the face value $X(\\omega)=\\omega$ is a random variable, and so is the indicator of \"the roll is odd\".",
+   "distractors": [
+    "A subset of the sample space made up of several outcomes",
+    "The probability assigned to each individual outcome",
+    "A number drawn uniformly at random from the interval [0, 1]"
+   ]
+  },
+  {
+   "id": "4-indicator-variable",
+   "section": "4.1",
+   "name": "Indicator variable",
+   "kind": "concept",
+   "page": 60,
+   "prompt": "For an event $A$, the indicator variable $I_A$ equals 1 when $A$ occurs and 0 otherwise. What is $E[I_A]$?",
+   "answer": "$E[I_A]=P(A)$",
+   "explanation": "$I_A$ equals 1 with probability $P(A)$ and 0 with probability $1-P(A)$, so $E[I_A]=1\\cdot P(A)+0\\cdot(1-P(A))=P(A)$.\n- $P(A)\\bigl(1-P(A)\\bigr)$ is the **variance** of $I_A$, not its mean.\nIndicators are a workhorse: write a count as a sum of indicators and linearity of expectation often makes a hard expectation easy.",
+   "distractors": [
+    "$E[I_A]=1$",
+    "$E[I_A]=P(A)\\bigl(1-P(A)\\bigr)$",
+    "$E[I_A]=\\frac12$"
+   ]
+  },
+  {
+   "id": "4-coin-toss-game-4-1",
+   "section": "4.1",
+   "name": "Coin toss game (n+1 vs n coins)",
+   "kind": "problem",
+   "page": 61,
+   "prompt": "Player A flips $n+1$ fair coins and player B flips $n$ fair coins. What is the probability that A ends up with strictly more heads than B?",
+   "answer": "$\\frac{1}{2}$",
+   "explanation": "Set aside A's extra coin and compare A's first $n$ coins with B's $n$ coins.\n- By symmetry, P(A ahead) = P(B ahead) $=x$; let P(tie) $=y$, so $2x+y=1$.\n- If A is already ahead, the extra coin can't hurt. If B is ahead, one extra head gives at most a tie, so A still doesn't win.\n- In a tie, the extra coin decides: A wins with probability $\\frac12$.\nSo $P(\\text{A wins})=x+\\frac y2=x+\\frac{1-2x}{2}=\\frac12$, for every $n$.",
+   "distractors": [
+    "$\\frac{n+1}{2n+1}$",
+    "$\\frac{1}{2}+\\frac{1}{2^{n+1}}$",
+    "$\\frac{2}{3}$"
+   ],
+   "hint": "Remove A's extra coin first and use symmetry."
+  },
+  {
+   "id": "4-card-game-4-1",
+   "section": "4.1",
+   "name": "Card game (higher card wins)",
+   "kind": "problem",
+   "page": 61,
+   "prompt": "From a well-shuffled standard 52-card deck (4 cards of each of 13 ranks), you draw one card and the dealer draws another without replacement. You win only if your rank is strictly higher; ties and lower ranks go to the house. What is your probability of winning?",
+   "answer": "$\\frac{8}{17}$",
+   "explanation": "There are three cases: your rank is higher, equal, or lower. By symmetry, higher and lower are equally likely.\n- Tie: whatever you draw, 3 of the remaining 51 cards share your rank, so $P(\\text{tie})=\\frac{3}{51}=\\frac{1}{17}$.\n- Win: $\\frac{1-1/17}{2}=\\frac{8}{17}\\approx 0.47$.\nThe tie going to the house is exactly the house's edge. (With replacement it would be $\\frac{6}{13}$.)",
+   "distractors": [
+    "$\\frac{1}{2}$",
+    "$\\frac{6}{13}$",
+    "$\\frac{9}{17}$"
+   ],
+   "hint": "By symmetry, only the tie probability needs computing."
+  },
+  {
+   "id": "4-drunk-passenger",
+   "section": "4.1",
+   "name": "Drunk passenger",
+   "kind": "problem",
+   "page": 62,
+   "prompt": "100 passengers board a 100-seat plane one at a time; passenger $k$ holds a ticket for seat $k$. Passenger 1 is drunk and takes a uniformly random seat. Each later passenger takes their own seat if it's free and otherwise picks a random free seat. You are passenger 100. What is the probability that you get seat 100?",
+   "answer": "$\\frac{1}{2}$",
+   "explanation": "Only seats #1 and #100 matter. Whenever someone has to choose at random, seat #1 and seat #100 are equally likely picks.\n- If seat #1 is taken first, the displacement chain ends and everyone after (including you) sits in their own seat.\n- If seat #100 is taken first, you lose your seat.\n- Picking any other seat just hands the \"random chooser\" role to a later passenger.\nBy this symmetry, you get seat 100 with probability $\\frac12$ (for any number of passengers $\\ge 2$).",
+   "distractors": [
+    "$\\frac{1}{100}$",
+    "$\\frac{99}{100}$",
+    "$\\frac{1}{e}$"
+   ],
+   "hint": "Focus only on seats #1 and #100: which gets taken first?"
+  },
+  {
+   "id": "4-n-points-on-circle",
+   "section": "4.1",
+   "name": "N points on a circle",
+   "kind": "problem",
+   "page": 63,
+   "prompt": "$N$ points are placed independently and uniformly at random on the circumference of a circle. What is the probability that all of them lie within some semicircle?",
+   "answer": "$\\frac{N}{2^{N-1}}$",
+   "explanation": "For each point $i$, let $E_i$ be the event that the other $N-1$ points all lie in the semicircle running clockwise from point $i$. Each point lands there independently with probability $\\frac12$, so $P(E_i)=\\frac{1}{2^{N-1}}$.\n- The $E_i$ are mutually exclusive: if $E_i$ holds, the gap just counterclockwise of point $i$ is at least half the circle, and a clockwise semicircle starting at any other point would have to cross it.\n- \"All in some semicircle\" is exactly the union of the $E_i$.\nSo the probability is $N\\cdot\\frac{1}{2^{N-1}}$.",
+   "distractors": [
+    "$\\frac{1}{2^{N-1}}$",
+    "$\\frac{N}{2^{N}}$",
+    "$\\frac{N-1}{2^{N-1}}$"
+   ],
+   "hint": "Anchor a semicircle at each point in turn. Can two of those events happen together?"
+  },
+  {
+   "id": "4-n-points-on-circle-3",
+   "section": "4.1",
+   "name": "N points on a circle (N = 3)",
+   "kind": "problem",
+   "page": 63,
+   "prompt": "Three points are placed uniformly at random on a circle. What is the probability that they all lie within some semicircle (equivalently, that their triangle does **not** contain the center)?",
+   "answer": "$\\frac{3}{4}$",
+   "explanation": "Plug $N=3$ into $\\frac{N}{2^{N-1}}$ to get $\\frac34$.\n- Each of the 3 points can be the clockwise start of a semicircle holding the other two, each with probability $\\frac14$, and these events are disjoint.\n- Complement: the random triangle contains the center with probability $\\frac14$, a classic companion fact.",
+   "distractors": [
+    "$\\frac{1}{4}$",
+    "$\\frac{1}{2}$",
+    "$\\frac{3}{8}$"
+   ]
+  },
+  {
+   "id": "4-n-points-on-arc",
+   "section": "4.1",
+   "name": "N points on a circle (short arc)",
+   "kind": "problem",
+   "page": 64,
+   "prompt": "$N$ points are placed uniformly at random on a circle. Fix a fraction $x\\le\\frac12$. What is the probability that all $N$ points fit inside some arc whose length is the fraction $x$ of the circumference?",
+   "answer": "$Nx^{N-1}$",
+   "explanation": "This is the semicircle argument again. For each point $i$, the other $N-1$ points all fall in the clockwise arc of length $x$ starting at $i$ with probability $x^{N-1}$.\n- Because $x\\le\\frac12$, the leftover gap is at least half the circle, so at most one point can serve as the start: the events are disjoint.\n- Summing over the $N$ starting points gives $Nx^{N-1}$, and $x=\\frac12$ recovers $\\frac{N}{2^{N-1}}$.\nFor $x>\\frac12$ the events can overlap and the formula breaks (it can even exceed 1).",
+   "distractors": [
+    "$x^{N-1}$",
+    "$Nx^{N}$",
+    "$x^{N}$"
+   ]
+  },
+  {
+   "id": "4-basic-counting-principle",
+   "section": "4.2",
+   "name": "Basic principle of counting",
+   "kind": "concept",
+   "page": 64,
+   "prompt": "You build a sequence of length $k$: there are $n_1$ choices for the first entry, $n_2$ choices for the second entry (for each first entry), and so on, up to $n_k$ choices for the last. How many sequences are possible?",
+   "answer": "$n_1\\cdot n_2\\cdots n_k$",
+   "explanation": "Each choice at step $j$ combines with every combination of earlier choices, so the counts multiply.\n- Adding the counts is right only when you pick **one** option from several disjoint groups.\nExample: the birthdays of $n$ people, each one of 365 days, form $365^n$ sequences, which is the denominator in the birthday problem.",
+   "distractors": [
+    "$n_1+n_2+\\cdots+n_k$",
+    "$\\binom{n_1+n_2+\\cdots+n_k}{k}$",
+    "$\\max(n_1,\\dots,n_k)^k$"
+   ]
+  },
+  {
+   "id": "4-permutations-identical-objects",
+   "section": "4.2",
+   "name": "Permutations with identical objects",
+   "kind": "concept",
+   "page": 65,
+   "prompt": "How many distinct orderings are there of $n$ objects when $n_1$ of them are identical to each other, $n_2$ are identical to each other, …, and $n_r$ are identical to each other ($n_1+\\cdots+n_r=n$)?",
+   "answer": "$\\frac{n!}{n_1!\\,n_2!\\cdots n_r!}$",
+   "explanation": "Start with all $n!$ orderings as if every object were distinct. Swapping identical objects among themselves gives no new arrangement, and each group of $n_i$ copies can be shuffled in $n_i!$ ways, so divide by every $n_i!$.\nExample: the letters of BOOK can be arranged in $\\frac{4!}{1!\\,2!\\,1!}=12$ distinct ways.",
+   "distractors": [
+    "$n!$",
+    "$\\frac{n!}{(n-r)!}$",
+    "$n!\\,n_1!\\,n_2!\\cdots n_r!$"
+   ]
+  },
+  {
+   "id": "4-combinations",
+   "section": "4.2",
+   "name": "Combinations",
+   "kind": "concept",
+   "page": 65,
+   "prompt": "How many ways are there to choose an unordered group of $r$ objects from $n$ distinct objects?",
+   "answer": "$\\binom{n}{r}=\\frac{n!}{r!\\,(n-r)!}$",
+   "explanation": "Ordered selections number $n(n-1)\\cdots(n-r+1)=\\frac{n!}{(n-r)!}$. Each unordered group shows up in $r!$ different orders, so divide by $r!$.\n- $\\frac{n!}{(n-r)!}$ counts ordered selections, where order matters.\n- $n^r$ counts ordered selections with replacement.\nExample: there are $\\binom{52}{5}=2{,}598{,}960$ five-card poker hands.",
+   "distractors": [
+    "$\\frac{n!}{(n-r)!}$",
+    "$\\frac{n!}{r!}$",
+    "$n^r$"
+   ]
+  },
+  {
+   "id": "4-binomial-theorem",
+   "section": "4.2",
+   "name": "Binomial theorem",
+   "kind": "concept",
+   "page": 65,
+   "prompt": "State the binomial theorem: expand $(x+y)^n$.",
+   "answer": "$(x+y)^n=\\sum_{k=0}^{n}\\binom{n}{k}x^k y^{n-k}$",
+   "explanation": "Multiplying out $n$ factors of $(x+y)$, each term picks $x$ from $k$ factors and $y$ from the rest. There are $\\binom nk$ ways to choose which $k$ factors, which gives the coefficient of $x^ky^{n-k}$.\n- With $x=y=1$: $\\sum_k\\binom nk=2^n$.\n- Adding $(a+b)^n$ and $(a-b)^n$ cancels the odd-power terms, the trick behind the 100th-digit problem.",
+   "distractors": [
+    "$(x+y)^n=\\sum_{k=0}^{n}x^k y^{n-k}$",
+    "$(x+y)^n=\\sum_{k=0}^{n}\\binom{n}{k}x^k y^{k}$",
+    "$(x+y)^n=x^n+y^n$"
+   ]
+  },
+  {
+   "id": "4-inclusion-exclusion-3",
+   "section": "4.2",
+   "name": "Inclusion–exclusion (3 events)",
+   "kind": "concept",
+   "page": 65,
+   "prompt": "Use the inclusion–exclusion principle to write $P(E_1\\cup E_2\\cup E_3)$.",
+   "answer": "$\\sum_i P(E_i)-\\sum_{i<j}P(E_iE_j)+P(E_1E_2E_3)$",
+   "explanation": "Adding the three probabilities counts outcomes in exactly two events twice, and outcomes in all three events three times.\n- Subtracting the three pairwise intersections fixes the double counting, but it removes the triple overlap three times, leaving it counted zero times.\n- Adding $P(E_1E_2E_3)$ back once corrects that.\nFor two events it reduces to $P(E_1)+P(E_2)-P(E_1E_2)$.",
+   "distractors": [
+    "$\\sum_i P(E_i)-\\sum_{i<j}P(E_iE_j)-P(E_1E_2E_3)$",
+    "$\\sum_i P(E_i)-\\sum_{i<j}P(E_iE_j)$",
+    "$\\sum_i P(E_i)-P(E_1E_2E_3)$"
+   ],
+   "hint": "Track how many times an outcome in all three events gets counted."
+  },
+  {
+   "id": "4-inclusion-exclusion-general",
+   "section": "4.2",
+   "name": "Inclusion–exclusion (N events)",
+   "kind": "concept",
+   "page": 65,
+   "prompt": "In the general inclusion–exclusion formula for $P(E_1\\cup\\cdots\\cup E_N)$, look at the sum of all $r$-fold intersection probabilities $P(E_{i_1}E_{i_2}\\cdots E_{i_r})$ with $i_1<\\cdots<i_r$. What sign does that sum carry, and how many terms does it contain?",
+   "answer": "Sign $(-1)^{r+1}$; it has $\\binom{N}{r}$ terms",
+   "explanation": "The signs alternate, starting with $+$ for single events:\n$$\\sum P(E_i)-\\sum P(E_iE_j)+\\sum P(E_iE_jE_k)-\\cdots+(-1)^{N+1}P(E_1\\cdots E_N).$$\n- So the $r$-th sum has sign $(-1)^{r+1}$.\n- There is one term for each way to choose $r$ of the $N$ events: $\\binom Nr$ terms.\nWhen all $r$-fold intersections have equal probability (as in the application-letters problem), each sum collapses to $\\binom Nr$ times a single term.",
+   "distractors": [
+    "Sign $(-1)^{r}$; it has $\\binom{N}{r}$ terms",
+    "Sign $(-1)^{r+1}$; it has $N^r$ terms",
+    "Sign $(-1)^{r+1}$; it has $r!$ terms"
+   ]
+  },
+  {
+   "id": "4-poker-hands-total",
+   "section": "4.2",
+   "name": "Poker hands (total hands)",
+   "kind": "problem",
+   "page": 66,
+   "prompt": "A poker hand is 5 cards dealt from a standard 52-card deck (13 ranks × 4 suits). How many different 5-card hands are there?",
+   "answer": "$\\binom{52}{5}=2{,}598{,}960$",
+   "explanation": "A hand is an unordered set of 5 distinct cards, so count the 5-element subsets of 52 cards: $\\binom{52}{5}=\\frac{52\\cdot51\\cdot50\\cdot49\\cdot48}{5!}=2{,}598{,}960$.\n- The product $52\\cdot51\\cdots48$ counts ordered deals, and each hand appears $5!=120$ times in it.\nThis is the denominator for every poker-hand probability.",
+   "distractors": [
+    "$52\\cdot51\\cdot50\\cdot49\\cdot48=311{,}875{,}200$",
+    "$52^5=380{,}204{,}032$",
+    "$\\binom{52}{4}=270{,}725$"
+   ]
+  },
+  {
+   "id": "4-poker-four-of-a-kind",
+   "section": "4.2",
+   "name": "Poker hands (four of a kind)",
+   "kind": "problem",
+   "page": 66,
+   "prompt": "How many 5-card hands contain four cards of the same rank (four of a kind), and what is the probability of being dealt one? (There are $\\binom{52}{5}=2{,}598{,}960$ hands in total.)",
+   "answer": "$13\\times48=624$ hands, probability $\\frac{1}{4165}\\approx0.024\\%$",
+   "explanation": "Choose the rank of the four matching cards (13 ways); all four suits of that rank are then forced. The fifth card can be any of the other $52-4=48$ cards.\n- Count: $13\\times48=624$.\n- Probability: $\\frac{624}{2{,}598{,}960}=\\frac{1}{4165}\\approx0.024\\%$.\nThere's no suit-choice factor for the four matching cards, since all four suits are used.",
+   "distractors": [
+    "$13\\times12=156$ hands, probability $\\approx0.006\\%$",
+    "$13\\times4\\times48=2{,}496$ hands, probability $\\approx0.096\\%$",
+    "$13\\times\\binom{48}{2}=14{,}664$ hands, probability $\\approx0.56\\%$"
+   ],
+   "hint": "Once the rank is fixed, how many choices remain for the odd card?"
+  },
+  {
+   "id": "4-poker-full-house",
+   "section": "4.2",
+   "name": "Poker hands (full house)",
+   "kind": "problem",
+   "page": 66,
+   "prompt": "A full house is three cards of one rank plus two cards of a different rank. How many 5-card hands are full houses, and what is the probability of being dealt one? (Total hands: 2,598,960.)",
+   "answer": "$13\\binom43\\cdot12\\binom42=3{,}744$ hands, probability $\\approx0.144\\%$",
+   "explanation": "Build the hand step by step:\n- rank of the triple: 13 choices; its suits: $\\binom43=4$;\n- rank of the pair (a different rank): 12 choices; its suits: $\\binom42=6$.\nTotal $13\\cdot4\\cdot12\\cdot6=3{,}744$, so the probability is $\\frac{3744}{2{,}598{,}960}=\\frac{6}{4165}\\approx0.144\\%$.\nThe two ranks are chosen in order (13 then 12), not as $\\binom{13}{2}$, because the triple and the pair play different roles: three kings with two sevens differs from three sevens with two kings.",
+   "distractors": [
+    "$\\binom{13}{2}\\binom43\\binom42=1{,}872$ hands, probability $\\approx0.072\\%$",
+    "$13\\cdot4\\cdot12\\cdot4=2{,}496$ hands, probability $\\approx0.096\\%$",
+    "$13\\binom43\\cdot12\\binom42\\cdot2=7{,}488$ hands, probability $\\approx0.288\\%$"
+   ],
+   "hint": "Are the triple's rank and the pair's rank interchangeable?"
+  },
+  {
+   "id": "4-poker-two-pairs",
+   "section": "4.2",
+   "name": "Poker hands (two pairs)",
+   "kind": "problem",
+   "page": 66,
+   "prompt": "How many 5-card hands contain exactly two pairs (two cards of one rank, two of a second rank, and a fifth card of a third rank), and what is the probability? (Total hands: 2,598,960.)",
+   "answer": "$\\binom{13}{2}\\binom42^2\\cdot44=123{,}552$ hands, probability $\\approx4.75\\%$",
+   "explanation": "- The two pair ranks: $\\binom{13}{2}=78$ (unordered, because the two pairs play symmetric roles).\n- Suits within each pair: $\\binom42\\cdot\\binom42=36$.\n- The fifth card must avoid both pair ranks: $52-8=44$ choices.\nTotal $78\\cdot36\\cdot44=123{,}552$, a probability of about $4.75\\%$.\nCommon slips: ordering the pair ranks ($13\\cdot12$) double counts every hand, and allowing 48 choices for the fifth card lets full houses sneak in.",
+   "distractors": [
+    "$13\\cdot12\\binom42^2\\cdot44=247{,}104$ hands, probability $\\approx9.51\\%$",
+    "$\\binom{13}{2}\\binom42^2\\cdot48=134{,}784$ hands, probability $\\approx5.19\\%$",
+    "$\\binom{13}{2}\\binom42^2\\cdot11=30{,}888$ hands, probability $\\approx1.19\\%$"
+   ],
+   "hint": "Unlike a full house, the two pairs are interchangeable."
+  },
+  {
+   "id": "4-hopping-rabbit",
+   "section": "4.2",
+   "name": "Hopping rabbit",
+   "kind": "problem",
+   "page": 66,
+   "prompt": "A rabbit at the bottom of an $n$-step staircase climbs by hopping either 1 or 2 steps at a time. Let $f(n)$ be the number of different ways to reach the top. What is $f(n)$?",
+   "answer": "$f(n)=f(n-1)+f(n-2)$ with $f(1)=1$, $f(2)=2$ (Fibonacci)",
+   "explanation": "Look at the **last** hop. Either it's a 1-step hop from step $n-1$ (reached in $f(n-1)$ ways) or a 2-step hop from step $n-2$ (reached in $f(n-2)$ ways). The two cases don't overlap, so $f(n)=f(n-1)+f(n-2)$.\n- Base cases: 1 step has 1 way; 2 steps have 2 ways (1+1 or 2).\nThe values 1, 2, 3, 5, 8, 13, … are the Fibonacci numbers shifted by one place.",
+   "distractors": [
+    "$f(n)=2^{n-1}$",
+    "$f(n)=f(n-1)+f(n-2)$ with $f(1)=1$, $f(2)=1$",
+    "$f(n)=f(n-1)+2f(n-2)$ with $f(1)=1$, $f(2)=2$"
+   ],
+   "hint": "Condition on the rabbit's final hop."
+  },
+  {
+   "id": "4-hopping-rabbit-10",
+   "section": "4.2",
+   "name": "Hopping rabbit (10 stairs)",
+   "kind": "problem",
+   "page": 67,
+   "prompt": "A rabbit climbs a 10-step staircase, hopping either 1 or 2 steps at a time. In how many different ways can it reach the top?",
+   "answer": "89",
+   "explanation": "Use $f(n)=f(n-1)+f(n-2)$ with $f(1)=1$, $f(2)=2$:\n1, 2, 3, 5, 8, 13, 21, 34, 55, **89**.\n- 55 is the count for 9 steps (or what you get by starting from $f(2)=1$ by mistake).\n- $512=2^9$ counts the ways to climb if hops of any size were allowed.",
+   "distractors": [
+    "55",
+    "144",
+    "512"
+   ]
+  },
+  {
+   "id": "4-screwy-pirates-2-locks",
+   "section": "4.2",
+   "name": "Screwy pirates 2 (locks)",
+   "kind": "problem",
+   "page": 67,
+   "prompt": "11 pirates want a safe that any group of 6 or more of them can open, but no group of 5 or fewer can. The safe has several locks, all of which must be opened. Each lock can have many copies of its key, and a pirate can carry several keys. What is the minimum number of locks?",
+   "answer": "$\\binom{11}{5}=462$ locks",
+   "explanation": "Take any group of 5 pirates. They must be unable to open the safe, so some lock has no key among them. Adding any sixth pirate must let them in, so **every** one of the other 6 pirates holds that lock's key.\n- That lock is therefore tied to exactly this 5-group: its keyholders are precisely the complementary 6 pirates.\n- Different 5-groups need different locks, so at least $\\binom{11}{5}=462$ locks are required, and one lock per 5-group suffices.\nThis is a combinatorial form of threshold secret sharing.",
+   "distractors": [
+    "$\\binom{11}{4}=330$ locks",
+    "$\\binom{10}{5}=252$ locks",
+    "$2^{11}-1=2{,}047$ locks"
+   ],
+   "hint": "Every group of 5 pirates must be blocked by a lock that all the other 6 can open."
+  },
+  {
+   "id": "4-screwy-pirates-2-keys",
+   "section": "4.2",
+   "name": "Screwy pirates 2 (keys per pirate)",
+   "kind": "problem",
+   "page": 67,
+   "prompt": "In the 11-pirate safe with one lock for each group of 5 pirates (462 locks, where each lock's keys go to exactly the 6 pirates outside its group), how many keys does each pirate carry?",
+   "answer": "$\\binom{10}{5}=252$ keys",
+   "explanation": "A pirate holds a lock's key exactly when he is **not** in that lock's 5-member group. The number of 5-groups formed from the other 10 pirates is $\\binom{10}{5}=252$.\nCross-check: 462 locks × 6 keys each = 2,772 keys, split evenly among 11 pirates, gives $2772/11=252$.",
+   "distractors": [
+    "$\\binom{11}{6}=462$ keys",
+    "$\\binom{10}{6}=210$ keys",
+    "6 keys"
+   ],
+   "hint": "Count the 5-groups that exclude a given pirate."
+  },
+  {
+   "id": "4-chess-tournament",
+   "section": "4.2",
+   "name": "Chess tournament",
+   "kind": "problem",
+   "page": 68,
+   "prompt": "A knockout chess tournament has $2^n$ players with skills ranked $1>2>\\cdots>2^n$, and the more skilled player always wins. Opponents in each round are drawn at random. What is the probability that players 1 and 2 meet in the final?",
+   "answer": "$\\frac{2^{n-1}}{2^n-1}$",
+   "explanation": "Think of the tournament as two halves of $2^{n-1}$ players, each producing one finalist. Player 1 always wins his half. Player 2 reaches the final exactly when he is in the **other** half, since there he beats everyone.\n- Of the $2^n-1$ slots besides player 1's, $2^{n-1}$ are in the other half.\n- So $P=\\frac{2^{n-1}}{2^n-1}$, slightly above $\\frac12$.\nRound by round, the multiplication rule gives the same answer: $\\prod_{k=2}^{n}\\frac{2^k-2}{2^k-1}$ telescopes to it.",
+   "distractors": [
+    "$\\frac{1}{2}$",
+    "$\\frac{1}{2^n-1}$",
+    "$\\frac{2^{n-1}-1}{2^n-1}$"
+   ],
+   "hint": "Split the bracket into two halves. Where must player 2 be?"
+  },
+  {
+   "id": "4-application-letters",
+   "section": "4.2",
+   "name": "Application letters",
+   "kind": "problem",
+   "page": 69,
+   "prompt": "You have 5 cover letters, each personalized for a different firm, and 5 matching addressed envelopes. A child puts the letters into the envelopes completely at random, one per envelope. What is the probability that every letter goes to the wrong firm?",
+   "answer": "$\\frac{11}{30}$",
+   "explanation": "Let $E_i$ be the event that letter $i$ lands in its own envelope. Then $P(\\text{all wrong})=1-P(\\bigcup E_i)$, and inclusion–exclusion handles the union.\n- A given set of $r$ letters is all correct with probability $\\frac{(5-r)!}{5!}$, and there are $\\binom5r$ such sets, so the $r$-th sum equals $\\frac{1}{r!}$.\n- $P(\\bigcup E_i)=1-\\frac1{2!}+\\frac1{3!}-\\frac1{4!}+\\frac1{5!}=\\frac{19}{30}$.\nSo all 5 are wrong with probability $\\frac{11}{30}$ (44 derangements out of 120).\n$\\left(\\frac45\\right)^5$ wrongly treats the letters as independent; $\\frac38$ is the answer for 4 letters.",
+   "distractors": [
+    "$\\frac{19}{30}$",
+    "$\\left(\\frac{4}{5}\\right)^5$",
+    "$\\frac{3}{8}$"
+   ],
+   "hint": "Work with the complement: at least one letter is correct."
+  },
+  {
+   "id": "4-application-letters-n",
+   "section": "4.2",
+   "name": "Application letters (n letters)",
+   "kind": "problem",
+   "page": 70,
+   "prompt": "Generalize the application-letters problem: $n$ letters are placed at random into their $n$ envelopes. What is the probability that no letter is in its correct envelope, and what does it approach as $n\\to\\infty$?",
+   "answer": "$\\sum_{k=0}^{n}\\frac{(-1)^k}{k!}\\to\\frac1e\\approx0.368$",
+   "explanation": "By inclusion–exclusion, the $r$-th sum is $\\binom nr\\frac{(n-r)!}{n!}=\\frac1{r!}$, so $P(\\text{at least one match})=\\sum_{k=1}^n\\frac{(-1)^{k+1}}{k!}$.\n- The probability of **no** match is $1$ minus that, $\\sum_{k=0}^n\\frac{(-1)^k}{k!}$, a partial sum of the series for $e^{-1}$.\n- It converges very quickly: $\\frac{11}{30}\\approx0.3667$ at $n=5$ versus $\\frac1e\\approx0.3679$.\n$1-\\frac1e$ is the limiting probability of at least one match.",
+   "distractors": [
+    "$\\sum_{k=1}^{n}\\frac{(-1)^{k+1}}{k!}\\to1-\\frac1e\\approx0.632$",
+    "$\\frac{n-1}{n}\\to1$",
+    "$\\frac{1}{2}$ for every $n\\ge2$"
+   ]
+  },
+  {
+   "id": "4-birthday-problem",
+   "section": "4.2",
+   "name": "Birthday problem",
+   "kind": "problem",
+   "page": 71,
+   "prompt": "Assuming 365 equally likely birthdays, what is the smallest number of people for which the probability that at least two share a birthday exceeds $\\frac12$?",
+   "answer": "23",
+   "explanation": "The probability that $n$ people all have **different** birthdays is $\\frac{365\\cdot364\\cdots(365-n+1)}{365^n}$: sequences with no repeats divided by all $365^n$ sequences.\n- This first drops below $\\frac12$ at $n=23$ (about 0.493), so a shared birthday has probability about 0.507.\n- It happens fast because what matters is the number of **pairs**, $\\binom{23}{2}=253$.\n183 is the naive \"half of 365\" guess, 253 is the group size at which someone likely shares **your** birthday, and 57 people already give about 99%.",
+   "distractors": [
+    "183",
+    "253",
+    "57"
+   ],
+   "hint": "Compute the probability that all birthdays are different."
+  },
+  {
+   "id": "4-birthday-problem-23",
+   "section": "4.2",
+   "name": "Birthday problem (23 people)",
+   "kind": "problem",
+   "page": 71,
+   "prompt": "In a group of 23 people with 365 equally likely birthdays, approximately what is the probability that at least two of them share a birthday?",
+   "answer": "$\\approx 50.7\\%$",
+   "explanation": "$P(\\text{all distinct})=\\prod_{k=0}^{22}\\frac{365-k}{365}\\approx0.493$, so $P(\\text{shared})\\approx0.507$.\n- $6.3\\%\\approx\\frac{23}{365}$ confuses this with matching one fixed date.\n- $69.3\\%\\approx\\frac{253}{365}$ adds up the 253 pair probabilities, overcounting overlaps (it's only an upper bound).\n- $99\\%$ is the value for 57 people.",
+   "distractors": [
+    "$\\approx 6.3\\%$",
+    "$\\approx 69.3\\%$",
+    "$\\approx 99.0\\%$"
+   ]
+  },
+  {
+   "id": "4-100th-digit",
+   "section": "4.2",
+   "name": "100th digit",
+   "kind": "problem",
+   "page": 71,
+   "prompt": "What is the 100th digit after the decimal point in the decimal expansion of $(1+\\sqrt2)^{3000}$?",
+   "answer": "9",
+   "explanation": "Pair the number with its conjugate. In the binomial expansions, the odd powers of $\\sqrt2$ cancel when you add, so $(1+\\sqrt2)^n+(1-\\sqrt2)^n$ is an integer for every $n$.\n- $|1-\\sqrt2|\\approx0.414$, so for even $n=3000$, $0<(1-\\sqrt2)^{3000}\\approx10^{-1148}\\ll10^{-100}$.\n- Hence $(1+\\sqrt2)^{3000}$ equals an integer minus a tiny positive amount, so its fractional part is $0.999\\ldots$ with over 1,000 nines.\nThe 100th decimal digit is 9.",
+   "distractors": [
+    "0",
+    "1",
+    "4"
+   ],
+   "hint": "What kind of number is $(1+\\sqrt2)^{n}+(1-\\sqrt2)^{n}$?"
+  },
+  {
+   "id": "4-cubic-of-integer",
+   "section": "4.2",
+   "name": "Cubic of integer",
+   "kind": "problem",
+   "page": 72,
+   "prompt": "An integer $x$ is chosen uniformly at random from 1 to $10^{12}$. What is the probability that $x^3$ ends in the digits 11?",
+   "answer": "$1\\%$ (exactly the $x$ ending in 71)",
+   "explanation": "The last two digits of $x^3$ depend only on the last two digits of $x$. Write $x=a+10b$ with $a$ the units digit:\n$$x^3=a^3+30a^2b+300ab^2+1000b^3.$$\n- Units digit: $a^3$ must end in 1, which forces $a=1$ (the cubes of 0–9 all end in different digits).\n- Tens digit: with $a=1$, $x^3\\equiv1+30b \\pmod{100}$, so $3b$ must end in 1, which forces $b$ to end in 7.\nSo $x$ must end in 71 (check: $71^3=357{,}911$), which is 1 in every 100 integers.",
+   "distractors": [
+    "$10\\%$ (exactly the $x$ ending in 1)",
+    "$2\\%$ (the $x$ ending in 71 or 91)",
+    "$0.1\\%$ (the $x$ ending in 711)"
+   ],
+   "hint": "Only the last two digits of $x$ matter."
+  },
+  {
+   "id": "4-conditional-probability",
+   "section": "4.3",
+   "name": "Conditional probability",
+   "kind": "concept",
+   "page": 72,
+   "prompt": "Define the conditional probability $P(A\\mid B)$, assuming $P(B)>0$.",
+   "answer": "$P(A\\mid B)=\\frac{P(AB)}{P(B)}$",
+   "explanation": "Conditioning on $B$ shrinks the sample space to $B$ and renormalizes: $P(A\\mid B)$ is the share of $B$'s probability that also lies in $A$.\n- $\\frac{P(AB)}{P(A)}$ is $P(B\\mid A)$, the reverse conditional.\n- $P(A)P(B)$ equals $P(AB)$ only under independence.\nRearranged as $P(AB)=P(A\\mid B)P(B)$, it's the seed of the multiplication rule.",
+   "distractors": [
+    "$P(A\\mid B)=\\frac{P(AB)}{P(A)}$",
+    "$P(A\\mid B)=P(A)P(B)$",
+    "$P(A\\mid B)=\\frac{P(B\\mid A)}{P(B)}$"
+   ]
+  },
+  {
+   "id": "4-multiplication-rule",
+   "section": "4.3",
+   "name": "Multiplication rule",
+   "kind": "concept",
+   "page": 72,
+   "prompt": "Using conditional probabilities, write $P(E_1E_2\\cdots E_n)$ with the multiplication (chain) rule.",
+   "answer": "$P(E_1)P(E_2\\mid E_1)P(E_3\\mid E_1E_2)\\cdots P(E_n\\mid E_1\\cdots E_{n-1})$",
+   "explanation": "Apply $P(AB)=P(A)P(B\\mid A)$ repeatedly: each new event's probability is taken given everything that came before.\n- The plain product $\\prod P(E_i)$ is only valid for independent events.\nTypical use: the Aces problem, $P=1\\cdot\\frac{39}{51}\\cdot\\frac{26}{50}\\cdot\\frac{13}{49}$, where each factor is conditioned on the earlier aces having landed in different hands.",
+   "distractors": [
+    "$P(E_1)P(E_2)P(E_3)\\cdots P(E_n)$",
+    "$P(E_1)+P(E_2\\mid E_1)+\\cdots+P(E_n\\mid E_1\\cdots E_{n-1})$",
+    "$P(E_n)P(E_n\\mid E_1)P(E_n\\mid E_2)\\cdots P(E_n\\mid E_{n-1})$"
+   ]
+  },
+  {
+   "id": "4-law-of-total-probability",
+   "section": "4.3",
+   "name": "Law of total probability",
+   "kind": "concept",
+   "page": 73,
+   "prompt": "Events $F_1,\\dots,F_n$ are mutually exclusive and together make up the whole sample space. Express $P(E)$ in terms of the $F_i$.",
+   "answer": "$P(E)=\\sum_{i=1}^n P(E\\mid F_i)P(F_i)$",
+   "explanation": "Because the $F_i$ partition $\\Omega$, $E$ splits into the disjoint pieces $EF_1,\\dots,EF_n$. So $P(E)=\\sum_i P(EF_i)=\\sum_i P(E\\mid F_i)P(F_i)$, a probability-weighted average of the conditional probabilities.\n- Dropping the weights $P(F_i)$ can even produce a \"probability\" above 1.\nThis is the engine of first-step analysis (amoeba, gambler's ruin, coin games): condition on what happens first.",
+   "distractors": [
+    "$P(E)=\\sum_{i=1}^n P(E\\mid F_i)$",
+    "$P(E)=\\prod_{i=1}^n P(E\\mid F_i)P(F_i)$",
+    "$P(E)=\\max_i P(E\\mid F_i)P(F_i)$"
+   ]
+  },
+  {
+   "id": "4-independent-events",
+   "section": "4.3",
+   "name": "Independent events",
+   "kind": "concept",
+   "page": 73,
+   "prompt": "Events $E$ and $F$ are independent, meaning $P(EF)=P(E)P(F)$. What is $P(EF^c)$, and what does that imply?",
+   "answer": "$P(EF^c)=P(E)P(F^c)$, so $E$ and $F^c$ are also independent",
+   "explanation": "$P(EF^c)=P(E)-P(EF)=P(E)-P(E)P(F)=P(E)\\bigl(1-P(F)\\bigr)=P(E)P(F^c)$.\n- Independence is symmetric: if $E$ is independent of $F$, then $F$ is independent of $E$.\n- Don't confuse independent with mutually exclusive: two disjoint events with positive probabilities are strongly **dependent**, since one happening rules out the other.",
+   "distractors": [
+    "$P(EF^c)=0$, so $E$ and $F^c$ are mutually exclusive",
+    "$P(EF^c)=P(E)-P(F)$, so $E$ and $F^c$ are dependent",
+    "$P(EF^c)=P(E)$, so $F^c$ must contain $E$"
+   ]
+  },
+  {
+   "id": "4-bayes-formula",
+   "section": "4.3",
+   "name": "Bayes' formula",
+   "kind": "concept",
+   "page": 73,
+   "prompt": "The events $F_1,\\dots,F_n$ are mutually exclusive and their union is the whole sample space. State Bayes' formula for $P(F_j\\mid E)$.",
+   "answer": "$P(F_j\\mid E)=\\frac{P(E\\mid F_j)P(F_j)}{\\sum_{i=1}^n P(E\\mid F_i)P(F_i)}$",
+   "explanation": "Start from $P(F_j\\mid E)=\\frac{P(EF_j)}{P(E)}$. Write the numerator as $P(E\\mid F_j)P(F_j)$ and expand the denominator with the law of total probability.\n- In words: posterior $\\propto$ likelihood × prior, normalized over all hypotheses.\n- Ignoring the priors $P(F_i)$ is the classic base-rate error; the unfair-coin problem shows how much they matter.",
+   "distractors": [
+    "$P(F_j\\mid E)=\\frac{P(E\\mid F_j)}{\\sum_{i=1}^n P(E\\mid F_i)}$",
+    "$P(F_j\\mid E)=\\frac{P(F_j)}{\\sum_{i=1}^n P(E\\mid F_i)P(F_i)}$",
+    "$P(F_j\\mid E)=P(E\\mid F_j)$"
+   ]
+  },
+  {
+   "id": "4-first-step-analysis",
+   "section": "4.3",
+   "name": "First-step analysis",
+   "kind": "concept",
+   "page": 79,
+   "prompt": "The amoeba population, HT coin game, re-spun Russian roulette and gambler's ruin problems all give way to one technique. What is it?",
+   "answer": "Condition on the first step, then solve the resulting self-referential equation",
+   "explanation": "After one step, the process often restarts in a state you've already named: the same state, a mirror-image state, or a neighbouring one. The law of total probability then turns into an equation for the unknown.\n- Amoeba: $P=\\frac14(1+P+P^2+P^3)$.\n- HT game: after A tosses a tail, B is effectively the first tosser, so $P(A\\mid T)=1-P(A)$.\n- Gambler's ruin: $P_i=pP_{i+1}+qP_{i-1}$ with fixed boundary values.\nSolve the equation (or recursion) and keep the root that makes sense.",
+   "distractors": [
+    "Enumerate every possible sequence of outcomes and count them directly",
+    "Apply inclusion–exclusion across all rounds of the game",
+    "Treat the rounds as mutually exclusive and add up their probabilities"
+   ]
+  },
+  {
+   "id": "4-boys-and-girls-a",
+   "section": "4.3",
+   "name": "Boys and girls (A)",
+   "kind": "problem",
+   "page": 73,
+   "prompt": "A company holds a dinner for working mothers who have at least one son. Ms. Jackson, who has two children, is invited. If each child is independently a boy or a girl with probability $\\frac12$, what is the probability that both of her children are boys?",
+   "answer": "$\\frac13$",
+   "explanation": "Two-child families are equally likely to be BB, BG, GB or GG (older child first). The invitation only rules out GG.\n- Remaining equally likely cases: BB, BG, GB.\n- $P(\\text{BB}\\mid\\text{at least one boy})=\\frac{1/4}{3/4}=\\frac13$.\n\"At least one boy\" doesn't point to a particular child, which is why the answer isn't $\\frac12$.",
+   "distractors": [
+    "$\\frac12$",
+    "$\\frac14$",
+    "$\\frac23$"
+   ],
+   "hint": "List the equally likely two-child families and remove the ones ruled out."
+  },
+  {
+   "id": "4-boys-and-girls-b",
+   "section": "4.3",
+   "name": "Boys and girls (B)",
+   "kind": "problem",
+   "page": 73,
+   "prompt": "Your colleague Ms. Parker has two children. You run into her walking with one of them, and that child is a boy. If each child is independently a boy or a girl with probability $\\frac12$, what is the probability that both of her children are boys?",
+   "answer": "$\\frac12$",
+   "explanation": "Now you've observed a **specific** child. The question is just whether the other child is a boy, and that child's sex is independent of the one you saw, so the answer is $\\frac12$.\nCompare with part A: \"at least one is a boy\" leaves three equally likely families (answer $\\frac13$), while \"this particular child is a boy\" fixes one child and leaves the other free.\n(This assumes she's equally likely to be out with either child.)",
+   "distractors": [
+    "$\\frac13$",
+    "$\\frac14$",
+    "$\\frac23$"
+   ],
+   "hint": "The boy you saw is one specific child. What about the other one?"
+  },
+  {
+   "id": "4-all-girl-world",
+   "section": "4.3",
+   "name": "All-girl world?",
+   "kind": "problem",
+   "page": 74,
+   "prompt": "In a society, every couple keeps having children until they have a girl, and then stops. Each birth is independently a girl with probability 50%. In the long run, what happens to the fraction of girls in the population?",
+   "answer": "It stays at 50%",
+   "explanation": "A stopping rule can't change the odds of any single birth. Every birth is still a fair coin flip, independent of the past, so on average half of all babies are girls.\n- Per family: exactly 1 girl, and the number of boys before her is geometric with mean $\\frac{0.5}{0.5}=1$.\n- So the average family has 1 girl and 1 boy.\nThe preference changes what individual families look like, not the overall sex ratio.",
+   "distractors": [
+    "It rises toward 100%",
+    "It settles near two-thirds",
+    "It falls below 50%"
+   ],
+   "hint": "Does the stopping rule change the odds of any single birth?"
+  },
+  {
+   "id": "4-unfair-coin",
+   "section": "4.3",
+   "name": "Unfair coin",
+   "kind": "problem",
+   "page": 74,
+   "prompt": "Of 1000 coins, one has heads on both sides and the other 999 are fair. You pick one at random, toss it 10 times, and get 10 heads. What is the probability that you picked the two-headed coin?",
+   "answer": "$\\frac{1024}{2023}\\approx0.51$",
+   "explanation": "Use Bayes' formula with $A$ = two-headed coin and $B$ = ten heads:\n- Priors: $P(A)=\\frac1{1000}$, $P(A^c)=\\frac{999}{1000}$.\n- Likelihoods: $P(B\\mid A)=1$, $P(B\\mid A^c)=2^{-10}=\\frac1{1024}$.\n$$P(A\\mid B)=\\frac{\\frac1{1000}}{\\frac1{1000}+\\frac{999}{1000}\\cdot\\frac1{1024}}=\\frac{1024}{1024+999}\\approx0.506.$$\nTen heads multiply the odds by 1024, which almost exactly cancels the 1-in-1000 prior, leaving roughly a coin flip.",
+   "distractors": [
+    "$\\frac{1}{1000}=0.001$",
+    "$\\frac{1023}{1024}\\approx0.999$",
+    "$\\frac{999}{2023}\\approx0.49$"
+   ],
+   "hint": "Compare the prior odds with the likelihood ratio of ten heads."
+  },
+  {
+   "id": "4-fair-from-unfair-coin",
+   "section": "4.3",
+   "name": "Fair probability from an unfair coin",
+   "kind": "problem",
+   "page": 75,
+   "prompt": "You have a coin with an unknown bias: it shows heads with some probability $p\\ne\\frac12$, $0<p<1$. How can you use it to produce an exactly fair 50/50 outcome?",
+   "answer": "Toss twice: HT means win, TH means lose; on HH or TT, discard and repeat",
+   "explanation": "For two independent tosses, $P(HT)=pq=P(TH)$ with $q=1-p$. So given that the two tosses differ, HT and TH are equally likely, whatever $p$ is.\n- HH and TT carry no usable information, so throw them away and toss again.\n- \"Same vs. different\" isn't fair: $P(\\text{same})=p^2+q^2>\\frac12$ whenever $p\\ne\\frac12$.\nThis is von Neumann's trick. It works for any bias but can be slow for a very lopsided coin.",
+   "distractors": [
+    "Toss once: heads means win, since the bias averages out over many games",
+    "Toss twice: HH or TT means win, HT or TH means lose",
+    "Toss until the first head; win if that took an even number of tosses"
+   ],
+   "hint": "Which two-toss outcomes have exactly the same probability?"
+  },
+  {
+   "id": "4-fair-from-unfair-coin-cost",
+   "section": "4.3",
+   "name": "Fair probability from an unfair coin (cost)",
+   "kind": "problem",
+   "page": 75,
+   "prompt": "Using the scheme \"toss twice; HT wins, TH loses, otherwise repeat\" with a coin that shows heads with probability $p$ ($q=1-p$), what is the expected total number of tosses until a decision?",
+   "answer": "$\\frac{1}{pq}$",
+   "explanation": "Each round uses 2 tosses and produces a decision (HT or TH) with probability $2pq$. The number of rounds is geometric with mean $\\frac{1}{2pq}$, so the expected number of tosses is $2\\cdot\\frac1{2pq}=\\frac1{pq}$.\n- Fair coin: $\\frac{1}{1/4}=4$ tosses.\n- Biased coin with $p=0.9$: about 11 tosses, which is why more efficient schemes exist.\n$\\frac1{2pq}$ counts rounds, not tosses.",
+   "distractors": [
+    "$2$",
+    "$\\frac{1}{2pq}$",
+    "$\\frac{2}{p^2+q^2}$"
+   ]
+  },
+  {
+   "id": "4-dart-game",
+   "section": "4.3",
+   "name": "Dart game",
+   "kind": "problem",
+   "page": 75,
+   "prompt": "Jason throws darts at a board, aiming for the center, and his skill is constant (throws are i.i.d.). His second dart lands farther from the center than his first. What is the probability that his third dart also lands farther from the center than his first?",
+   "answer": "$\\frac23$",
+   "explanation": "Only the ranking of the three distances matters, and all $3!=6$ rankings are equally likely.\n- Given the condition, the 3rd dart is worse than the 1st unless the 3rd dart is the best of all three.\n- By symmetry, the 3rd dart is the best of three with probability $\\frac13$, whatever the order of the first two.\nSo the answer is $1-\\frac13=\\frac23$. (Enumerating the 3 rankings consistent with the condition gives the same result.)",
+   "distractors": [
+    "$\\frac12$",
+    "$\\frac13$",
+    "$\\frac34$"
+   ],
+   "hint": "When is the third dart NOT farther than the first?"
+  },
+  {
+   "id": "4-dart-game-n",
+   "section": "4.3",
+   "name": "Dart game (n darts)",
+   "kind": "problem",
+   "page": 76,
+   "prompt": "Jason (constant skill, i.i.d. throws) throws $n$ darts, and every dart after the first lands farther from the center than the first. What is the probability that dart number $n+1$ also lands farther from the center than the first?",
+   "answer": "$\\frac{n}{n+1}$",
+   "explanation": "The condition says the first dart is the best of the first $n$. Dart $n+1$ is worse than the first exactly when dart $n+1$ is **not** the best of all $n+1$.\n- Whether the last dart is the overall best is independent of how the first $n$ darts are ordered among themselves.\n- By symmetry, each of the $n+1$ darts is equally likely to be the best, so that probability is $\\frac1{n+1}$.\nAnswer: $1-\\frac1{n+1}=\\frac n{n+1}$; with $n=2$ this gives $\\frac23$.",
+   "distractors": [
+    "$\\frac{n-1}{n}$",
+    "$\\frac{1}{n+1}$",
+    "$\\frac12$"
+   ]
+  },
+  {
+   "id": "4-birthday-line",
+   "section": "4.3",
+   "name": "Birthday line",
+   "kind": "problem",
+   "page": 76,
+   "prompt": "A movie theater gives a free ticket to the first person in line whose birthday matches someone ahead of them in line. Birthdays are uniform over 365 days, and you don't know anyone else's. Which position in line maximizes your chance of winning?",
+   "answer": "20th",
+   "explanation": "At position $n$ you win iff the first $n-1$ people all have different birthdays **and** yours matches one of them:\n$$p(n)=\\frac{365\\cdot364\\cdots(365-n+2)}{365^{n-1}}\\cdot\\frac{n-1}{365}.$$\n- Ratio of consecutive terms: $\\frac{p(n+1)}{p(n)}=\\frac{366-n}{365}\\cdot\\frac{n}{n-1}$, which exceeds 1 iff $n^2-n<365$.\n- That holds for $n\\le19$ and fails from $n=20$ on, so $p(n)$ peaks at $n=20$ (about 3.2%).\n23 answers a different question: the group size at which a shared birthday becomes more likely than not.",
+   "distractors": [
+    "23rd",
+    "21st",
+    "2nd"
+   ],
+   "hint": "Find where p(n+1)/p(n) drops below 1."
+  },
+  {
+   "id": "4-dice-order",
+   "section": "4.3",
+   "name": "Dice order",
+   "kind": "problem",
+   "page": 78,
+   "prompt": "Three fair dice are rolled one after another. What is the probability that the three results come out in strictly increasing order?",
+   "answer": "$\\frac{5}{54}$",
+   "explanation": "Strictly increasing requires three distinct values.\n- $P(\\text{all distinct})=1\\cdot\\frac56\\cdot\\frac46=\\frac59$.\n- Given three distinct values, all $3!=6$ orders are equally likely, and exactly one is increasing.\nSo $P=\\frac59\\cdot\\frac16=\\frac5{54}$ (equivalently $\\binom63/6^3=\\frac{20}{216}$).\n$\\frac{7}{27}=\\frac{56}{216}$ would be the answer for non-decreasing order (ties allowed).",
+   "distractors": [
+    "$\\frac{1}{6}$",
+    "$\\frac{5}{9}$",
+    "$\\frac{7}{27}$"
+   ],
+   "hint": "First require distinct values, then ask which order they appear in."
+  },
+  {
+   "id": "4-monty-hall",
+   "section": "4.3",
+   "name": "Monty Hall problem",
+   "kind": "problem",
+   "page": 78,
+   "prompt": "A car is behind one of 3 doors and goats are behind the other two. You pick a door. The host, who knows where the car is, then opens one of the other two doors to reveal a goat and offers you the chance to switch to the remaining closed door. Should you switch, and what is your probability of winning if you do?",
+   "answer": "Switch; switching wins with probability $\\frac23$",
+   "explanation": "Staying wins only if your first pick was the car, which has probability $\\frac13$; the host's reveal doesn't change that.\n- Switching wins exactly when your first pick was a goat (probability $\\frac23$). The host must then open the other goat door, so the remaining door hides the car.\nThe host's choice isn't random: it's constrained by what he knows, which is why the two closed doors aren't equally likely.",
+   "distractors": [
+    "It doesn't matter; both doors win with probability $\\frac12$",
+    "Stay; staying wins with probability $\\frac23$",
+    "Switch; switching wins with probability $\\frac12$"
+   ],
+   "hint": "When does switching lose?"
+  },
+  {
+   "id": "4-amoeba-population",
+   "section": "4.3",
+   "name": "Amoeba population",
+   "kind": "problem",
+   "page": 79,
+   "prompt": "A pond starts with one amoeba. Every minute, each amoeba independently dies, stays as it is, splits into two, or splits into three, each with probability $\\frac14$. What is the probability that the population eventually dies out?",
+   "answer": "$\\sqrt2-1\\approx0.414$",
+   "explanation": "Let $P$ be the extinction probability starting from one amoeba, and condition on the first minute:\n- dies: extinct for sure (1); stays: back to the start ($P$);\n- splits into 2 or 3: every line must die out independently ($P^2$ or $P^3$).\n$$P=\\tfrac14\\left(1+P+P^2+P^3\\right)\\iff(P-1)(P^2+2P-1)=0.$$\nThe roots are $1$ and $-1\\pm\\sqrt2$. The mean number of offspring is $1.5>1$, so extinction isn't certain, and the answer is the smallest nonnegative root, $\\sqrt2-1$.",
+   "distractors": [
+    "$\\frac14$",
+    "$1$",
+    "$\\frac{\\sqrt5-1}{2}\\approx0.618$"
+   ],
+   "hint": "Condition on what the first amoeba does in the first minute."
+  },
+  {
+   "id": "4-candies-in-a-jar",
+   "section": "4.3",
+   "name": "Candies in a jar",
+   "kind": "problem",
+   "page": 79,
+   "prompt": "A jar holds 10 red, 20 blue and 30 green candies, which are taken out one at a time in random order. What is the probability that at the moment the last red candy is removed, at least one blue and at least one green candy are still in the jar?",
+   "answer": "$\\frac{7}{12}$",
+   "explanation": "The last red must come out before both the last blue and the last green. Split by the color of the very last candy:\n- Green is last with probability $\\frac{30}{60}$. Then, among the red and blue candies only, blue must be last: $\\frac{20}{30}$. Contribution: $\\frac12\\cdot\\frac23=\\frac13$.\n- Blue is last with probability $\\frac{20}{60}$. Then, among red and green, green must be last: $\\frac{30}{40}$. Contribution: $\\frac13\\cdot\\frac34=\\frac14$.\nTotal: $\\frac13+\\frac14=\\frac7{12}$.\n$\\frac56$ only requires red not to be the very last candy, which is necessary but not enough.",
+   "distractors": [
+    "$\\frac{5}{6}$",
+    "$\\frac{1}{2}$",
+    "$\\frac{5}{12}$"
+   ],
+   "hint": "Condition on the color of the very last candy in the jar."
+  },
+  {
+   "id": "4-coin-toss-game-4-3",
+   "section": "4.3",
+   "name": "Coin toss game (first HT)",
+   "kind": "problem",
+   "page": 80,
+   "prompt": "Players A and B take turns tossing a fair coin, with A going first. The game ends the first time a head is immediately followed by a tail (HT), and whoever tossed that tail wins. What is the probability that A wins?",
+   "answer": "$\\frac49$",
+   "explanation": "Let $P(A)$ be A's chance of winning, and condition on A's first toss.\n- A tosses T (prob. $\\frac12$): nothing has started, and B is now effectively the first tosser, so $P(A\\mid T)=1-P(A)$.\n- A tosses H: now whoever tosses the next tail wins. B tosses T with prob. $\\frac12$ and wins; otherwise the roles swap. So $x=P(A\\mid H)$ satisfies $x=\\frac12(1-x)$, giving $x=\\frac13$.\nThen $P(A)=\\frac12\\cdot\\frac13+\\frac12\\bigl(1-P(A)\\bigr)$, so $P(A)=\\frac49$.\nSanity check: A can't win on toss 1, while B wins on toss 2 with probability $\\frac14$.",
+   "distractors": [
+    "$\\frac12$",
+    "$\\frac13$",
+    "$\\frac59$"
+   ],
+   "hint": "Condition on A's first toss and use symmetry between the players."
+  },
+  {
+   "id": "4-russian-roulette-no-spin",
+   "section": "4.3",
+   "name": "Russian roulette series (no re-spin)",
+   "kind": "problem",
+   "page": 81,
+   "prompt": "One bullet is loaded into a 6-chamber revolver and the cylinder is spun once. Two players take turns pulling the trigger, without spinning again, until the gun fires; the player it fires on loses. Should you go first or second, and what is your probability of losing?",
+   "answer": "It doesn't matter: either way you lose with probability $\\frac12$",
+   "explanation": "The single spin fixes the bullet's position, and all 6 positions are equally likely. The first player faces pulls 1, 3 and 5; the second player faces pulls 2, 4 and 6.\n- Each player loses iff the bullet sits in one of his three positions: $\\frac36=\\frac12$.\nIntuition says going first is worse (a $\\frac16$ risk right away), but the second player's later pulls are riskier because fewer chambers remain.",
+   "distractors": [
+    "Go second: you lose with probability $\\frac{5}{11}$",
+    "Go second: you lose with probability $\\frac{1}{3}$",
+    "Go first: you lose with probability $\\frac{1}{6}$"
+   ],
+   "hint": "The bullet's position is fixed after one spin."
+  },
+  {
+   "id": "4-russian-roulette-respin",
+   "section": "4.3",
+   "name": "Russian roulette series (re-spin)",
+   "kind": "problem",
+   "page": 81,
+   "prompt": "Same game (one bullet, 6-chamber revolver, two players alternate pulling the trigger), but now the cylinder is re-spun before every pull. Should you go first or second, and what is your probability of losing?",
+   "answer": "Go second: you lose with probability $\\frac{5}{11}$",
+   "explanation": "Now every pull is an independent $\\frac16$ risk. Let $p$ be the first player's probability of losing, and condition on his first pull:\n- it fires (prob. $\\frac16$): he loses;\n- it clicks (prob. $\\frac56$): he is now effectively the second player, who loses with probability $1-p$.\n$$p=\\tfrac16+\\tfrac56(1-p)\\;\\Rightarrow\\;p=\\tfrac6{11}.$$\nThe first player loses with probability $\\frac6{11}$, so go second and lose with probability $\\frac5{11}$.",
+   "distractors": [
+    "Go first: you lose with probability $\\frac{5}{11}$",
+    "It doesn't matter: either way you lose with probability $\\frac12$",
+    "Go second: you lose with probability $\\frac{5}{12}$"
+   ],
+   "hint": "Condition on the first pull; after a click, the roles swap."
+  },
+  {
+   "id": "4-russian-roulette-two-bullets",
+   "section": "4.3",
+   "name": "Russian roulette series (two random bullets)",
+   "kind": "problem",
+   "page": 81,
+   "prompt": "Two bullets are loaded into random chambers of a 6-chamber revolver, and the cylinder is spun. Your opponent pulls the trigger first and survives. Now it's your turn: should you spin the cylinder again before pulling?",
+   "answer": "Spin: you lose with probability $\\frac13$ versus $\\frac25$ without spinning",
+   "explanation": "- Spin: you get a fresh uniform chamber, and 2 of the 6 are loaded, so you lose with probability $\\frac26=\\frac13$.\n- No spin: the opponent's chamber was empty, so the 2 bullets are spread uniformly over the other 5 chambers, and the next one is loaded with probability $\\frac25$.\nSince $\\frac13<\\frac25$, spin. Surviving the first pull made the remaining chambers **more** dangerous on average.",
+   "distractors": [
+    "Don't spin: you lose with probability $\\frac14$ versus $\\frac13$ with spinning",
+    "It doesn't matter: you lose with probability $\\frac13$ either way",
+    "Don't spin: you lose with probability $\\frac15$ versus $\\frac13$ with spinning"
+   ],
+   "hint": "Given the first chamber was empty, where can the two bullets be?"
+  },
+  {
+   "id": "4-russian-roulette-adjacent",
+   "section": "4.3",
+   "name": "Russian roulette series (adjacent bullets)",
+   "kind": "problem",
+   "page": 82,
+   "prompt": "Now two bullets are loaded into two **adjacent** chambers of a 6-chamber revolver, and the cylinder is spun. Your opponent pulls first and survives. Should you spin the cylinder again before your pull?",
+   "answer": "Don't spin: you lose with probability $\\frac14$ versus $\\frac13$ with spinning",
+   "explanation": "Label the chambers in firing order so the four empty ones E1, E2, E3, E4 are followed by the two loaded ones.\n- The opponent survived, so he was equally likely to be on E1, E2, E3 or E4.\n- Without spinning, you get the next chamber, which is loaded only if he was on E4: probability $\\frac14$.\n- Spinning gives a fresh $\\frac26=\\frac13$ chance of a bullet.\nBecause the bullets are adjacent, an empty chamber is usually followed by another empty one, so don't spin.",
+   "distractors": [
+    "Spin: you lose with probability $\\frac13$ versus $\\frac25$ without spinning",
+    "It doesn't matter: you lose with probability $\\frac13$ either way",
+    "Spin: you lose with probability $\\frac13$ versus $\\frac12$ without spinning"
+   ],
+   "hint": "Which empty chambers are immediately followed by a bullet?"
+  },
+  {
+   "id": "4-aces",
+   "section": "4.3",
+   "name": "Aces",
+   "kind": "problem",
+   "page": 82,
+   "prompt": "A standard 52-card deck is dealt evenly to 4 players, 13 cards each. What is the probability that each player receives exactly one ace?",
+   "answer": "$\\frac{39}{51}\\cdot\\frac{26}{50}\\cdot\\frac{13}{49}\\approx0.105$",
+   "explanation": "Place the aces one at a time (multiplication rule):\n- The first ace lands in some hand (probability 1).\n- The second ace must fall in one of the 39 of the remaining 51 slots outside that hand: $\\frac{39}{51}$.\n- The third must avoid both occupied hands: $\\frac{26}{50}$. The fourth must land in the last hand: $\\frac{13}{49}$.\nThe product is about 0.105. Direct counting agrees: $4!\\cdot\\frac{48!}{(12!)^4}\\Big/\\frac{52!}{(13!)^4}$.\n$\\frac{3}{32}=\\frac{4!}{4^4}$ wrongly treats the aces' hands as independent draws.",
+   "distractors": [
+    "$\\frac{4!}{4^4}=\\frac{3}{32}\\approx0.094$",
+    "$\\frac{1}{4^3}\\approx0.016$",
+    "$\\frac{13}{49}\\approx0.265$"
+   ],
+   "hint": "Place the aces one by one and count the slots still available in empty hands."
+  },
+  {
+   "id": "4-gamblers-ruin",
+   "section": "4.3",
+   "name": "Gambler's ruin problem",
+   "kind": "problem",
+   "page": 83,
+   "prompt": "A gambler starts with $i$ dollars and repeatedly bets 1 dollar, winning with probability $p$ and losing with probability $q=1-p$, where $p\\ne\\frac12$. He stops when he reaches $N$ dollars or goes broke. What is the probability that he reaches $N$?",
+   "answer": "$P_i=\\frac{1-(q/p)^i}{1-(q/p)^N}$",
+   "explanation": "First-step analysis: $P_i=pP_{i+1}+qP_{i-1}$, with $P_0=0$ and $P_N=1$.\n- Rearranging: $P_{i+1}-P_i=\\frac qp\\,(P_i-P_{i-1})$, so the gaps are geometric: $P_{i+1}-P_i=r^iP_1$ with $r=\\frac qp$.\n- Summing the gaps: $P_i=P_1\\bigl(1+r+\\cdots+r^{i-1}\\bigr)=P_1\\frac{1-r^i}{1-r}$.\n- The condition $P_N=1$ fixes $P_1=\\frac{1-r}{1-r^N}$, which gives $P_i=\\frac{1-r^i}{1-r^N}$.",
+   "distractors": [
+    "$P_i=\\frac{1-(p/q)^i}{1-(p/q)^N}$",
+    "$P_i=\\frac{i}{N}$",
+    "$P_i=\\left(\\frac{p}{q}\\right)^{N-i}$"
+   ],
+   "hint": "Condition on the first bet and look at the differences P(i+1) − P(i)."
+  },
+  {
+   "id": "4-gamblers-ruin-fair",
+   "section": "4.3",
+   "name": "Gambler's ruin problem (fair game)",
+   "kind": "problem",
+   "page": 84,
+   "prompt": "In the gambler's ruin setup (start with $i$ dollars, bet 1 dollar per round, stop at $N$ dollars or at 0), what is the probability of reaching $N$ when the game is fair, $p=q=\\frac12$?",
+   "answer": "$\\frac{i}{N}$",
+   "explanation": "With $p=q$ the recursion becomes $P_{i+1}-P_i=P_i-P_{i-1}$: all gaps are equal, so $P_i$ is linear in $i$. With $P_0=0$ and $P_N=1$, this gives $P_i=\\frac iN$.\n- Martingale check: in a fair game your expected wealth stays at $i$, so $N\\cdot P_i+0\\cdot(1-P_i)=i$.\n- $\\frac{N-i}{N}$ is the probability of going broke.",
+   "distractors": [
+    "$\\frac12$",
+    "$\\frac{N-i}{N}$",
+    "$\\frac{i}{N+i}$"
+   ]
+  },
+  {
+   "id": "4-basketball-scores",
+   "section": "4.3",
+   "name": "Basketball scores",
+   "kind": "problem",
+   "page": 84,
+   "prompt": "A player takes 100 free throws. She makes the first and misses the second. After that, her chance of making each throw equals the fraction of throws she has made so far (e.g. 23 made out of 40 means the 41st goes in with probability $\\frac{23}{40}$). What is the probability that she makes exactly 50 of the 100?",
+   "answer": "$\\frac{1}{99}$",
+   "explanation": "Let $P_{n,k}$ be the probability of $k$ makes after $n$ throws. Small cases show a pattern: after 3 throws, 1 or 2 makes each have probability $\\frac12$; after 4 throws, 1, 2 or 3 makes each have $\\frac13$.\n- Claim: $P_{n,k}=\\frac1{n-1}$ for $k=1,\\dots,n-1$ (uniform).\n- Induction via total probability: $P_{n+1,k}=\\left(1-\\frac kn\\right)\\frac1{n-1}+\\frac{k-1}n\\cdot\\frac1{n-1}=\\frac1n$.\nAfter 100 throws the 99 possible totals (1 to 99) are equally likely, so $P_{100,50}=\\frac1{99}$. This is Pólya's urn in disguise.",
+   "distractors": [
+    "$\\binom{98}{49}2^{-98}\\approx0.080$",
+    "$\\frac{1}{100}$",
+    "$\\frac{1}{2}$"
+   ],
+   "hint": "Work out the distribution after 3 and 4 throws, then guess and prove the pattern."
+  },
+  {
+   "id": "4-cars-on-road",
+   "section": "4.3",
+   "name": "Cars on road",
+   "kind": "problem",
+   "page": 85,
+   "prompt": "The probability of seeing at least one car on a highway during any 20-minute window is $\\frac{609}{625}$. Assuming the chance of seeing a car is constant over time and independent across non-overlapping periods, what is the probability of seeing at least one car during any 5-minute window?",
+   "answer": "$\\frac35$",
+   "explanation": "Split the 20 minutes into four independent 5-minute blocks, each with the same probability $p$ of containing a car.\n- No car in 20 minutes means no car in any of the blocks: $(1-p)^4=1-\\frac{609}{625}=\\frac{16}{625}$.\n- So $1-p=\\frac25$ and $p=\\frac35$.\nWork with the **no-car** probability, which multiplies across independent blocks. \"At least one\" doesn't scale linearly: $\\frac{609}{2500}$ is the naive divide-by-4 answer.",
+   "distractors": [
+    "$\\frac{609}{2500}$",
+    "$\\frac25$",
+    "$\\frac45$"
+   ],
+   "hint": "Work with the probability of seeing no car."
+  }
+ ]
+}
