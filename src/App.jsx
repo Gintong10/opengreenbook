@@ -39,7 +39,6 @@ export default function App() {
       <footer className="footer">
         <p>
           OpenGreenBook is an unofficial, free study companion to <em>A Practical Guide to Quantitative Finance Interviews</em> by Xinfeng Zhou.
-          Cards are original summaries written for review — get the book for the full treatment.
         </p>
       </footer>
     </>
