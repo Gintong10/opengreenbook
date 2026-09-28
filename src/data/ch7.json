@@ -312,7 +312,8 @@
     "examples": [
      "2/5",
      "0.4"
-    ]
+    ],
+    "percent": true
    },
    "explanation": "Let $\\tilde A_p$ be the $p$-th smallest value and look at the $q-p+1$ values $\\tilde A_p,\\dots,\\tilde A_q$; here $p=3$, $q=7$, so five values. They all stay in the same subarray until one of them becomes a pivot. By symmetry, each is equally likely to be the first chosen.\n- If the first is $\\tilde A_p$ or $\\tilde A_q$, that pivot gets compared with the other: probability $2/(q-p+1)=2/5$.\n- If the first lies strictly between them, they are split into different subarrays and never meet.\nThe array size ($n=20$) plays no role. Summing over all pairs gives the expected comparison count $\\sum_{p<q}\\frac{2}{q-p+1}\\approx 2n\\ln n=\\Theta(n\\log n)$.",
    "distractors": [
@@ -389,7 +390,8 @@
     "examples": [
      "1/10",
      "0.1"
-    ]
+    ],
+    "percent": true
    },
    "explanation": "If the file ended right after character $k$, that character would need probability $1/k$ of being the pick, so it must replace the current pick with probability $1/k$; for $k=10$ that is $1/10$.\nInduction: suppose that after $k$ characters each has probability $1/k$ of being the current pick. Character $k+1$ replaces it with probability $\\frac1{k+1}$. Each earlier character survives with probability $\\frac1k\\cdot\\frac{k}{k+1}=\\frac1{k+1}$. After all $m$ characters, every one has probability $1/m$.\n```\npick = None; k = 0\nfor c in stream:\n    k += 1\n    if uniform(0,1) < 1/k: pick = c\nreturn pick\n```\nThis takes one pass and $O(1)$ memory. For a sample of size $s$, keep item $k$ with probability $s/k$, replacing a random slot.",
    "distractors": [

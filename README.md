@@ -17,7 +17,8 @@ The problems cover Chapters 2–7 (brain teasers, calculus and linear algebra, p
 ```sh
 npm install
 npm run dev        # http://localhost:5173/opengreenbook/
-npm run validate   # schema + KaTeX check for every card file
+npm run validate   # schema, KaTeX, and every accepted example run through the grader
+npm test           # grader regression tests
 npm run build
 ```
 
@@ -39,7 +40,7 @@ Card data lives in `src/data/ch*.json`. Every card has this shape:
 }
 ```
 
-`check` controls grading: `number` (auto-graded value, `examples` must be accepted), `text` (`accept`: list of short answers), or omitted for multiple choice between `answer` and `distractors`. `npm run validate` runs every example through the grader.
+`check` controls grading: `number` (auto-graded value, `examples` must be accepted, `percent: true` lets probabilities be typed as a bare percentage like `50`), `text` (`accept`: list of short answers), or omitted for multiple choice between `answer` and `distractors`. `npm run validate` runs every example through the grader.
 
 ## Deploy
 

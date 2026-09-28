@@ -1,7 +1,8 @@
 // Answer checking for the trainer. Shared by the UI and scripts/validate.mjs.
 //
 // card.check shapes:
-//   { type: 'number', value: 0.4545..., examples: ['5/11', '0.4545'], unit?: 'coins' }
+//   { type: 'number', value: 0.4545..., examples: ['5/11', '0.4545'], unit?: 'coins', percent?: true }
+//     percent: the answer is a probability, so a bare "45.45" is read as 45.45%
 //   { type: 'text', accept: ['blue'] }
 //   (none) -> multiple choice between card.answer and card.distractors
 
@@ -181,6 +182,18 @@ function rounding(src) {
   return { slack: m[3] ? slack / 100 : slack, sig }
 }
 
+// Is x an acceptable answer for value v? `r` describes a typed plain decimal (for rounding).
+function matches(x, v, r) {
+  const diff = Math.abs(x - v)
+  const scale = Math.max(Math.abs(v), 1e-12)
+  if (diff <= 1e-7 * Math.max(1, Math.abs(v))) return { ok: true }
+  // Rounded decimals count if they have 2+ significant digits, round correctly, and are within 1%.
+  if (r && r.sig >= 2 && diff <= r.slack * (1 + 1e-9) && diff / scale <= 0.01) return { ok: true, rounded: true }
+  // Expressions must be exact (up to floating point), so 499/500 is not accepted for 500/501.
+  if (!r && diff / scale <= 1e-6) return { ok: true }
+  return { ok: false }
+}
+
 function gradeNumber(input, check) {
   let x
   try {
@@ -188,15 +201,15 @@ function gradeNumber(input, check) {
   } catch {
     return { status: 'invalid', message: "Couldn't read that as a number. Try 5/11, 0.4545 or sqrt(2)/2." }
   }
-  const v = check.value
-  const diff = Math.abs(x - v)
-  const scale = Math.max(Math.abs(v), 1e-12)
-  if (diff <= 1e-7 * Math.max(1, Math.abs(v))) return { status: 'correct', value: x }
   const r = rounding(input)
-  // Rounded decimals count if they have 2+ significant digits, round correctly, and are within 1%.
-  if (r && r.sig >= 2 && diff <= r.slack * (1 + 1e-9) && diff / scale <= 0.01) return { status: 'correct', value: x, rounded: true }
-  // Expressions must be exact (up to floating point), so 499/500 is not accepted for 500/501.
-  if (!r && diff / scale <= 1e-6) return { status: 'correct', value: x }
+  const m = matches(x, check.value, r)
+  if (m.ok) return { status: 'correct', value: x, rounded: m.rounded }
+  // Probabilities may be typed as a bare percentage: "50" for 0.5, "33.3" for 1/3.
+  const bare = r && !/%\s*$/.test(input)
+  if (check.percent && bare && x > 1 && x <= 100) {
+    const p = matches(x / 100, check.value, { ...r, slack: r.slack / 100 })
+    if (p.ok) return { status: 'correct', value: x / 100, rounded: p.rounded, percent: true }
+  }
   return { status: 'wrong', value: x }
 }
 
@@ -204,8 +217,13 @@ export function normText(s) {
   return String(s)
     .toLowerCase()
     .replace(/∞/g, ' infinity ')
-    .replace(/²/g, ' 2')
-    .replace(/³/g, ' 3')
+    .replace(/²/g, '^2')
+    .replace(/³/g, '^3')
+    .replace(/\*\*/g, '^')
+    .replace(/\^/g, ' pow ')
+    .replace(/[/÷]/g, ' div ')
+    .replace(/[*×·]/g, ' times ')
+    .replace(/\+/g, ' plus ')
     .replace(/[^a-z0-9]+/g, ' ')
     .replace(/\b(the|a|an)\b/g, ' ')
     .replace(/\s+/g, ' ')
@@ -213,7 +231,9 @@ export function normText(s) {
 }
 
 // Extra words allowed around an accepted answer ("I think it's blue"). Anything else must match exactly.
-const FILLER = new Set('i it its it s is are be was will would should you we they think answer say so then just my go goes get gets become becomes stays stay remains remain'.split(' '))
+const FILLER = new Set(
+  'i it its it s is are be was will would should you we they think answer say so then just my go goes get gets become becomes stays stay remains remain time case worst average complexity runtime running big o theta'.split(' '),
+)
 
 function gradeText(input, check) {
   const got = normText(input)

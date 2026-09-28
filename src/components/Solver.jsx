@@ -22,7 +22,7 @@ export default function Solver({ card, onNext, nextLabel = 'Next problem', onRes
   const [feedback, setFeedback] = useState(null)
   const [shake, setShake] = useState(0)
   const [hint, setHint] = useState(false)
-  const [rounded, setRounded] = useState(false)
+  const [note, setNote] = useState('')
   const [badChoices, setBadChoices] = useState([])
   const choices = useMemo(() => (type === 'choice' ? choicesFor(card) : []), [card, type])
   const inputRef = useRef(null)
@@ -36,9 +36,9 @@ export default function Solver({ card, onNext, nextLabel = 'Next problem', onRes
     if (done) nextRef.current?.focus({ preventScroll: true })
   }, [done])
 
-  const succeed = (wasRounded = false) => {
+  const succeed = (r = {}) => {
     recordCorrect(card.id)
-    setRounded(wasRounded)
+    setNote(r.percent ? ' (read your answer as a percentage)' : r.rounded ? ' (your rounded value was accepted)' : '')
     setPhase('correct')
     setFeedback(null)
     onResult?.(wrong === 0 ? 'first' : 'retry')
@@ -65,7 +65,7 @@ export default function Solver({ card, onNext, nextLabel = 'Next problem', onRes
     }
     const r = grade(card, input)
     if (r.status === 'invalid') setFeedback({ kind: 'invalid', text: r.message })
-    else if (r.status === 'correct') succeed(!!r.rounded)
+    else if (r.status === 'correct') succeed(r)
     else fail()
   }
   const pick = (ch) => {
@@ -246,7 +246,7 @@ export default function Solver({ card, onNext, nextLabel = 'Next problem', onRes
             </div>
           )}
           <div className="solution-body">
-            <p className="sol-label">Answer{rounded ? ' (your rounded value was accepted)' : ''}</p>
+            <p className="sol-label">Answer{note}</p>
             <Rich text={card.answer} className="sol-answer" big />
             <p className="sol-label">Solution</p>
             <Rich text={card.explanation} className="sol-explain" />

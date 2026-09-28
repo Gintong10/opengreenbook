@@ -81,6 +81,8 @@ for (const file of files) {
             if (r.status !== 'correct') errors.push(`${where}: example "${ex}" is graded ${r.status} (value ${ch.value})`)
           }
         if (ch.unit != null && (typeof ch.unit !== 'string' || ch.unit.length > 16)) errors.push(`${where}: check.unit must be a short string`)
+        if (ch.percent != null && (ch.percent !== true || ch.unit || ch.value < 0 || ch.value > 1))
+          errors.push(`${where}: check.percent is only for unitless answers in [0, 1]`)
         for (const d of c.distractors || []) {
           // A distractor that is just a number must not be accepted as correct.
           if (/^\$?[-\d./\\{}frac ]+\$?$/.test(d.trim())) {
@@ -91,6 +93,10 @@ for (const file of files) {
       } else if (ch.type === 'text') {
         if (!Array.isArray(ch.accept) || !ch.accept.length || ch.accept.some((a) => typeof a !== 'string' || !a.trim()))
           errors.push(`${where}: text check needs a non-empty "accept" array of strings`)
+        else
+          for (const d of c.distractors || []) {
+            if (grade(c, plain(d)).status === 'correct') errors.push(`${where}: distractor "${d}" would be accepted by the text grader`)
+          }
       } else errors.push(`${where}: unknown check.type "${ch.type}"`)
     }
   }

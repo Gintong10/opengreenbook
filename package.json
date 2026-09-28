@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "validate": "node scripts/validate.mjs",
-    "deploy": "bash scripts/deploy.sh"
+    "deploy": "bash scripts/deploy.sh",
+    "test": "node --test scripts/grade.test.mjs"
   },
   "dependencies": {
     "katex": "^0.18.9",
